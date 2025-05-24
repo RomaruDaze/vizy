@@ -1,0 +1,19 @@
+.container-top {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: space-between;
+  /* Space for the header */
+}
+
+/* Reminder component takes 70% of the space */
+.container-top> :first-child {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+
+/* Locator component takes 20% of the space */
+.container-top> :last-child {
+ 
+  flex: 0 0 37.5%;
+  max-width: 37.5%;
+}

@@ -1,0 +1,74 @@
+.header {
+    background-color: #0078d4;
+    /* Windows blue color */
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.menu-icon {
+    width: 24px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.menu-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Animation for the middle line - fade out first */
+.menu-button.open .menu-icon span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Animation for the first and last lines - transform to X after middle line fades */
+.menu-button.open .menu-icon span:first-child {
+    transform: translateY(9px) rotate(45deg);
+    transition-delay: 0.2s;
+}
+
+.menu-button.open .menu-icon span:last-child {
+    transform: translateY(-9px) rotate(-45deg);
+    transition-delay: 0.2s;
+}
+
+/* Optional: Add hover effect for the lines */
+.menu-button:hover .menu-icon span {
+    background-color: #f0f0f0;
+}
+
+/* Arrow shape when menu is open */
+.menu-button.open .menu-icon {
+    transform: rotate(90deg);
+    transition-delay: 0.4s;
+}

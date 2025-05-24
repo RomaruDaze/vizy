@@ -1,0 +1,71 @@
+.reminder-container {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0 0;
+}
+
+.reminder-card {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.reminder-title {
+    background-color: #0078d4;
+    /* Windows blue color */
+    color: white;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.reminder-title h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.reminder-content {
+    padding: 1.5rem;
+    background-color: white;
+}
+
+.deadline-date-container,
+.availability-status-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.deadline-date-container p,
+.availability-status-container p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.deadline-date {
+    font-weight: 500;
+}
+
+.availability-status {
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.availability-status.available {
+    color: #2e7d32;
+    /* Green color */
+    background-color: rgba(46, 125, 50, 0.1);
+}
+
+.availability-status.unavailable {
+    color: #d32f2f;
+    /* Red color */
+    background-color: rgba(211, 47, 47, 0.1);
+}

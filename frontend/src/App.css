@@ -1,0 +1,43 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Allow text selection for input fields and textareas */
+input,
+textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Prevent double-tap zoom on mobile devices */
+html {
+    touch-action: manipulation;
+}
+
+/* Main app container */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Content area that sits below the header */
+.content-area {
+    margin-top: 32px;
+    /* Height of the header */
+    flex: 1;
+    padding: 1rem;
+}
