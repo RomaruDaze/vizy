@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "./dashboard";
+import Reminder from "./reminder-component/reminder";
 import Checklist from "./checklist";
 import Locater from "./locater";
 
@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div>
       Home
-      <Dashboard />
+      <Reminder />
       <Checklist />
       <Locater />
     </div>
