@@ -13,8 +13,8 @@
 }
 
 .locater-container:hover {
-    background-color: #0078d4;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    scale: 0.95;
+    transition: all 0.1s ease;
 }
 
 .locater-content {

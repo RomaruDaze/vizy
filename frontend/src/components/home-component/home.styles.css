@@ -1,6 +1,6 @@
 .container-top {
   display: flex;
-  margin: 2rem 0;
+  margin: 2rem 0 0.5rem 0;
   justify-content: space-between;
   /* Space for the header */
 }
