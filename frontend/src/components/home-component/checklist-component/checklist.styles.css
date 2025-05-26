@@ -326,7 +326,6 @@
     z-index: 1001;
 }
 
-/* Update notification color for uncheck action */
 .notification.uncheck {
     background-color: #f44336;
 }

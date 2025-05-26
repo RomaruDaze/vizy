@@ -18,6 +18,8 @@ const Checklist = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [isUnchecking, setIsUnchecking] = useState(false);
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
@@ -35,6 +37,9 @@ const Checklist = () => {
       setUncheckedItems((prev) => prev.filter((item) => item !== selectedItem));
       // Add to checked items
       setCheckedItems((prev) => [...prev, selectedItem]);
+      // Set notification message
+      setNotificationMessage(`${selectedItem} has been checked!`);
+      setIsUnchecking(false);
       // Show notification
       setShowNotification(true);
       // Hide notification after 2 seconds
@@ -50,6 +55,9 @@ const Checklist = () => {
       setCheckedItems((prev) => prev.filter((item) => item !== selectedItem));
       // Add to unchecked items
       setUncheckedItems((prev) => [...prev, selectedItem]);
+      // Set notification message
+      setNotificationMessage(`${selectedItem} has been unchecked!`);
+      setIsUnchecking(true);
       // Show notification
       setShowNotification(true);
       // Hide notification after 2 seconds
@@ -160,8 +168,8 @@ const Checklist = () => {
 
       {/* Notification */}
       {showNotification && (
-        <div className="notification">
-          <span>Item {isItemCompleted ? "unchecked" : "checked"}!</span>
+        <div className={`notification ${isUnchecking ? "uncheck" : ""}`}>
+          <span>{notificationMessage}</span>
         </div>
       )}
     </div>
