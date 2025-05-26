@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./header.styles.css";
+import SideMenu from "./sidemenu-component/sidemenu";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,20 +9,27 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <header className="header">
-      <button
-        className={`menu-button ${isOpen ? "open" : ""}`}
-        onClick={handleClick}
-        aria-label="Toggle menu"
-      >
-        <div className="menu-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </button>
-    </header>
+    <>
+      <header className="header">
+        <button
+          className={`menu-button ${isOpen ? "open" : ""}`}
+          onClick={handleClick}
+          aria-label="Toggle menu"
+        >
+          <div className="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </header>
+      <SideMenu isOpen={isOpen} onClose={handleClose} />
+    </>
   );
 };
 

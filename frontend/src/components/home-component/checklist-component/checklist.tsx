@@ -4,15 +4,15 @@ import "./checklist.styles.css";
 const Checklist = () => {
   const [uncheckedItems, setUncheckedItems] = useState([
     "Passport",
-    "Visa Application Form",
-    "Photo (35mm x 45mm)",
-    "Bank Statement",
+    "Visa Renewal Application Form",
+    "Photo (30mm x 40mm)",
+    "Financial Statement",
   ]);
 
   const [checkedItems, setCheckedItems] = useState([
-    "ID Card",
-    "Residence Certificate",
-    "Employment Contract",
+    "Residence Card",
+    "Enrollment Certificate",
+    "University Transcript",
   ]);
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);

@@ -6,7 +6,7 @@ import Locater from "./locator-component/locater";
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <div className="container-top">
         <Reminder />
         <Locater />
