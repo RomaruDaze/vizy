@@ -17,9 +17,13 @@ const Checklist = () => {
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
-  const [isUnchecking, setIsUnchecking] = useState(false);
+  const [notifications, setNotifications] = useState<
+    Array<{
+      message: string;
+      isUnchecking: boolean;
+      id: number;
+    }>
+  >([]);
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
@@ -33,36 +37,46 @@ const Checklist = () => {
 
   const handleCheckItem = () => {
     if (selectedItem) {
-      // Remove from unchecked items
       setUncheckedItems((prev) => prev.filter((item) => item !== selectedItem));
-      // Add to checked items
       setCheckedItems((prev) => [...prev, selectedItem]);
-      // Set notification message
-      setNotificationMessage(`${selectedItem} has been checked!`);
-      setIsUnchecking(false);
-      // Show notification
-      setShowNotification(true);
-      // Hide notification after 2 seconds
-      setTimeout(() => setShowNotification(false), 2000);
-      // Close modal
+
+      const newId = Date.now();
+      setNotifications((prev) => [
+        ...prev,
+        {
+          message: `${selectedItem} has been checked!`,
+          isUnchecking: false,
+          id: newId,
+        },
+      ]);
+
+      setTimeout(() => {
+        setNotifications((prev) => prev.filter((n) => n.id !== newId));
+      }, 2000);
+
       handleCloseModal();
     }
   };
 
   const handleUncheckItem = () => {
     if (selectedItem) {
-      // Remove from checked items
       setCheckedItems((prev) => prev.filter((item) => item !== selectedItem));
-      // Add to unchecked items
       setUncheckedItems((prev) => [...prev, selectedItem]);
-      // Set notification message
-      setNotificationMessage(`${selectedItem} has been unchecked!`);
-      setIsUnchecking(true);
-      // Show notification
-      setShowNotification(true);
-      // Hide notification after 2 seconds
-      setTimeout(() => setShowNotification(false), 2000);
-      // Close modal
+
+      const newId = Date.now();
+      setNotifications((prev) => [
+        ...prev,
+        {
+          message: `${selectedItem} has been unchecked!`,
+          isUnchecking: true,
+          id: newId,
+        },
+      ]);
+
+      setTimeout(() => {
+        setNotifications((prev) => prev.filter((n) => n.id !== newId));
+      }, 2000);
+
       handleCloseModal();
     }
   };
@@ -74,14 +88,11 @@ const Checklist = () => {
   return (
     <div className="checklist-container">
       <div className="checklist-card">
-        {/* Title bar */}
         <div className="checklist-title">
           <h5>Document Checklist</h5>
         </div>
 
-        {/* Content area */}
         <div className="checklist-content">
-          {/* Unchecked items section */}
           <div className="checklist-section">
             <h6 className="section-title">Required Documents</h6>
             <ul className="document-list">
@@ -97,10 +108,8 @@ const Checklist = () => {
             </ul>
           </div>
 
-          {/* Divider */}
           <div className="checklist-divider"></div>
 
-          {/* Checked items section */}
           <div className="checklist-section">
             <h6 className="section-title">Completed Documents</h6>
             <ul className="document-list">
@@ -118,7 +127,6 @@ const Checklist = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -166,12 +174,22 @@ const Checklist = () => {
         </div>
       )}
 
-      {/* Notification */}
-      {showNotification && (
-        <div className={`notification ${isUnchecking ? "uncheck" : ""}`}>
-          <span>{notificationMessage}</span>
-        </div>
-      )}
+      <div className="notification-container">
+        {notifications.map((notification, index) => (
+          <div
+            key={notification.id}
+            className={`notification ${
+              notification.isUnchecking ? "uncheck" : ""
+            }`}
+            style={{
+              transform: `translateY(${-index * 80}px)`,
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <span>{notification.message}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

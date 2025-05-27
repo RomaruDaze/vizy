@@ -312,43 +312,42 @@
     background-color: #d32f2f;
 }
 
-/* Notification */
-.notification {
+/* Notification Container */
+.notification-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    z-index: 1001;
+}
+
+/* Notification */
+.notification {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     background-color: #4CAF50;
     color: white;
     padding: 1rem 2rem;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    animation: slideIn 0.3s ease, fadeOut 0.3s ease 1.7s;
-    z-index: 1001;
+    max-width: 400px;
+    min-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    animation: slideInFromBottom 0.3s ease;
 }
 
 .notification.uncheck {
     background-color: #f44336;
 }
 
-@keyframes slideIn {
+@keyframes slideInFromBottom {
     from {
-        transform: translateX(100%);
-        opacity: 0;
+        transform: translateY(100%);
     }
 
     to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
+        transform: translateY(0);
     }
 }
 
