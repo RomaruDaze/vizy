@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../header.styles.css";
 
 interface SideMenuProps {
@@ -7,6 +8,7 @@ interface SideMenuProps {
 }
 
 const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
+  const navigate = useNavigate();
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
@@ -38,6 +40,21 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
     console.log("Logging out...");
   };
 
+  const handleHomeClick = () => {
+    navigate("/");
+    onClose();
+  };
+
+  const handleSettingsClick = () => {
+    navigate("/settings");
+    onClose();
+  };
+
+  const handleProfileImageClick = () => {
+    navigate("/settings");
+    onClose();
+  };
+
   // Close language dropdown when menu is closed
   React.useEffect(() => {
     if (!isOpen) {
@@ -51,7 +68,11 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
         <div className="side-menu-content">
           {/* User Profile Section */}
           <div className="user-profile">
-            <div className="profile-image">
+            <div
+              className="profile-image"
+              onClick={handleProfileImageClick}
+              style={{ cursor: "pointer" }}
+            >
               <img
                 src="https://img.icons8.com/ios-filled/100/0078d4/user-male-circle.png"
                 alt="User Profile"
@@ -96,9 +117,9 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
 
           <nav className="side-menu-nav">
             <ul>
-              <li>Home</li>
+              <li onClick={handleHomeClick}>Home</li>
               <li>Document Guide</li>
-              <li>Settings</li>
+              <li onClick={handleSettingsClick}>Settings</li>
               <li>Help</li>
             </ul>
           </nav>

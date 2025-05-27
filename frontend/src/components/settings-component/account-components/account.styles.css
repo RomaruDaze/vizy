@@ -1,0 +1,54 @@
+.account-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 0 0;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #0078d4;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 120, 212, 0.1);
+}
+
+.back-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.section-header h1 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.account-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.account-content h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
