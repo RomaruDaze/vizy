@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./reminder.styles.css";
+import ReminderSet from "./reminder-set";
 
 const Reminder = () => {
+  const [deadlineDate, setDeadlineDate] = useState("2025/06/03");
+  const [reminderTime, setReminderTime] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+
   // Function to check if date is within 3 months
   const isWithinThreeMonths = (deadlineDate: string) => {
     const deadline = new Date(deadlineDate);
@@ -28,12 +33,21 @@ const Reminder = () => {
     return { status: "Unavailable", isAvailable: false };
   };
 
-  const deadlineDate = "2025/06/03";
   const { status, isAvailable } = getAvailabilityStatus(deadlineDate);
 
+  const handleDeadlineChange = (newDeadline: string, newReminder: string) => {
+    setDeadlineDate(newDeadline);
+    setReminderTime(newReminder);
+    setIsOpen(false);
+  };
+
   return (
-    <div className="reminder-container">
-      <div className="reminder-card">
+    <div className="reminder-container" style={{ position: "relative" }}>
+      <div
+        className="reminder-card"
+        onClick={() => setIsOpen(!isOpen)}
+        style={{ cursor: "pointer" }}
+      >
         {/* Title bar */}
         <div className="reminder-title">
           <h5>VISA Renewal Reminder</h5>
@@ -44,6 +58,16 @@ const Reminder = () => {
           <div className="deadline-date-container">
             <p>Deadline: </p>
             <p className="deadline-date">{deadlineDate}</p>
+          </div>
+          <div className="reminder-time-container">
+            <p>Reminder: </p>
+            <p className="reminder-time">
+              {reminderTime
+                ? `${reminderTime} month${
+                    reminderTime === "1" ? "" : "s"
+                  } prior`
+                : "Not set"}
+            </p>
           </div>
           <div className="availability-status-container">
             <p>Status: </p>
@@ -57,6 +81,14 @@ const Reminder = () => {
           </div>
         </div>
       </div>
+      {isOpen && (
+        <ReminderSet
+          onDeadlineChange={handleDeadlineChange}
+          onClose={() => setIsOpen(false)}
+          currentDate={deadlineDate}
+          currentReminder={reminderTime}
+        />
+      )}
     </div>
   );
 };

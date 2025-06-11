@@ -29,43 +29,50 @@
 }
 
 .reminder-content {
-    padding: 1.5rem;
-    background-color: white;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .deadline-date-container,
+.reminder-time-container,
 .availability-status-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    align-items: center;
+    width: 100%;
 }
 
 .deadline-date-container p,
+.reminder-time-container p,
 .availability-status-container p {
     margin: 0;
-    line-height: 1.5;
+    font-size: 0.85rem;
 }
 
-.deadline-date {
+.deadline-date-container p:first-child,
+.reminder-time-container p:first-child,
+.availability-status-container p:first-child {
+    color: #666;
     font-weight: 500;
 }
 
+.deadline-date,
+.reminder-time,
 .availability-status {
     font-weight: 500;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    text-align: right;
+}
+
+.reminder-time {
+    color: #107c10;
 }
 
 .availability-status.available {
-    color: #2e7d32;
-    /* Green color */
-    background-color: rgba(46, 125, 50, 0.1);
+    color: #107c10;
 }
 
 .availability-status.unavailable {
-    color: #d32f2f;
-    /* Red color */
-    background-color: rgba(211, 47, 47, 0.1);
+    color: #d83b01;
 }
