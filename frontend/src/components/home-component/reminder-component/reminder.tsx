@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./reminder.styles.css";
-import ReminderSet from "./reminder-set";
+import ReminderSet from "./reminder-set-component/reminder-set";
 
 const Reminder = () => {
   const [deadlineDate, setDeadlineDate] = useState("2025/06/03");
@@ -23,7 +23,7 @@ const Reminder = () => {
     const today = new Date();
 
     if (today > deadline) {
-      return { status: "Unavailable", isAvailable: false };
+      return { status: "Expired", isAvailable: false };
     }
 
     if (isWithinThreeMonths(deadlineDate)) {
@@ -61,7 +61,7 @@ const Reminder = () => {
           </div>
           <div className="reminder-time-container">
             <p>Reminder: </p>
-            <p className="reminder-time">
+            <p className={`reminder-time ${reminderTime ? "set" : "not-set"}`}>
               {reminderTime
                 ? `${reminderTime} month${
                     reminderTime === "1" ? "" : "s"
@@ -73,7 +73,11 @@ const Reminder = () => {
             <p>Status: </p>
             <p
               className={`availability-status ${
-                isAvailable ? "available" : "unavailable"
+                status === "Available"
+                  ? "available"
+                  : status === "Expired"
+                  ? "expired"
+                  : "unavailable"
               }`}
             >
               {status}

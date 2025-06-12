@@ -152,7 +152,7 @@ const ReminderSet: React.FC<ReminderSetProps> = ({
             {selectedReminder ? (
               <p className="reminder-info">
                 You will be reminded{" "}
-                <span className="reminder-time">
+                <span className="reminder-time-text">
                   {selectedReminder} month{selectedReminder === "1" ? "" : "s"}
                 </span>{" "}
                 before the expiration date.

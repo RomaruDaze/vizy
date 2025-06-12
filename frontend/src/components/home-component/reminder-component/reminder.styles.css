@@ -58,21 +58,52 @@
     font-weight: 500;
 }
 
-.deadline-date,
-.reminder-time,
-.availability-status {
+.deadline-date {
     font-weight: 500;
     text-align: right;
+    padding: 4px 8px;
+    border-radius: 4px;
 }
 
 .reminder-time {
-    color: #107c10;
+    font-weight: 500;
+    text-align: right;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white !important;
+}
+
+.reminder-time.set {
+    background-color: #107c10;
+}
+
+.reminder-time.not-set {
+    background-color: #d83b01;
+}
+
+.availability-status {
+    font-weight: 500;
+    text-align: right;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
 }
 
 .availability-status.available {
-    color: #107c10;
+    background-color: #107c10;
+    /* Green */
 }
 
 .availability-status.unavailable {
-    color: #d83b01;
+    background-color: #ffb900;
+    /* Yellow */
+    color: #000;
+    /* Black text for better contrast on yellow */
+}
+
+.availability-status.expired {
+    background-color: #d83b01;
+    /* Red */
+    color: white;
+    /* White text for red background */
 }
