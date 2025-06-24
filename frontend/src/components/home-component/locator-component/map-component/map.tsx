@@ -27,18 +27,6 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Custom green icon for photo booths
-const greenIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
 // Function to calculate distance between two points using Haversine formula
 const calculateDistance = (
   lat1: number,
@@ -85,8 +73,7 @@ const Map = ({ locationType }: MapProps) => {
               ? immigrationOfficesData
               : photoBoothData;
 
-          // Filter locations within 50km for photo booths, 100km for immigration offices
-          const maxDistance = locationType === "immigration" ? 100 : 10;
+          // Filter locations within 100km
           const nearby = dataSource.filter((location) => {
             const distance = calculateDistance(
               userLat,
@@ -94,7 +81,7 @@ const Map = ({ locationType }: MapProps) => {
               location.lat,
               location.lon
             );
-            return distance <= maxDistance;
+            return distance <= 20;
           });
 
           // Sort by distance (closest first)
@@ -134,16 +121,7 @@ const Map = ({ locationType }: MapProps) => {
   // Don't render map until we have the user position
   if (isLoading) {
     return (
-      <div
-        className="map-wrapper"
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="map-wrapper map-loading">
         <div>Getting your location...</div>
       </div>
     );
@@ -151,14 +129,13 @@ const Map = ({ locationType }: MapProps) => {
 
   const locationTypeName =
     locationType === "immigration" ? "offices" : "photo machines";
-  const maxDistance = locationType === "immigration" ? 100 : 50;
 
   return (
-    <div className="map-wrapper" style={{ width: "100%", height: "100%" }}>
+    <div className="map-wrapper">
       <MapContainer
         center={userPosition!}
         zoom={10}
-        style={{ width: "100%", height: "100%" }}
+        className="map-container"  
         zoomControl={true}
         attributionControl={false}
       >
@@ -176,11 +153,7 @@ const Map = ({ locationType }: MapProps) => {
             : 0;
 
           return (
-            <Marker
-              key={index}
-              position={[location.lat, location.lon]}
-              icon={locationType === "photobooth" ? greenIcon : undefined}
-            >
+            <Marker key={index} position={[location.lat, location.lon]}>
               <Popup closeButton={false}>
                 <div>
                   <strong>{location.name}</strong>
@@ -198,8 +171,7 @@ const Map = ({ locationType }: MapProps) => {
               <div>
                 <strong>Your Location</strong>
                 <p>
-                  Found {nearbyLocations.length} {locationTypeName} within{" "}
-                  {maxDistance}km
+                  Found {nearbyLocations.length} {locationTypeName} within 20km
                 </p>
               </div>
             </Popup>
