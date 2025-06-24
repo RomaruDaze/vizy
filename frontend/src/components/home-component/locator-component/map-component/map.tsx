@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useEffect, useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "./map.styles.css";
@@ -26,6 +26,39 @@ const redIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+
+// Component to handle map controls
+const MapControls = ({
+  userPosition,
+}: {
+  userPosition: [number, number] | null;
+}) => {
+  const map = useMap();
+
+  const handleMyLocationClick = () => {
+    if (userPosition) {
+      map.setView(userPosition, 13, {
+        animate: true,
+        duration: 1,
+      });
+    }
+  };
+
+  return (
+    <div className="map-controls">
+      <button
+        className="my-location-btn"
+        onClick={handleMyLocationClick}
+        title="Go to my location"
+      >
+        <img
+          src="https://img.icons8.com/ios-filled/100/define-location--v1.png"
+          alt="My Location"
+        />
+      </button>
+    </div>
+  );
+};
 
 // Function to calculate distance between two points using Haversine formula
 const calculateDistance = (
@@ -57,6 +90,8 @@ const Map = ({ locationType }: MapProps) => {
   );
   const [nearbyLocations, setNearbyLocations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [showDetailPopup, setShowDetailPopup] = useState(false);
 
   useEffect(() => {
     // Get user's current location
@@ -118,6 +153,29 @@ const Map = ({ locationType }: MapProps) => {
     }
   }, [locationType]);
 
+  const handleLocationClick = (location: any) => {
+    setSelectedLocation(location);
+    setShowDetailPopup(true);
+  };
+
+  const handlePhoneClick = () => {
+    // For now, just show an alert. You can replace this with actual phone functionality
+    alert("Phone functionality will be implemented here");
+  };
+
+  const handleDirectionClick = () => {
+    if (selectedLocation) {
+      // Open Google Maps with directions from user's current location
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userPosition?.[0]},${userPosition?.[1]}&destination=${selectedLocation.lat},${selectedLocation.lon}&travelmode=driving`;
+      window.open(url, "_blank");
+    }
+  };
+
+  const handleCloseDetailPopup = () => {
+    setShowDetailPopup(false);
+    setSelectedLocation(null);
+  };
+
   // Don't render map until we have the user position
   if (isLoading) {
     return (
@@ -134,12 +192,15 @@ const Map = ({ locationType }: MapProps) => {
     <div className="map-wrapper">
       <MapContainer
         center={userPosition!}
-        zoom={10}
-        className="map-container"  
+        zoom={13}
+        className="map-container"
         zoomControl={true}
         attributionControl={false}
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+
+        {/* Map Controls */}
+        <MapControls userPosition={userPosition} />
 
         {/* Show nearby locations */}
         {nearbyLocations.map((location, index) => {
@@ -155,9 +216,13 @@ const Map = ({ locationType }: MapProps) => {
           return (
             <Marker key={index} position={[location.lat, location.lon]}>
               <Popup closeButton={false}>
-                <div>
+                <div
+                  className="location-popup clickable"
+                  onClick={() => handleLocationClick(location)}
+                >
                   <strong>{location.name}</strong>
                   {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
+                  <p className="click-for-more">Click for more details</p>
                 </div>
               </Popup>
             </Marker>
@@ -178,6 +243,54 @@ const Map = ({ locationType }: MapProps) => {
           </Marker>
         )}
       </MapContainer>
+
+      {/* Detailed popup overlay */}
+      {showDetailPopup && selectedLocation && (
+        <div className="detail-popup-overlay">
+          <div className="detail-popup">
+            <button className="close-button" onClick={handleCloseDetailPopup}>
+              ×
+            </button>
+            <div className="detail-content">
+              <h3>{selectedLocation.name}</h3>
+              {userPosition && (
+                <p className="distance">
+                  Distance:{" "}
+                  {calculateDistance(
+                    userPosition[0],
+                    userPosition[1],
+                    selectedLocation.lat,
+                    selectedLocation.lon
+                  ).toFixed(1)}{" "}
+                  km
+                </p>
+              )}
+              <div className="action-buttons">
+                <button
+                  className="action-btn phone-btn"
+                  onClick={handlePhoneClick}
+                >
+                  <img
+                    src="https://img.icons8.com/ios-filled/50/FFFFFF/phone.png"
+                    alt="Phone"
+                  />
+                  <span>Call</span>
+                </button>
+                <button
+                  className="action-btn direction-btn"
+                  onClick={handleDirectionClick}
+                >
+                  <img
+                    src="https://img.icons8.com/ios-filled/50/FFFFFF/compass.png"
+                    alt="Directions"
+                  />
+                  <span>Directions</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

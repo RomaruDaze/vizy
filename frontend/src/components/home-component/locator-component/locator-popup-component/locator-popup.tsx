@@ -40,7 +40,7 @@ const LocatorPopup = ({ onClose }: LocatorPopupProps) => {
             <span>
               {selectedOption === "immigration"
                 ? "Immigration Office Map"
-                : "Passport Photo Machine Map"}
+                : "ID Photo Machine Map"}
             </span>
           </h3>
           <div className="map-container">

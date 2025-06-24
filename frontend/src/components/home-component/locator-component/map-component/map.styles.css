@@ -1,6 +1,7 @@
 .map-wrapper {
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .map-loading {
@@ -14,4 +15,195 @@
 .map-container {
     width: 100%;
     height: 100%;
+}
+
+/* Leaflet popup customization */
+.leaflet-popup-content-wrapper {
+    background-color: red;
+    border-radius: 8px;
+    padding: 1px 0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 0 !important;
+    width: auto !important;
+    min-width: 200px;
+}
+
+.leaflet-popup-tip {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Location popup styles */
+.location-popup {
+    text-align: center;
+    min-width: 100px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+}
+
+.location-popup.clickable:hover {
+    background-color: #f8f9fa;
+}
+
+.click-for-more {
+    color: #007bff;
+    font-size: 12px;
+    margin: 8px 0 0 0;
+    font-style: italic;
+    cursor: pointer;
+}
+
+/* Detail popup overlay */
+.detail-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.detail-popup {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.detail-popup .close-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 4px;
+    line-height: 1;
+}
+
+.detail-popup .close-button:hover {
+    color: #333;
+}
+
+.detail-content h3 {
+    margin: 0 0 16px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.detail-content .distance {
+    margin: 0 0 24px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.phone-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.phone-btn:hover {
+    background-color: #218838;
+}
+
+.direction-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.direction-btn:hover {
+    background-color: #0056b3;
+}
+
+.action-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.action-btn span {
+    font-size: 12px;
+}
+
+/* Map Controls */
+.map-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.my-location-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+}
+
+.my-location-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.my-location-btn:active {
+    transform: scale(0.95);
+}
+
+.my-location-btn img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+}
+
+.my-location-btn:hover img {
+    opacity: 1;
 }
