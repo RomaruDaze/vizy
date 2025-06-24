@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "./map.styles.css";
 import immigrationOfficesData from "./immigration-offices.json";
+import photoBoothData from "./photo-booth.json";
 
 // Fix default marker icon issue with Leaflet + Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -18,6 +19,18 @@ L.Icon.Default.mergeOptions({
 const redIcon = new L.Icon({
   iconUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+// Custom green icon for photo booths
+const greenIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
   iconSize: [25, 41],
@@ -46,11 +59,15 @@ const calculateDistance = (
   return R * c;
 };
 
-const Map = () => {
+interface MapProps {
+  locationType: string;
+}
+
+const Map = ({ locationType }: MapProps) => {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(
     null
   );
-  const [nearbyOffices, setNearbyOffices] = useState<any[]>([]);
+  const [nearbyLocations, setNearbyLocations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -62,15 +79,22 @@ const Map = () => {
           const userLon = position.coords.longitude;
           setUserPosition([userLat, userLon]);
 
-          // Filter offices within 200km
-          const nearby = immigrationOfficesData.filter((office) => {
+          // Choose data based on location type
+          const dataSource =
+            locationType === "immigration"
+              ? immigrationOfficesData
+              : photoBoothData;
+
+          // Filter locations within 50km for photo booths, 100km for immigration offices
+          const maxDistance = locationType === "immigration" ? 100 : 10;
+          const nearby = dataSource.filter((location) => {
             const distance = calculateDistance(
               userLat,
               userLon,
-              office.lat,
-              office.lon
+              location.lat,
+              location.lon
             );
-            return distance <= 100;
+            return distance <= maxDistance;
           });
 
           // Sort by distance (closest first)
@@ -80,24 +104,32 @@ const Map = () => {
             return distanceA - distanceB;
           });
 
-          setNearbyOffices(nearby);
+          setNearbyLocations(nearby);
           setIsLoading(false);
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Fallback to Tokyo immigration office
+          // Fallback to Tokyo
           setUserPosition([35.630184, 139.744451]);
-          setNearbyOffices(immigrationOfficesData);
+          const dataSource =
+            locationType === "immigration"
+              ? immigrationOfficesData
+              : photoBoothData;
+          setNearbyLocations(dataSource);
           setIsLoading(false);
         }
       );
     } else {
       // Fallback if geolocation is not supported
       setUserPosition([35.630184, 139.744451]);
-      setNearbyOffices(immigrationOfficesData);
+      const dataSource =
+        locationType === "immigration"
+          ? immigrationOfficesData
+          : photoBoothData;
+      setNearbyLocations(dataSource);
       setIsLoading(false);
     }
-  }, []);
+  }, [locationType]);
 
   // Don't render map until we have the user position
   if (isLoading) {
@@ -117,6 +149,10 @@ const Map = () => {
     );
   }
 
+  const locationTypeName =
+    locationType === "immigration" ? "offices" : "photo machines";
+  const maxDistance = locationType === "immigration" ? 100 : 50;
+
   return (
     <div className="map-wrapper" style={{ width: "100%", height: "100%" }}>
       <MapContainer
@@ -128,22 +164,26 @@ const Map = () => {
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
 
-        {/* Show only nearby immigration offices (within 200km) */}
-        {nearbyOffices.map((office, index) => {
+        {/* Show nearby locations */}
+        {nearbyLocations.map((location, index) => {
           const distance = userPosition
             ? calculateDistance(
                 userPosition[0],
                 userPosition[1],
-                office.lat,
-                office.lon
+                location.lat,
+                location.lon
               )
             : 0;
 
           return (
-            <Marker key={index} position={[office.lat, office.lon]}>
+            <Marker
+              key={index}
+              position={[location.lat, location.lon]}
+              icon={locationType === "photobooth" ? greenIcon : undefined}
+            >
               <Popup closeButton={false}>
                 <div>
-                  <strong>{office.name}</strong>
+                  <strong>{location.name}</strong>
                   {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
                 </div>
               </Popup>
@@ -157,7 +197,10 @@ const Map = () => {
             <Popup closeButton={false}>
               <div>
                 <strong>Your Location</strong>
-                <p>Found {nearbyOffices.length} offices within 100km</p>
+                <p>
+                  Found {nearbyLocations.length} {locationTypeName} within{" "}
+                  {maxDistance}km
+                </p>
               </div>
             </Popup>
           </Marker>

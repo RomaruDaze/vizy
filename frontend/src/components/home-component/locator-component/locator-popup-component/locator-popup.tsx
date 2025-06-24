@@ -8,13 +8,21 @@ interface LocatorPopupProps {
 
 const LocatorPopup = ({ onClose }: LocatorPopupProps) => {
   const [showMap, setShowMap] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleImmigrationOfficeClick = () => {
+    setSelectedOption("immigration");
+    setShowMap(true);
+  };
+
+  const handlePhotoBoothClick = () => {
+    setSelectedOption("photobooth");
     setShowMap(true);
   };
 
   const handleMapClose = () => {
     setShowMap(false);
+    setSelectedOption("");
   };
 
   if (showMap) {
@@ -29,10 +37,14 @@ const LocatorPopup = ({ onClose }: LocatorPopupProps) => {
               src="https://img.icons8.com/external-lylac-kerismaker/25/external-Pin-Map-location-lylac-kerismaker.png"
               alt="Pin Icon"
             />
-            <span> Immigration Office Map</span>
+            <span>
+              {selectedOption === "immigration"
+                ? "Immigration Office Map"
+                : "Passport Photo Machine Map"}
+            </span>
           </h3>
           <div className="map-container">
-            <Map />
+            <Map locationType={selectedOption} />
           </div>
         </div>
       </div>
@@ -63,7 +75,7 @@ const LocatorPopup = ({ onClose }: LocatorPopupProps) => {
             />
             <p>Immigration Office</p>
           </button>
-          <button className="option-button">
+          <button className="option-button" onClick={handlePhotoBoothClick}>
             <img
               src="https://img.icons8.com/ios-filled/100/FFFFFF/selfie-booth.png"
               alt="Pin Icon"
