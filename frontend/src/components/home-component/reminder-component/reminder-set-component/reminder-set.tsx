@@ -89,13 +89,13 @@ const ReminderSet: React.FC<ReminderSetProps> = ({
           ×
         </button>
         <div className="popup-content">
-          <h3>
+          <div className="popup-content-header">
             <img
               src="https://img.icons8.com/color/96/passport.png"
               alt="Visa Icon"
             />
-            VISA Reminder
-          </h3>
+            <h3>VISA Reminder</h3>
+          </div>
           <div className="input-group">
             <div className="input-with-button">
               <label className="date-label">Set Visa expiration date</label>

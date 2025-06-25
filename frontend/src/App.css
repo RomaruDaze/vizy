@@ -36,10 +36,39 @@ html {
     flex-direction: column;
 }
 
-/* Content area that sits below the header */
+/* Content area - takes up space above bottom navigation */
 .content-area {
-    margin-top: 32px;
-    /* Height of the header */
+    background-color: #FFFFFF;
     flex: 1;
+    padding: 0;
+    overflow: hidden;
+    height: 70vh;
+}
+
+/* Top section - User Profile (20%) */
+.top-section {
+    height: 12.5%;
+    display: flex;
+    align-items: center;
     padding: 1rem;
+    background-color: #0078d4;
+}
+
+/* Middle section - Reminder & Checklist (80%) */
+.middle-section {
+    height: 72.5%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Bottom section - Navigation (10%) */
+.bottom-section {
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: transparent;
 }

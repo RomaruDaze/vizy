@@ -1,0 +1,14 @@
+.locator-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #0078d4;
+}
+
+.top-section h1 {
+    color: white;
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 600;
+}

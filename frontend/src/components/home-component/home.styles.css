@@ -13,14 +13,16 @@
 
 /* Locator component takes 20% of the space */
 .container-top> :last-child {
-
   flex: 0 0 37.5%;
   max-width: 37.5%;
 }
 
 .home-container {
   position: relative;
+  height: 100vh;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* When menu is open, prevent interaction with home content */

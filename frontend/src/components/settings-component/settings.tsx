@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./settings.styles.css";
 import Account from "./account-components/account";
+import BottomNavigation from "../shared/bottom-navigation";
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const settingsSections = [
     {
@@ -11,12 +14,6 @@ const Settings = () => {
       title: "Account",
       icon: "https://img.icons8.com/ios-filled/50/0078d4/user-male-circle.png",
       description: "Manage your account settings and preferences",
-    },
-    {
-      id: "reminder",
-      title: "Reminder",
-      icon: "https://img.icons8.com/ios-filled/50/0078d4/bell.png",
-      description: "Configure your reminder notifications and schedules",
     },
     {
       id: "appearance",
@@ -36,12 +33,6 @@ const Settings = () => {
       icon: "https://img.icons8.com/ios-filled/50/0078d4/headset.png",
       description: "Get support and view documentation",
     },
-    {
-      id: "about",
-      title: "About",
-      icon: "https://img.icons8.com/ios-filled/50/0078d4/info.png",
-      description: "Learn more about the application",
-    },
   ];
 
   const handleSectionClick = (sectionId: string) => {
@@ -56,33 +47,38 @@ const Settings = () => {
         </div>
       ) : (
         <>
-          <div className="settings-header">
-            <h1>Settings</h1>
+          <div className="top-section">
+            <h1 className="settings-header">Settings</h1>
           </div>
-          <div className="settings-grid">
-            {settingsSections.map((section) => (
-              <div
-                key={section.id}
-                className="settings-card"
-                onClick={() => handleSectionClick(section.id)}
-              >
-                <div className="settings-card-content">
-                  <div className="settings-icon">
-                    <img src={section.icon} alt={section.title} />
-                  </div>
-                  <div className="settings-info">
-                    <h2>{section.title}</h2>
-                    <p>{section.description}</p>
-                  </div>
-                  <div className="settings-arrow">
-                    <img
-                      src="https://img.icons8.com/ios-filled/50/0078d4/chevron-right.png"
-                      alt="arrow"
-                    />
+          <div className="middle-section">
+            <div className="settings-grid">
+              {settingsSections.map((section) => (
+                <div
+                  key={section.id}
+                  className="settings-card"
+                  onClick={() => handleSectionClick(section.id)}
+                >
+                  <div className="settings-card-content">
+                    <div className="settings-icon">
+                      <img src={section.icon} alt={section.title} />
+                    </div>
+                    <div className="settings-info">
+                      <h2>{section.title}</h2>
+                      <p>{section.description}</p>
+                    </div>
+                    <div className="settings-arrow">
+                      <img
+                        src="https://img.icons8.com/ios-filled/50/0078d4/chevron-right.png"
+                        alt="arrow"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="bottom-section">
+            <BottomNavigation />
           </div>
         </>
       )}

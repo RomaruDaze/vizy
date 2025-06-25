@@ -2,16 +2,27 @@ import React from "react";
 import "./home.styles.css";
 import Reminder from "./reminder-component/reminder";
 import Checklist from "./checklist-component/checklist";
-import Locater from "./locator-component/locater";
+import UserProfile from "./user-profile-component/user-profile";
+import BottomNavigation from "../shared/bottom-navigation";
 
 const Home = () => {
   return (
     <div className="home-container">
-      <div className="container-top">
-        <Reminder />
-        <Locater />
+      {/* Top section - User Profile (15%) */}
+      <div className="top-section">
+        <UserProfile />
       </div>
-      <Checklist />
+
+      {/* Middle section - Reminder & Checklist (85%) */}
+      <div className="middle-section">
+        <Reminder />
+        <Checklist />
+      </div>
+
+      {/* Bottom section - Navigation (10%) */}
+      <div className="bottom-section">
+        <BottomNavigation />
+      </div>
     </div>
   );
 };
