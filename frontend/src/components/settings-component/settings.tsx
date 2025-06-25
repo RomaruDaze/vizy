@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./settings.styles.css";
 import Account from "./account-components/account";
 import BottomNavigation from "../shared/bottom-navigation";
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const settingsSections = [
     {

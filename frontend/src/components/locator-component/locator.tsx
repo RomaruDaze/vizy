@@ -1,11 +1,9 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 import "./locator.styles.css";
 import BottomNavigation from "../shared/bottom-navigation";
 import Map from "./map-component/map";
 
 const Locator = () => {
-  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("immigration");
   const mapRef = useRef<{ resetToUserLocation: () => void }>(null);
 
@@ -15,10 +13,6 @@ const Locator = () => {
 
   const handlePhotoBooths = () => {
     setSelectedOption("photobooth");
-  };
-
-  const handleBackToHome = () => {
-    navigate("/");
   };
 
   const handleResetLocation = () => {

@@ -1,4 +1,4 @@
-import  { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -88,7 +88,7 @@ interface MapRef {
   resetToUserLocation: () => void;
 }
 
-const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
+const Map = forwardRef<MapRef, MapProps>(({ locationType }, _ref) => {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(
     null
   );
@@ -110,9 +110,9 @@ const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
           const dataSource =
             locationType === "immigration"
               ? immigrationOfficesData
-              : photoBoothData;
+              : photoBoothData.data;
 
-          // Filter locations within 100km
+          // Filter locations within 20km
           const nearby = dataSource.filter((location) => {
             const distance = calculateDistance(
               userLat,
@@ -140,7 +140,7 @@ const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
           const dataSource =
             locationType === "immigration"
               ? immigrationOfficesData
-              : photoBoothData;
+              : photoBoothData.data;
           setNearbyLocations(dataSource);
           setIsLoading(false);
         }
@@ -151,7 +151,7 @@ const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
       const dataSource =
         locationType === "immigration"
           ? immigrationOfficesData
-          : photoBoothData;
+          : photoBoothData.data;
       setNearbyLocations(dataSource);
       setIsLoading(false);
     }
@@ -299,6 +299,6 @@ const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
   );
 });
 
-Map.displayName = 'Map';
+Map.displayName = "Map";
 
 export default Map;

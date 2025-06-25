@@ -1,4 +1,3 @@
-import React from "react";
 import "./user-profile.styles.css";
 
 const UserProfile = () => {
@@ -6,12 +5,8 @@ const UserProfile = () => {
     <div className="user-profile">
       <div className="profile-picture">
         <img
-          src="/default-avatar.png"
-          alt="User Profile"
-          onError={(e) => {
-            e.currentTarget.src =
-              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='20' fill='%23ccc'/%3E%3Cpath d='M20 85c0-16.6 13.4-30 30-30s30 13.4 30 30' fill='%23ccc'/%3E%3C/svg%3E";
-          }}
+          src="https://img.icons8.com/ios-filled/50/FFFFFF/user.png"
+          alt="user"
         />
       </div>
       <div className="user-info">

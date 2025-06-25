@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./bottom-navigation.styles.css";
 
@@ -10,10 +9,10 @@ const BottomNavigation = () => {
     <div className="bottom-navigation">
       <button
         className={`nav-button locator-button ${
-          location.pathname === "/locator" ? "active" : ""
+          location.pathname === "/vizy/locator" ? "active" : ""
         }`}
         onClick={() => {
-          navigate("/locator");
+          navigate("/vizy/locator");
         }}
       >
         <div className="nav-icon">
@@ -27,10 +26,10 @@ const BottomNavigation = () => {
 
       <button
         className={`nav-button home-button ${
-          location.pathname === "/" ? "active" : ""
+          location.pathname === "/vizy/" || location.pathname === "/vizy" ? "active" : ""
         }`}
         onClick={() => {
-          navigate("/");
+          navigate("/vizy/");
         }}
       >
         <div className="nav-icon">
@@ -44,9 +43,9 @@ const BottomNavigation = () => {
 
       <button
         className={`nav-button settings-button ${
-          location.pathname === "/settings" ? "active" : ""
+          location.pathname === "/vizy/settings" ? "active" : ""
         }`}
-        onClick={() => navigate("/settings")}
+        onClick={() => navigate("/vizy/settings")}
       >
         <div className="nav-icon">
           <img

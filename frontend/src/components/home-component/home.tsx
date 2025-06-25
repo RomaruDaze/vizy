@@ -1,4 +1,3 @@
-import React from "react";
 import "./home.styles.css";
 import Reminder from "./reminder-component/reminder";
 import Checklist from "./checklist-component/checklist";

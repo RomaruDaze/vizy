@@ -10,9 +10,9 @@ const App = () => {
       <div className="app-container">
         <main className="content-area">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/locator" element={<Locator />} />
+            <Route path="/vizy/" element={<Home />} />
+            <Route path="/vizy/settings" element={<Settings />} />
+            <Route path="/vizy/locator" element={<Locator />} />
           </Routes>
         </main>
       </div>

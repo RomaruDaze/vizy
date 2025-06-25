@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./reminder.styles.css";
 import ReminderSet from "./reminder-set-component/reminder-set";
 
@@ -33,7 +33,8 @@ const Reminder = () => {
     return { status: "Unavailable", isAvailable: false };
   };
 
-  const { status, isAvailable } = getAvailabilityStatus(deadlineDate);
+  // Get current status
+  const { status } = getAvailabilityStatus(deadlineDate);
 
   const handleDeadlineChange = (newDeadline: string, newReminder: string) => {
     setDeadlineDate(newDeadline);
