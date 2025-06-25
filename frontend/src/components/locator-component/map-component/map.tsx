@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import  { useEffect, useState, forwardRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -84,7 +84,11 @@ interface MapProps {
   locationType: string;
 }
 
-const Map = ({ locationType }: MapProps) => {
+interface MapRef {
+  resetToUserLocation: () => void;
+}
+
+const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(
     null
   );
@@ -293,6 +297,8 @@ const Map = ({ locationType }: MapProps) => {
       )}
     </div>
   );
-};
+});
+
+Map.displayName = 'Map';
 
 export default Map;
