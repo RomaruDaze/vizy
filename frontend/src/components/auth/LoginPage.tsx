@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "./loginPage.styles.css";
 
 const LoginPage = () => {
@@ -7,8 +8,16 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isSignup, setIsSignup] = useState(false);
-  const { login, signup, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      console.log('User already logged in, redirecting to home');
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,18 +25,10 @@ const LoginPage = () => {
     try {
       setError("");
       setLoading(true);
-
-      if (isSignup) {
-        await signup(email, password);
-      } else {
-        await login(email, password);
-      }
+      await login(email, password);
+      // Navigation will be handled by the useEffect above
     } catch (error: any) {
-      setError(
-        isSignup
-          ? "Failed to create account: " + error.message
-          : "Failed to log in: " + error.message
-      );
+      setError("Failed to log in: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -38,11 +39,23 @@ const LoginPage = () => {
       setError("");
       setLoading(true);
       await loginWithGoogle();
+      // Navigation will be handled by the useEffect above
     } catch (error: any) {
       setError("Failed to authenticate with Google: " + error.message);
     } finally {
       setLoading(false);
     }
+  }
+
+  // Don't render login form if user is already authenticated
+  if (currentUser) {
+    return (
+      <div className="login-page">
+        <div className="login-container">
+          <div>Redirecting...</div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -91,13 +104,7 @@ const LoginPage = () => {
             className="login-button primary"
             disabled={loading}
           >
-            {loading
-              ? isSignup
-                ? "Creating Account..."
-                : "Logging in..."
-              : isSignup
-              ? "Sign Up"
-              : "Login"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

@@ -7,7 +7,6 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
-  updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 
@@ -17,7 +16,6 @@ interface AuthContextType {
   signup: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   loginWithGoogle: () => Promise<any>;
-  updateUserProfile: (displayName: string) => Promise<void>;
   loading: boolean;
 }
 
@@ -43,8 +41,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  function logout() {
-    return signOut(auth);
+  async function logout() {
+    try {
+      console.log("Logging out...");
+      await signOut(auth);
+      console.log("Logout successful");
+      // Force clear the user state
+      setCurrentUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+      throw error;
+    }
   }
 
   function loginWithGoogle() {
@@ -52,15 +59,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return signInWithPopup(auth, provider);
   }
 
-  async function updateUserProfile(displayName: string) {
-    if (currentUser) {
-      await updateProfile(currentUser, { displayName });
-      setCurrentUser({ ...currentUser });
-    }
-  }
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed:", user);
       setCurrentUser(user);
       setLoading(false);
     });
@@ -74,7 +75,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signup,
     logout,
     loginWithGoogle,
-    updateUserProfile,
     loading,
   };
 

@@ -17,9 +17,14 @@ const Account = ({ onBack }: AccountProps) => {
 
   const handleLogout = async () => {
     try {
+      console.log('Attempting to logout...');
       await logout();
+      console.log('Logout successful, redirecting...');
+      // Redirect to login page after logout
+      window.location.href = '/vizy/login';
     } catch (error) {
       console.error("Failed to log out:", error);
+      alert('Failed to logout. Please try again.');
     }
   };
 
@@ -78,95 +83,53 @@ const Account = ({ onBack }: AccountProps) => {
       </div>
 
       <div className="account-content">
-        <h2>Account Settings</h2>
+        <h2>Account Information</h2>
 
-        {currentUser && (
-          <div className="profile-section">
-            <div className="profile-header">
-              <div className="profile-avatar">
-                {currentUser.photoURL ? (
-                  <img src={currentUser.photoURL} alt="Profile" />
-                ) : (
-                  <div className="avatar-placeholder">
-                    {currentUser.email?.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <button className="change-avatar-btn">
-                  <img
-                    src="https://img.icons8.com/ios-filled/50/FFFFFF/camera.png"
-                    alt="Change"
-                  />
-                </button>
-              </div>
-
-              <div className="profile-info">
-                <h3>{currentUser.displayName || "User"}</h3>
-                <p>{currentUser.email}</p>
-              </div>
+        {currentUser ? (
+          <div className="user-info">
+            <div className="user-avatar">
+              {currentUser.photoURL ? (
+                <img src={currentUser.photoURL} alt="Profile" />
+              ) : (
+                <div className="avatar-placeholder">
+                  {currentUser.displayName?.charAt(0).toUpperCase() || currentUser.email?.charAt(0).toUpperCase()}
+                </div>
+              )}
             </div>
 
-            <div className="profile-actions">
-              <button
-                className="edit-profile-btn"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                <img
-                  src="https://img.icons8.com/ios-filled/50/FFFFFF/edit.png"
-                  alt="Edit"
-                />
-                Edit Profile
-              </button>
+            <div className="user-details">
+              <h3>{currentUser.displayName || "User"}</h3>
+              <p>{currentUser.email}</p>
+              <p className="user-id">ID: {currentUser.uid}</p>
+            </div>
 
-              <button
-                className="reset-password-btn"
-                onClick={handleResetPassword}
-                disabled={loading}
+            <div className="account-actions">
+              <button 
+                className="logout-button" 
+                onClick={handleLogout}
+                style={{
+                  background: '#dc3545',
+                  color: 'white',
+                  border: 'none',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: '500'
+                }}
               >
-                <img
-                  src="https://img.icons8.com/ios-filled/50/FFFFFF/password.png"
-                  alt="Reset"
-                />
-                Reset Password
-              </button>
-
-              <button className="logout-btn" onClick={handleLogout}>
                 <img
                   src="https://img.icons8.com/ios-filled/50/FFFFFF/logout.png"
                   alt="Logout"
+                  style={{ width: '20px', height: '20px', marginRight: '8px' }}
                 />
                 Logout
               </button>
             </div>
-
-            {isEditing && (
-              <div className="edit-profile-form">
-                <div className="form-group">
-                  <label>Display Name</label>
-                  <input
-                    type="text"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Enter display name"
-                  />
-                </div>
-
-                <div className="form-actions">
-                  <button
-                    className="save-btn"
-                    onClick={handleSaveProfile}
-                    disabled={loading}
-                  >
-                    {loading ? "Saving..." : "Save Changes"}
-                  </button>
-                  <button
-                    className="cancel-btn"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
+          </div>
+        ) : (
+          <div className="no-user">
+            <p>Please log in to view account information.</p>
           </div>
         )}
       </div>
