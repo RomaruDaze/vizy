@@ -1,11 +1,4 @@
-import {
-  ref,
-  get,
-  query,
-  orderByChild,
-  startAt,
-  endAt,
-} from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "../firebase/config";
 
 export interface Location {
