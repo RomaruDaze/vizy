@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import "./account.styles.css";
-import { updateProfile } from "firebase/auth";
 
 interface AccountProps {
   onBack: () => void;
@@ -16,120 +15,288 @@ const Account = ({ onBack }: AccountProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
-    try {
-      console.log('Attempting to logout...');
-      await logout();
-      console.log('Logout successful, redirecting...');
-      // Redirect to login page after logout
-      window.location.href = '/vizy/login';
-    } catch (error) {
-      console.error("Failed to log out:", error);
-      alert('Failed to logout. Please try again.');
-    }
-  };
-
-  const handleSaveProfile = async () => {
-    if (!currentUser) return;
-
-    try {
-      setLoading(true);
-      // Update profile logic will be implemented here
-      // await updateProfile(currentUser, { displayName });
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResetPassword = async () => {
-    if (!currentUser?.email) return;
-
-    try {
-      setLoading(true);
-      // Password reset logic will be implemented here
-      // await sendPasswordResetEmail(auth, currentUser.email);
-      alert("Password reset email sent!");
-    } catch (error) {
-      console.error("Failed to send password reset email:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateDisplayName = async (newName: string) => {
-    if (currentUser) {
+    if (window.confirm("Are you sure you want to logout?")) {
       try {
-        await updateProfile(currentUser, { displayName: newName });
-        // Force a re-render
-        window.location.reload();
+        setLoading(true);
+        await logout();
+        window.location.href = "/vizy/login";
       } catch (error) {
-        console.error("Failed to update display name:", error);
+        console.error("Failed to log out:", error);
+        alert("Failed to logout. Please try again.");
+      } finally {
+        setLoading(false);
       }
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
+      try {
+        setLoading(true);
+        // Add delete account functionality here
+        alert("Account deletion will be implemented soon.");
+      } catch (error) {
+        console.error("Failed to delete account:", error);
+        alert("Failed to delete account. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      setLoading(true);
+      // Add password reset functionality here
+      alert("Password reset email will be sent to your email address.");
+    } catch (error) {
+      console.error("Failed to send password reset:", error);
+      alert("Failed to send password reset email. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="account-container">
-      <div className="section-header">
+    <div className="account-page">
+      <div className="account-header">
         <button className="back-button" onClick={onBack}>
           <img
             src="https://img.icons8.com/ios-filled/50/0078d4/back.png"
             alt="back"
           />
-          Back
+          <span>Back</span>
         </button>
+        <h1>Account Settings</h1>
       </div>
 
       <div className="account-content">
-        <h2>Account Information</h2>
-
         {currentUser ? (
-          <div className="user-info">
-            <div className="user-avatar">
-              {currentUser.photoURL ? (
-                <img src={currentUser.photoURL} alt="Profile" />
-              ) : (
-                <div className="avatar-placeholder">
-                  {currentUser.displayName?.charAt(0).toUpperCase() || currentUser.email?.charAt(0).toUpperCase()}
+          <>
+            {/* Profile Section */}
+            <div className="profile-section">
+              <div className="profile-header">
+                <div className="profile-avatar">
+                  {currentUser.photoURL ? (
+                    <img src={currentUser.photoURL} alt="Profile" />
+                  ) : (
+                    <div className="avatar-placeholder">
+                      {currentUser.displayName?.charAt(0).toUpperCase() ||
+                        currentUser.email?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <button className="change-avatar-btn">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/camera.png"
+                      alt="Change"
+                    />
+                  </button>
                 </div>
-              )}
+
+                <div className="profile-info">
+                  <h2>{currentUser.displayName || "User"}</h2>
+                  <p className="user-email">{currentUser.email}</p>
+                  <p className="user-status">
+                    {currentUser.emailVerified
+                      ? "✓ Email Verified"
+                      : "⚠ Email Not Verified"}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="user-details">
-              <h3>{currentUser.displayName || "User"}</h3>
-              <p>{currentUser.email}</p>
-              <p className="user-id">ID: {currentUser.uid}</p>
-            </div>
-
+            {/* Account Actions */}
             <div className="account-actions">
-              <button 
-                className="logout-button" 
-                onClick={handleLogout}
-                style={{
-                  background: '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  padding: '12px 24px',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: '500'
-                }}
-              >
-                <img
-                  src="https://img.icons8.com/ios-filled/50/FFFFFF/logout.png"
-                  alt="Logout"
-                  style={{ width: '20px', height: '20px', marginRight: '8px' }}
-                />
-                Logout
-              </button>
+              <div className="action-group">
+                <h3>Account Management</h3>
+
+                <button
+                  className="action-btn edit-profile-btn"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/667eea/edit.png"
+                      alt="Edit"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Edit Profile</span>
+                    <small>Change your display name and photo</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+
+                <button
+                  className="action-btn reset-password-btn"
+                  onClick={handleResetPassword}
+                  disabled={loading}
+                >
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/667eea/password.png"
+                      alt="Reset"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Reset Password</span>
+                    <small>Send password reset email</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+              </div>
+
+              <div className="action-group">
+                <h3>Security</h3>
+
+                <button className="action-btn privacy-btn">
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/667eea/privacy.png"
+                      alt="Privacy"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Privacy Settings</span>
+                    <small>Manage your privacy preferences</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+
+                <button className="action-btn notifications-btn">
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/667eea/notification.png"
+                      alt="Notifications"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Notifications</span>
+                    <small>Manage notification preferences</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+              </div>
+
+              <div className="action-group">
+                <h3>Account</h3>
+
+                <button
+                  className="action-btn logout-btn"
+                  onClick={handleLogout}
+                  disabled={loading}
+                >
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/dc3545/logout.png"
+                      alt="Logout"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Logout</span>
+                    <small>Sign out of your account</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+
+                <button
+                  className="action-btn delete-account-btn"
+                  onClick={handleDeleteAccount}
+                  disabled={loading}
+                >
+                  <div className="action-icon">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/dc3545/delete-forever.png"
+                      alt="Delete"
+                    />
+                  </div>
+                  <div className="action-text">
+                    <span>Delete Account</span>
+                    <small>Permanently delete your account</small>
+                  </div>
+                  <div className="action-arrow">
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
+                      alt=">"
+                    />
+                  </div>
+                </button>
+              </div>
             </div>
-          </div>
+
+            {/* Edit Profile Form */}
+            {isEditing && (
+              <div className="edit-profile-form">
+                <h3>Edit Profile</h3>
+                <div className="form-group">
+                  <label>Display Name</label>
+                  <input
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Enter your display name"
+                  />
+                </div>
+
+                <div className="form-actions">
+                  <button
+                    className="save-btn"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    className="cancel-btn"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="no-user">
-            <p>Please log in to view account information.</p>
+            <div className="no-user-icon">
+              <img
+                src="https://img.icons8.com/ios-filled/100/999999/user.png"
+                alt="User"
+              />
+            </div>
+            <h3>Not Logged In</h3>
+            <p>Please log in to view your account information.</p>
+            <a href="/vizy/login" className="login-link-btn">
+              Go to Login
+            </a>
           </div>
         )}
       </div>

@@ -1,7 +1,11 @@
 import { useAuth } from "../../../contexts/AuthContext";
 import "./user-profile.styles.css";
 
-const UserProfile = () => {
+interface UserProfileProps {
+  onAccountClick?: () => void;
+}
+
+const UserProfile = ({ onAccountClick }: UserProfileProps) => {
   const { currentUser } = useAuth();
 
   // Get the user's display name or first letter of email as fallback
@@ -24,8 +28,14 @@ const UserProfile = () => {
     return displayName.charAt(0).toUpperCase();
   };
 
+  const handleClick = () => {
+    if (onAccountClick) {
+      onAccountClick();
+    }
+  };
+
   return (
-    <div className="user-profile">
+    <div className="user-profile" onClick={handleClick}>
       <div className="profile-picture">
         {currentUser?.photoURL ? (
           <img
