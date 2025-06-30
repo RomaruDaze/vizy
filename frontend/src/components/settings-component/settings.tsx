@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./settings.styles.css";
 import Account from "./account-components/account";
 import BottomNavigation from "../shared/bottom-navigation";
+import PrivacySecurity from "./privacy-components/privacy-security";
+import Help from "./help-components/help";
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -13,12 +15,7 @@ const Settings = () => {
       icon: "https://img.icons8.com/ios-filled/50/0078d4/user-male-circle.png",
       description: "Manage your account settings and preferences",
     },
-    {
-      id: "appearance",
-      title: "Appearance",
-      icon: "https://img.icons8.com/ios-filled/50/0078d4/paint-palette.png",
-      description: "Customize the look and feel of the application",
-    },
+
     {
       id: "privacy",
       title: "Privacy & Security",
@@ -43,9 +40,21 @@ const Settings = () => {
         <div className="section-overlay">
           <Account onBack={() => setActiveSection(null)} />
         </div>
+      ) : activeSection === "privacy" ? (
+        <div className="section-overlay">
+          <PrivacySecurity onBack={() => setActiveSection(null)} />
+        </div>
+      ) : activeSection === "help" ? (
+        <div className="section-overlay">
+          <Help onBack={() => setActiveSection(null)} />
+        </div>
       ) : (
         <>
           <div className="top-section">
+            <img
+              src="https://img.icons8.com/ios-filled/50/FFFFFF/settings.png"
+              alt="Logo"
+            />
             <h1 className="settings-header">Settings</h1>
           </div>
           <div className="middle-section">

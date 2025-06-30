@@ -24,7 +24,11 @@ const Locator = () => {
   return (
     <div className="locator-container">
       <div className="top-section">
-        <h1>Locator</h1>
+        <img
+          src="https://img.icons8.com/ios-filled/50/FFFFFF/map.png"
+          alt="Logo"
+        />
+        <h1>Map</h1>
       </div>
 
       <div className="middle-section">
