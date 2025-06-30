@@ -7,14 +7,7 @@ import {
   getImmigrationOffices,
   getPhotoBooths,
 } from "../../../services/locationService";
-
-// Define Location interface locally
-interface Location {
-  name: string;
-  lat: number;
-  lon: number;
-  address?: string;
-}
+import type { Location } from "../../../services/locationService";
 
 // Fix default marker icon issue with Leaflet + Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -37,11 +30,15 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Component to handle map controls
+// Component to handle map controls and track view changes
 const MapControls = ({
   userPosition,
+  onViewChange,
+  mapRef,
 }: {
   userPosition: [number, number] | null;
+  onViewChange: (isAtUserLocation: boolean) => void;
+  mapRef: React.MutableRefObject<{ resetToUserLocation: () => void } | null>;
 }) => {
   const map = useMap();
 
@@ -53,6 +50,50 @@ const MapControls = ({
       });
     }
   };
+
+  // Track map view changes
+  useEffect(() => {
+    const checkViewPosition = () => {
+      if (userPosition) {
+        const currentCenter = map.getCenter();
+        const currentZoom = map.getZoom();
+
+        // Check if map is centered on user location and at appropriate zoom
+        const isAtUserLocation =
+          Math.abs(currentCenter.lat - userPosition[0]) < 0.001 &&
+          Math.abs(currentCenter.lng - userPosition[1]) < 0.001 &&
+          currentZoom >= 12;
+
+        onViewChange(isAtUserLocation);
+      }
+    };
+
+    // Check position on map events
+    map.on("moveend", checkViewPosition);
+    map.on("zoomend", checkViewPosition);
+
+    // Initial check
+    checkViewPosition();
+
+    return () => {
+      map.off("moveend", checkViewPosition);
+      map.off("zoomend", checkViewPosition);
+    };
+  }, [map, userPosition, onViewChange]);
+
+  // Set up the reset function in the ref
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.resetToUserLocation = () => {
+        if (userPosition) {
+          map.setView(userPosition, 13, {
+            animate: true,
+            duration: 1,
+          });
+        }
+      };
+    }
+  }, [map, userPosition, mapRef]);
 
   return (
     <div className="map-controls">
@@ -92,268 +133,280 @@ const calculateDistance = (
 
 interface MapProps {
   locationType: string;
+  onViewChange?: (isAtUserLocation: boolean) => void;
 }
 
 interface MapRef {
   resetToUserLocation: () => void;
 }
 
-const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
-  const [userPosition, setUserPosition] = useState<[number, number] | null>(
-    null
-  );
-  const [nearbyLocations, setNearbyLocations] = useState<Location[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
-  const [showDetailPopup, setShowDetailPopup] = useState(false);
+const Map = forwardRef<MapRef, MapProps>(
+  ({ locationType, onViewChange }, ref) => {
+    const [userPosition, setUserPosition] = useState<[number, number] | null>(
+      null
+    );
+    const [nearbyLocations, setNearbyLocations] = useState<Location[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+      null
+    );
+    const [showDetailPopup, setShowDetailPopup] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Get user's current location
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const userLat = position.coords.latitude;
-              const userLon = position.coords.longitude;
-              setUserPosition([userLat, userLon]);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Get user's current location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+                setUserPosition([userLat, userLon]);
 
-              // Fetch data from Firebase based on location type
-              let dataSource: Location[] = [];
-              if (locationType === "immigration") {
-                dataSource = await getImmigrationOffices();
-              } else {
-                dataSource = await getPhotoBooths();
+                // Fetch data from Firebase based on location type
+                let dataSource: Location[] = [];
+                if (locationType === "immigration") {
+                  dataSource = await getImmigrationOffices();
+                } else {
+                  dataSource = await getPhotoBooths();
+                }
+
+                // Filter locations within 20km
+                const nearby = dataSource.filter((location) => {
+                  const distance = calculateDistance(
+                    userLat,
+                    userLon,
+                    location.lat,
+                    location.lon
+                  );
+                  return distance <= 20;
+                });
+
+                // Sort by distance (closest first)
+                nearby.sort((a, b) => {
+                  const distanceA = calculateDistance(
+                    userLat,
+                    userLon,
+                    a.lat,
+                    a.lon
+                  );
+                  const distanceB = calculateDistance(
+                    userLat,
+                    userLon,
+                    b.lat,
+                    b.lon
+                  );
+                  return distanceA - distanceB;
+                });
+
+                setNearbyLocations(nearby);
+                setIsLoading(false);
+              },
+              (error) => {
+                console.error("Error getting location:", error);
+                // Fallback to Tokyo
+                setUserPosition([35.630184, 139.744451]);
+                fetchFallbackData();
               }
+            );
+          } else {
+            // Fallback if geolocation is not supported
+            setUserPosition([35.630184, 139.744451]);
+            fetchFallbackData();
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setIsLoading(false);
+        }
+      };
 
-              // Filter locations within 20km
-              const nearby = dataSource.filter((location) => {
-                const distance = calculateDistance(
-                  userLat,
-                  userLon,
+      const fetchFallbackData = async () => {
+        try {
+          let dataSource: Location[] = [];
+          if (locationType === "immigration") {
+            dataSource = await getImmigrationOffices();
+          } else {
+            dataSource = await getPhotoBooths();
+          }
+          setNearbyLocations(dataSource);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error fetching fallback data:", error);
+          setIsLoading(false);
+        }
+      };
+
+      fetchData();
+    }, [locationType]);
+
+    const handleLocationClick = (location: Location) => {
+      setSelectedLocation(location);
+      setShowDetailPopup(true);
+    };
+
+    const handlePhoneClick = () => {
+      // For now, just show an alert. You can replace this with actual phone functionality
+      alert("Phone functionality will be implemented here");
+    };
+
+    const handleDirectionClick = () => {
+      if (selectedLocation) {
+        // Open Google Maps with directions from user's current location
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${userPosition?.[0]},${userPosition?.[1]}&destination=${selectedLocation.lat},${selectedLocation.lon}&travelmode=driving`;
+        window.open(url, "_blank");
+      }
+    };
+
+    const handleCloseDetailPopup = () => {
+      setShowDetailPopup(false);
+      setSelectedLocation(null);
+    };
+
+    const handleViewChange = (isAtUserLocation: boolean) => {
+      if (onViewChange) {
+        onViewChange(isAtUserLocation);
+      }
+    };
+
+    // Forward the ref
+    useEffect(() => {
+      if (ref && typeof ref === "object") {
+        ref.current = {
+          resetToUserLocation: () => {
+            // This will be set by MapControls
+          },
+        };
+      }
+    }, [ref]);
+
+    // Don't render map until we have the user position
+    if (isLoading) {
+      return (
+        <div className="map-wrapper map-loading">
+          <div>Getting your location...</div>
+        </div>
+      );
+    }
+
+    const locationTypeName =
+      locationType === "immigration" ? "offices" : "photo machines";
+
+    return (
+      <div className="map-wrapper">
+        <MapContainer
+          center={userPosition!}
+          zoom={13}
+          className="map-container"
+          zoomControl={true}
+          attributionControl={false}
+        >
+          <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+
+          {/* Map Controls with view tracking */}
+          <MapControls
+            userPosition={userPosition}
+            onViewChange={handleViewChange}
+            mapRef={
+              ref as React.MutableRefObject<{
+                resetToUserLocation: () => void;
+              } | null>
+            }
+          />
+
+          {/* Show nearby locations */}
+          {nearbyLocations.map((location, index) => {
+            const distance = userPosition
+              ? calculateDistance(
+                  userPosition[0],
+                  userPosition[1],
                   location.lat,
                   location.lon
-                );
-                return distance <= 20;
-              });
+                )
+              : 0;
 
-              // Sort by distance (closest first)
-              nearby.sort((a, b) => {
-                const distanceA = calculateDistance(
-                  userLat,
-                  userLon,
-                  a.lat,
-                  a.lon
-                );
-                const distanceB = calculateDistance(
-                  userLat,
-                  userLon,
-                  b.lat,
-                  b.lon
-                );
-                return distanceA - distanceB;
-              });
+            return (
+              <Marker key={index} position={[location.lat, location.lon]}>
+                <Popup closeButton={false}>
+                  <div
+                    className="location-popup clickable"
+                    onClick={() => handleLocationClick(location)}
+                  >
+                    <strong>{location.name}</strong>
+                    {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
+                    <p className="click-for-more">Click for more details</p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
 
-              setNearbyLocations(nearby);
-              setIsLoading(false);
-            },
-            (error) => {
-              console.error("Error getting location:", error);
-              // Fallback to Tokyo
-              setUserPosition([35.630184, 139.744451]);
-              fetchFallbackData();
-            }
-          );
-        } else {
-          // Fallback if geolocation is not supported
-          setUserPosition([35.630184, 139.744451]);
-          fetchFallbackData();
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      }
-    };
-
-    const fetchFallbackData = async () => {
-      try {
-        let dataSource: Location[] = [];
-        if (locationType === "immigration") {
-          dataSource = await getImmigrationOffices();
-        } else {
-          dataSource = await getPhotoBooths();
-        }
-        setNearbyLocations(dataSource);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching fallback data:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [locationType]);
-
-  const handleLocationClick = (location: Location) => {
-    setSelectedLocation(location);
-    setShowDetailPopup(true);
-  };
-
-  const handlePhoneClick = () => {
-    // For now, just show an alert. You can replace this with actual phone functionality
-    alert("Phone functionality will be implemented here");
-  };
-
-  const handleDirectionClick = () => {
-    if (selectedLocation) {
-      // Open Google Maps with directions from user's current location
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userPosition?.[0]},${userPosition?.[1]}&destination=${selectedLocation.lat},${selectedLocation.lon}&travelmode=driving`;
-      window.open(url, "_blank");
-    }
-  };
-
-  const handleCloseDetailPopup = () => {
-    setShowDetailPopup(false);
-    setSelectedLocation(null);
-  };
-
-  // Expose resetToUserLocation function via ref
-  const resetToUserLocation = () => {
-    if (userPosition) {
-      // This will be handled by the MapControls component
-      // You can also add a custom event or callback here
-    }
-  };
-
-  // Forward the ref
-  useEffect(() => {
-    if (ref && typeof ref === "object") {
-      ref.current = {
-        resetToUserLocation,
-      };
-    }
-  }, [ref, userPosition]);
-
-  // Don't render map until we have the user position
-  if (isLoading) {
-    return (
-      <div className="map-wrapper map-loading">
-        <div>Getting your location...</div>
-      </div>
-    );
-  }
-
-  const locationTypeName =
-    locationType === "immigration" ? "offices" : "photo machines";
-
-  return (
-    <div className="map-wrapper">
-      <MapContainer
-        center={userPosition!}
-        zoom={13}
-        className="map-container"
-        zoomControl={true}
-        attributionControl={false}
-      >
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
-
-        {/* Map Controls */}
-        <MapControls userPosition={userPosition} />
-
-        {/* Show nearby locations */}
-        {nearbyLocations.map((location, index) => {
-          const distance = userPosition
-            ? calculateDistance(
-                userPosition[0],
-                userPosition[1],
-                location.lat,
-                location.lon
-              )
-            : 0;
-
-          return (
-            <Marker key={index} position={[location.lat, location.lon]}>
+          {/* Show user location with red marker */}
+          {userPosition && (
+            <Marker position={userPosition} icon={redIcon}>
               <Popup closeButton={false}>
-                <div
-                  className="location-popup clickable"
-                  onClick={() => handleLocationClick(location)}
-                >
-                  <strong>{location.name}</strong>
-                  {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
-                  <p className="click-for-more">Click for more details</p>
+                <div>
+                  <strong>Your Location</strong>
+                  <p>
+                    Found {nearbyLocations.length} {locationTypeName} within
+                    20km
+                  </p>
                 </div>
               </Popup>
             </Marker>
-          );
-        })}
+          )}
+        </MapContainer>
 
-        {/* Show user location with red marker */}
-        {userPosition && (
-          <Marker position={userPosition} icon={redIcon}>
-            <Popup closeButton={false}>
-              <div>
-                <strong>Your Location</strong>
-                <p>
-                  Found {nearbyLocations.length} {locationTypeName} within 20km
-                </p>
-              </div>
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer>
-
-      {/* Detailed popup overlay */}
-      {showDetailPopup && selectedLocation && (
-        <div className="detail-popup-overlay">
-          <div className="detail-popup">
-            <button className="close-button" onClick={handleCloseDetailPopup}>
-              ×
-            </button>
-            <div className="detail-content">
-              <h3>{selectedLocation.name}</h3>
-              {userPosition && (
-                <p className="distance">
-                  Distance:{" "}
-                  {calculateDistance(
-                    userPosition[0],
-                    userPosition[1],
-                    selectedLocation.lat,
-                    selectedLocation.lon
-                  ).toFixed(1)}{" "}
-                  km
-                </p>
-              )}
-              <div className="action-buttons">
-                <button
-                  className="action-btn phone-btn"
-                  onClick={handlePhoneClick}
-                >
-                  <img
-                    src="https://img.icons8.com/ios-filled/50/FFFFFF/phone.png"
-                    alt="Phone"
-                  />
-                  <span>Call</span>
-                </button>
-                <button
-                  className="action-btn direction-btn"
-                  onClick={handleDirectionClick}
-                >
-                  <img
-                    src="https://img.icons8.com/ios-filled/50/FFFFFF/compass.png"
-                    alt="Directions"
-                  />
-                  <span>Directions</span>
-                </button>
+        {/* Detailed popup overlay */}
+        {showDetailPopup && selectedLocation && (
+          <div className="detail-popup-overlay">
+            <div className="detail-popup">
+              <button className="close-button" onClick={handleCloseDetailPopup}>
+                ×
+              </button>
+              <div className="detail-content">
+                <h3>{selectedLocation.name}</h3>
+                {userPosition && (
+                  <p className="distance">
+                    Distance:{" "}
+                    {calculateDistance(
+                      userPosition[0],
+                      userPosition[1],
+                      selectedLocation.lat,
+                      selectedLocation.lon
+                    ).toFixed(1)}{" "}
+                    km
+                  </p>
+                )}
+                <div className="action-buttons">
+                  <button
+                    className="action-btn phone-btn"
+                    onClick={handlePhoneClick}
+                  >
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/phone.png"
+                      alt="Phone"
+                    />
+                    <span>Call</span>
+                  </button>
+                  <button
+                    className="action-btn direction-btn"
+                    onClick={handleDirectionClick}
+                  >
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/compass.png"
+                      alt="Directions"
+                    />
+                    <span>Directions</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-});
+        )}
+      </div>
+    );
+  }
+);
 
 Map.displayName = "Map";
 

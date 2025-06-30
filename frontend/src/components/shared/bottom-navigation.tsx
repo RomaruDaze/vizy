@@ -9,10 +9,10 @@ const BottomNavigation = () => {
     <div className="bottom-navigation">
       <button
         className={`nav-button locator-button ${
-          location.pathname === "/vizy/locator" ? "active" : ""
+          location.pathname === "/locator" ? "active" : ""
         }`}
         onClick={() => {
-          navigate("/vizy/locator");
+          navigate("/locator");
         }}
       >
         <div className="nav-icon">
@@ -26,10 +26,12 @@ const BottomNavigation = () => {
 
       <button
         className={`nav-button home-button ${
-          location.pathname === "/vizy/" || location.pathname === "/vizy" ? "active" : ""
+          location.pathname === "/" || location.pathname === "/vizy"
+            ? "active"
+            : ""
         }`}
         onClick={() => {
-          navigate("/vizy/");
+          navigate("/");
         }}
       >
         <div className="nav-icon">
@@ -43,9 +45,9 @@ const BottomNavigation = () => {
 
       <button
         className={`nav-button settings-button ${
-          location.pathname === "/vizy/settings" ? "active" : ""
+          location.pathname === "/settings" ? "active" : ""
         }`}
-        onClick={() => navigate("/vizy/settings")}
+        onClick={() => navigate("/settings")}
       >
         <div className="nav-icon">
           <img

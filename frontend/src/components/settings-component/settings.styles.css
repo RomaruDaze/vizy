@@ -43,7 +43,7 @@
     flex: 1;
     overflow: hidden;
     padding: 1rem;
-    background-color: #0078d4;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .settings-grid {
@@ -145,7 +145,7 @@
 }
 
 .section-overlay .settings-header {
-    background-color: #0078d4;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 1rem;
 }
 

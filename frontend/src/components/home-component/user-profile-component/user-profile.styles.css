@@ -1,23 +1,39 @@
 .user-profile {
     display: flex;
     align-items: center;
-    width: 100%;
-    gap: 1rem;
+    gap: 16px;
+    padding: 16px 20px;
+    color: white;
 }
 
 .profile-picture {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #FFFFFF;
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.profile-picture img {
+.profile-avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.profile-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .user-info {
@@ -25,14 +41,15 @@
 }
 
 .user-name {
-    font-size: 1.5rem;
+    margin: 0 0 4px 0;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #FFFFFF;
-    margin: 0 0 0.25rem 0;
+    color: white;
 }
 
 .user-status {
-    font-size: 0.9rem;
-    color: #FFFFFF;
     margin: 0;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 0.9;
 }

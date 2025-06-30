@@ -1,23 +1,39 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/home-component/home";
-import Settings from "./components/settings-component/settings";
 import Locator from "./components/locator-component/locator";
+import Settings from "./components/settings-component/settings";
+import LoginPage from "./components/auth/LoginPage";
+import SignupPage from "./components/auth/SignupPage";
 import "./App.css";
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <main className="content-area">
-          <Routes>
-            <Route path="/vizy/" element={<Home />} />
-            <Route path="/vizy/settings" element={<Settings />} />
-            <Route path="/vizy/locator" element={<Locator />} />
-          </Routes>
-        </main>
-      </div>
+    <Router basename="/vizy">
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/locator" element={
+            <ProtectedRoute>
+              <Locator />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
-};
+}
 
 export default App;

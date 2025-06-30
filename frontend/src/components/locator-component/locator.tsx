@@ -5,6 +5,7 @@ import Map from "./map-component/map";
 
 const Locator = () => {
   const [selectedOption, setSelectedOption] = useState<string>("immigration");
+  const [isAtUserLocation, setIsAtUserLocation] = useState(true);
   const mapRef = useRef<{ resetToUserLocation: () => void }>(null);
 
   const handleImmigrationOffices = () => {
@@ -16,9 +17,13 @@ const Locator = () => {
   };
 
   const handleResetLocation = () => {
-    if (mapRef.current) {
+    if (mapRef.current && mapRef.current.resetToUserLocation) {
       mapRef.current.resetToUserLocation();
     }
+  };
+
+  const handleViewChange = (isAtUserLocation: boolean) => {
+    setIsAtUserLocation(isAtUserLocation);
   };
 
   return (
@@ -33,16 +38,23 @@ const Locator = () => {
 
       <div className="middle-section">
         <div className="map-wrapper">
-          <Map locationType={selectedOption} ref={mapRef} />
+          <Map
+            locationType={selectedOption}
+            ref={mapRef}
+            onViewChange={handleViewChange}
+          />
         </div>
 
-        <button className="reset-button" onClick={handleResetLocation}>
-          <img
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/center-direction.png"
-            alt="Reset Location"
-          />
-          <span>Reset</span>
-        </button>
+        {/* Only show reset button when not at user location */}
+        {!isAtUserLocation && (
+          <button className="reset-button" onClick={handleResetLocation}>
+            <img
+              src="https://img.icons8.com/ios-filled/50/FFFFFF/center-direction.png"
+              alt="Reset Location"
+            />
+            <span>Reset</span>
+          </button>
+        )}
 
         <div className="locator-options-overlay">
           <div className="locator-buttons">
@@ -54,7 +66,7 @@ const Locator = () => {
             >
               <div className="option-icon">
                 <img
-                  src="https://img.icons8.com/ios-filled/50/FFFFFF/office.png"
+                  src="https://img.icons8.com/ios-filled/50/666666/office.png"
                   alt="Immigration Offices"
                 />
               </div>
@@ -71,7 +83,7 @@ const Locator = () => {
             >
               <div className="option-icon">
                 <img
-                  src="https://img.icons8.com/ios-filled/50/FFFFFF/camera.png"
+                  src="https://img.icons8.com/ios-filled/50/666666/camera.png"
                   alt="Photo Booths"
                 />
               </div>
