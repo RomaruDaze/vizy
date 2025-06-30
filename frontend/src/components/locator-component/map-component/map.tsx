@@ -3,8 +3,18 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "./map.styles.css";
-import immigrationOfficesData from "./immigration-offices.json";
-import photoBoothData from "./photo-booth.json";
+import {
+  getImmigrationOffices,
+  getPhotoBooths,
+} from "../../../services/locationService";
+
+// Define Location interface locally
+interface Location {
+  name: string;
+  lat: number;
+  lon: number;
+  address?: string;
+}
 
 // Fix default marker icon issue with Leaflet + Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -88,76 +98,105 @@ interface MapRef {
   resetToUserLocation: () => void;
 }
 
-const Map = forwardRef<MapRef, MapProps>(({ locationType }, _ref) => {
+const Map = forwardRef<MapRef, MapProps>(({ locationType }, ref) => {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(
     null
   );
-  const [nearbyLocations, setNearbyLocations] = useState<any[]>([]);
+  const [nearbyLocations, setNearbyLocations] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  );
   const [showDetailPopup, setShowDetailPopup] = useState(false);
 
   useEffect(() => {
-    // Get user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLon = position.coords.longitude;
-          setUserPosition([userLat, userLon]);
+    const fetchData = async () => {
+      try {
+        // Get user's current location
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const userLat = position.coords.latitude;
+              const userLon = position.coords.longitude;
+              setUserPosition([userLat, userLon]);
 
-          // Choose data based on location type
-          const dataSource =
-            locationType === "immigration"
-              ? immigrationOfficesData
-              : photoBoothData.data;
+              // Fetch data from Firebase based on location type
+              let dataSource: Location[] = [];
+              if (locationType === "immigration") {
+                dataSource = await getImmigrationOffices();
+              } else {
+                dataSource = await getPhotoBooths();
+              }
 
-          // Filter locations within 20km
-          const nearby = dataSource.filter((location) => {
-            const distance = calculateDistance(
-              userLat,
-              userLon,
-              location.lat,
-              location.lon
-            );
-            return distance <= 20;
-          });
+              // Filter locations within 20km
+              const nearby = dataSource.filter((location) => {
+                const distance = calculateDistance(
+                  userLat,
+                  userLon,
+                  location.lat,
+                  location.lon
+                );
+                return distance <= 20;
+              });
 
-          // Sort by distance (closest first)
-          nearby.sort((a, b) => {
-            const distanceA = calculateDistance(userLat, userLon, a.lat, a.lon);
-            const distanceB = calculateDistance(userLat, userLon, b.lat, b.lon);
-            return distanceA - distanceB;
-          });
+              // Sort by distance (closest first)
+              nearby.sort((a, b) => {
+                const distanceA = calculateDistance(
+                  userLat,
+                  userLon,
+                  a.lat,
+                  a.lon
+                );
+                const distanceB = calculateDistance(
+                  userLat,
+                  userLon,
+                  b.lat,
+                  b.lon
+                );
+                return distanceA - distanceB;
+              });
 
-          setNearbyLocations(nearby);
-          setIsLoading(false);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          // Fallback to Tokyo
+              setNearbyLocations(nearby);
+              setIsLoading(false);
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+              // Fallback to Tokyo
+              setUserPosition([35.630184, 139.744451]);
+              fetchFallbackData();
+            }
+          );
+        } else {
+          // Fallback if geolocation is not supported
           setUserPosition([35.630184, 139.744451]);
-          const dataSource =
-            locationType === "immigration"
-              ? immigrationOfficesData
-              : photoBoothData.data;
-          setNearbyLocations(dataSource);
-          setIsLoading(false);
+          fetchFallbackData();
         }
-      );
-    } else {
-      // Fallback if geolocation is not supported
-      setUserPosition([35.630184, 139.744451]);
-      const dataSource =
-        locationType === "immigration"
-          ? immigrationOfficesData
-          : photoBoothData.data;
-      setNearbyLocations(dataSource);
-      setIsLoading(false);
-    }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    const fetchFallbackData = async () => {
+      try {
+        let dataSource: Location[] = [];
+        if (locationType === "immigration") {
+          dataSource = await getImmigrationOffices();
+        } else {
+          dataSource = await getPhotoBooths();
+        }
+        setNearbyLocations(dataSource);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching fallback data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [locationType]);
 
-  const handleLocationClick = (location: any) => {
+  const handleLocationClick = (location: Location) => {
     setSelectedLocation(location);
     setShowDetailPopup(true);
   };
@@ -179,6 +218,23 @@ const Map = forwardRef<MapRef, MapProps>(({ locationType }, _ref) => {
     setShowDetailPopup(false);
     setSelectedLocation(null);
   };
+
+  // Expose resetToUserLocation function via ref
+  const resetToUserLocation = () => {
+    if (userPosition) {
+      // This will be handled by the MapControls component
+      // You can also add a custom event or callback here
+    }
+  };
+
+  // Forward the ref
+  useEffect(() => {
+    if (ref && typeof ref === "object") {
+      ref.current = {
+        resetToUserLocation,
+      };
+    }
+  }, [ref, userPosition]);
 
   // Don't render map until we have the user position
   if (isLoading) {
