@@ -6,6 +6,7 @@ import "./map.styles.css";
 import {
   getImmigrationOffices,
   getPhotoBooths,
+  getLocationsNearby,
 } from "../../../services/locationService";
 import type { Location } from "../../../services/locationService";
 
@@ -155,7 +156,6 @@ const Map = forwardRef<MapRef, MapProps>(
     useEffect(() => {
       const fetchData = async () => {
         try {
-          // Get user's current location
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
               async (position) => {
@@ -163,55 +163,25 @@ const Map = forwardRef<MapRef, MapProps>(
                 const userLon = position.coords.longitude;
                 setUserPosition([userLat, userLon]);
 
-                // Fetch data from Firebase based on location type
-                let dataSource: Location[] = [];
-                if (locationType === "immigration") {
-                  dataSource = await getImmigrationOffices();
-                } else {
-                  dataSource = await getPhotoBooths();
-                }
-
-                // Filter locations within 20km
-                const nearby = dataSource.filter((location) => {
-                  const distance = calculateDistance(
-                    userLat,
-                    userLon,
-                    location.lat,
-                    location.lon
-                  );
-                  return distance <= 20;
-                });
-
-                // Sort by distance (closest first)
-                nearby.sort((a, b) => {
-                  const distanceA = calculateDistance(
-                    userLat,
-                    userLon,
-                    a.lat,
-                    a.lon
-                  );
-                  const distanceB = calculateDistance(
-                    userLat,
-                    userLon,
-                    b.lat,
-                    b.lon
-                  );
-                  return distanceA - distanceB;
-                });
+                // Use the optimized function
+                const nearby = await getLocationsNearby(
+                  locationType === "immigration"
+                    ? "immigration-offices"
+                    : "photo-booths",
+                  userLat,
+                  userLon,
+                  20
+                );
 
                 setNearbyLocations(nearby);
                 setIsLoading(false);
               },
               (error) => {
-                console.error("Error getting location:", error);
-                // Fallback to Tokyo
-                setUserPosition([35.630184, 139.744451]);
+                console.error("Geolocation error:", error);
                 fetchFallbackData();
               }
             );
           } else {
-            // Fallback if geolocation is not supported
-            setUserPosition([35.630184, 139.744451]);
             fetchFallbackData();
           }
         } catch (error) {
@@ -283,7 +253,8 @@ const Map = forwardRef<MapRef, MapProps>(
     if (isLoading) {
       return (
         <div className="map-wrapper map-loading">
-          <div>Getting your location...</div>
+          <div className="loading-spinner"></div>
+          <div>Loading nearby locations...</div>
         </div>
       );
     }

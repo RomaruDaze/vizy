@@ -107,3 +107,46 @@ const calculateDistance = (
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
+
+// Add this new function
+export const getLocationsNearby = async (
+  locationType: "immigration-offices" | "photo-booths",
+  userLat: number,
+  userLon: number,
+  maxDistance: number = 20
+): Promise<Location[]> => {
+  try {
+    const locationRef = ref(database, locationType);
+    const snapshot = await get(locationRef);
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const locations = Array.isArray(data) ? data : Object.values(data);
+
+      // Filter and sort by distance
+      const nearby = locations
+        .filter((location: Location) => {
+          const distance = calculateDistance(
+            userLat,
+            userLon,
+            location.lat,
+            location.lon
+          );
+          return distance <= maxDistance;
+        })
+        .sort((a: Location, b: Location) => {
+          const distanceA = calculateDistance(userLat, userLon, a.lat, a.lon);
+          const distanceB = calculateDistance(userLat, userLon, b.lat, b.lon);
+          return distanceA - distanceB;
+        })
+        .slice(0, 20); // Limit to 20 closest locations
+
+      return nearby;
+    }
+
+    return [];
+  } catch (error) {
+    console.error(`Error fetching nearby ${locationType}:`, error);
+    return [];
+  }
+};
