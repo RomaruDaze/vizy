@@ -14,6 +14,13 @@
     backdrop-filter: blur(10px);
 }
 
+.account-header img {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    filter: brightness(0) invert(1);
+}
+
 .back-button {
     background: none;
     border: none;
@@ -166,6 +173,28 @@
     text-align: left;
 }
 
+.name-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.save-button{
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: background-color 0.3s;
+}
+
+.save-button img {
+    width: 24px;
+    height: 24px;
+}
+
 .name-input {
     width: 100%;
     padding: 0.5rem;
@@ -181,7 +210,7 @@
     margin-top: 1rem;
 }
 
-.save-button,
+
 .reset-password-button {
     flex: 1;
     padding: 0.6rem 0;

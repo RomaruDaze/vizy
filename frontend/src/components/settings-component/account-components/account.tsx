@@ -114,24 +114,25 @@ const Account = ({ onBack }: AccountProps) => {
             <div className="popup-body">
               <div className="form-group">
                 <label>Display Name</label>
-                <input
-                  type="text"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="name-input"
-                />
+                <div className="name-input-container">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="name-input"
+                  />
+                  <button
+                    className="save-button"
+                    onClick={handleSaveName}
+                    disabled={loading || !newName.trim()}
+                  >
+                    {loading ? <img src="https://img.icons8.com/ios/100/FFFFFF/hourglass.png" alt="Saving" /> : <img src="https://img.icons8.com/sf-black-filled/100/FFFFFF/pencil.png" alt="Save" />}
+                  </button>
+                </div>
               </div>
 
               <div className="popup-actions">
-                <button
-                  className="save-button"
-                  onClick={handleSaveName}
-                  disabled={loading || !newName.trim()}
-                >
-                  {loading ? "Saving..." : "Save Name"}
-                </button>
-
                 <button
                   className="reset-password-button"
                   onClick={handleResetPassword}

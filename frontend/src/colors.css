@@ -1,0 +1,113 @@
+/* Color Palette - CSS Custom Properties */
+:root {
+    /* Primary Colors */
+    --color-primary: #3b82f6;
+    /* Blue */
+    --color-secondary: #10b981;
+    /* Green */
+    --color-accent: #f59e0b;
+    /* Orange */
+
+    /* Neutral Colors */
+    --color-neutral-light: #f8fafc;
+    /* Light gray */
+    --color-neutral-dark: #1e293b;
+    /* Dark gray */
+
+    /* Semantic Colors */
+    --color-success: #10b981;
+    /* Green - same as secondary */
+    --color-warning: #f59e0b;
+    /* Orange - same as accent */
+    --color-error: #ef4444;
+    /* Red */
+    --color-info: #3b82f6;
+    /* Blue - same as primary */
+
+    /* Background Colors */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f8fafc;
+    --color-bg-dark: #1e293b;
+
+    /* Text Colors */
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #ffffff;
+
+    /* Border Colors */
+    --color-border: #e2e8f0;
+    --color-border-dark: #cbd5e1;
+}
+
+/* Dark mode color overrides */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg-primary: #1e293b;
+        --color-bg-secondary: #334155;
+        --color-text-primary: #f8fafc;
+        --color-text-secondary: #cbd5e1;
+        --color-border: #475569;
+        --color-border-dark: #64748b;
+    }
+}
+
+/* Utility classes for quick color application */
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.text-accent {
+    color: var(--color-accent);
+}
+
+.text-neutral-light {
+    color: var(--color-neutral-light);
+}
+
+.text-neutral-dark {
+    color: var(--color-neutral-dark);
+}
+
+.bg-primary {
+    background-color: var(--color-primary);
+}
+
+.bg-secondary {
+    background-color: var(--color-secondary);
+}
+
+.bg-accent {
+    background-color: var(--color-accent);
+}
+
+.bg-neutral-light {
+    background-color: var(--color-neutral-light);
+}
+
+.bg-neutral-dark {
+    background-color: var(--color-neutral-dark);
+}
+
+.border-primary {
+    border-color: var(--color-primary);
+}
+
+.border-secondary {
+    border-color: var(--color-secondary);
+}
+
+.border-accent {
+    border-color: var(--color-accent);
+}
+
+.border-neutral-light {
+    border-color: var(--color-neutral-light);
+}
+
+.border-neutral-dark {
+    border-color: var(--color-neutral-dark);
+}
