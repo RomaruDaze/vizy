@@ -1,28 +1,15 @@
 /* Master Theme System - CSS Custom Properties */
 :root {
-    /* Default */
+    /* Default theme - will be overridden by ThemeContext */
     --master-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    
-    /* Sunset */
-    /* --master-gradient: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); */
-
-    /* Forest */
-    /* --master-gradient: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); */
-
-    /* Midnight */
-    /* --master-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); */
-
-    /* Cherry */
-    /* --master-gradient: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); */
-    
+    --color-primary-solid: #667eea;
+    --button-hover: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 
     /* App Background - Uses the master gradient */
     --app-bg: var(--master-gradient);
 
     /* Primary Colors - Based on master gradient */
     --color-primary: var(--master-gradient);
-    --color-primary-solid: #667eea;
-    /* For borders, text, etc. */
 
     /* Background Colors */
     --color-bg-primary: #ffffff;
@@ -41,23 +28,21 @@
     /* Button Colors */
     --button-bg: var(--master-gradient);
     --button-text: #ffffff;
-    --button-hover: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
 
-/* Black Theme */
-[data-theme="black"] {
-    --color-primary: var(--master-black);
-    --color-primary-solid: var(--master-black);
-    --button-bg: var(--master-black);
-    --button-hover: #333333;
+/* Theme-specific overrides for better contrast on certain themes */
+[data-theme="midnight"] {
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #cbd5e1;
+    --color-bg-primary: #1e293b;
+    --color-bg-secondary: #334155;
+    --color-border: #475569;
+    --color-border-dark: #64748b;
 }
 
-/* Gradient Theme (default) */
-[data-theme="gradient"] {
-    --color-primary: var(--master-gradient);
-    --color-primary-solid: #667eea;
-    --button-bg: var(--master-gradient);
-    --button-hover: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+[data-theme="lavender"] {
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
 }
 
 /* Utility classes */
@@ -88,4 +73,33 @@
     background: var(--button-hover);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus states using primary color */
+*:focus {
+    outline-color: var(--color-primary-solid);
+}
+
+/* Selection color */
+::selection {
+    background: var(--color-primary-solid);
+    color: white;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary-solid);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--button-hover);
 }

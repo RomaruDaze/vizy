@@ -78,7 +78,7 @@ const Settings = () => {
           >
             <div className="card-icon">
               <img
-                src="https://img.icons8.com/ios-filled/50/667eea/accessibility.png"
+                src="https://img.icons8.com/pastel-glyph/100/paint-palette.png"
                 alt="Accessibility"
               />
             </div>

@@ -130,7 +130,7 @@ const Account = ({ onBack }: AccountProps) => {
         >
           <div className="logout-icon">
             <img
-              src="https://img.icons8.com/sf-black-filled/100/999999/exit.png"
+              src="https://img.icons8.com/sf-black-filled/100/FFFFFF/exit.png"
               alt="Logout"
             />
           </div>
@@ -139,15 +139,10 @@ const Account = ({ onBack }: AccountProps) => {
             <span className="logout-subtitle">Logout from your account</span>
           </div>
           <div className="logout-arrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M9 18L15 12L9 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
+              alt="Back"
+            />
           </div>
         </button>
       </div>

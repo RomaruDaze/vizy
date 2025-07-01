@@ -244,18 +244,19 @@
     color: #dc3545;
 }
 
+/* Enhanced Logout Section */
 .logout-section {
     margin-top: auto;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 1.5rem;
 }
 
 .logout-button {
-    width: 70%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    padding: 20px;
+    padding: 1.25rem 1.5rem;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -263,6 +264,9 @@
     text-align: left;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 320px;
 }
 
 .logout-button::before {
@@ -272,79 +276,221 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
 }
 
+.logout-button:hover::before {
+    left: 100%;
+}
+
+.logout-button:hover {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.9) 0%, rgba(185, 28, 28, 0.8) 100%);
+    border-color: rgba(220, 38, 38, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+}
+
+.logout-button:active {
+    transform: translateY(0);
+}
 
 .logout-icon {
-    margin-right: 16px;
-    display: flex;
-    align-items: center;
+    margin-right: 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover .logout-icon {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
 }
 
 .logout-icon img {
-    width: 24px;
     height: 24px;
+    width: 24px;
+    filter: brightness(0) invert(1);
 }
 
-.logout-content h3 {
-    margin: 0 0 4px 0;
-    font-size: 16px;
+.logout-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logout-content .logout-text {
+    font-size: 1rem;
     font-weight: 600;
+    color: white;
+    margin: 0 0 0.25rem 0;
 }
 
-.logout-content p {
+.logout-content .logout-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
-    color: var(--color-text-secondary);
-    font-size: 14px;
+}
+
+.logout-arrow {
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover .logout-arrow {
+    transform: translateX(4px);
+}
+
+.logout-arrow img {
+    height: 20px;
+    width: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* Enhanced Logout Popup */
+.logout-popup .popup-header {
+    text-align: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.logout-popup-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.logout-popup .popup-body {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.logout-popup .popup-body p {
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
 }
 
 .logout-popup .popup-actions {
     display: flex;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
 }
 
 .logout-popup .cancel-button {
     flex: 1;
-    padding: 12px;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    color: var(--color-text-primary);
+    padding: 0.875rem 1.5rem;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    color: #64748b;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .logout-popup .cancel-button:hover {
-    background: var(--color-border);
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #475569;
+    transform: translateY(-1px);
 }
 
-.logout-popup .confirm-button {
+.logout-popup .confirm-logout-button {
     flex: 1;
-    padding: 12px;
-    background: #dc2626;
-    border: 1px solid #dc2626;
-    border-radius: 8px;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    border: none;
+    border-radius: 12px;
     color: white;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-.logout-popup .confirm-button:hover {
-    background: #b91c1c;
+.logout-popup .confirm-logout-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
 }
 
-.logout-popup .confirm-button:disabled {
+.logout-popup .confirm-logout-button:hover:not(:disabled)::before {
+    left: 100%;
+}
+
+.logout-popup .confirm-logout-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+}
+
+.logout-popup .confirm-logout-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.logout-popup .confirm-logout-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none !important;
 }
 
-.account-container {
+.loading-spinner {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: var(--app-bg);
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-spinner svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .popup-content {
+        margin: 1rem;
+        padding: 1.5rem;
+        min-width: auto;
+    }
+
+    .name-input-container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .save-button {
+        width: 100%;
+        height: 48px;
+    }
+
+    .logout-button {
+        padding: 1rem 1.25rem;
+    }
 }
 
 .profile-section {
