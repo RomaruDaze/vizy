@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./loginPage.styles.css";
+import vizyLogo from "../../assets/icons/vizy.svg";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -62,7 +63,7 @@ const LoginPage = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <img src="/vizy.svg" alt="Vizy Logo" className="logo" />
+          <img src={vizyLogo} alt="Vizy Logo" className="logo" />
           <h1>Welcome to Vizy</h1>
           <p>Your immigration assistant</p>
         </div>
