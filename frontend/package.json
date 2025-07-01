@@ -13,10 +13,6 @@
     "upload-data": "node scripts/uploadData.js"
   },
   "dependencies": {
-    "@capacitor/android": "^7.4.0",
-    "@capacitor/cli": "^7.4.0",
-    "@capacitor/core": "^7.4.0",
-    "@capacitor/ios": "^7.4.0",
     "firebase": "^11.9.1",
     "leaflet": "^1.9.4",
     "react": "^19.1.0",

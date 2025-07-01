@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Vizy</string>
-    <string name="title_activity_main">Vizy</string>
-    <string name="package_name">com.vizy.app</string>
-    <string name="custom_url_scheme">com.vizy.app</string>
-</resources>
