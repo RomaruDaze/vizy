@@ -28,8 +28,9 @@ class NotificationService {
     }
 
     try {
-      this.registration = await navigator.serviceWorker.register("/sw.js", {
-        scope: "/",
+      // Use relative path
+      this.registration = await navigator.serviceWorker.register("./sw.js", {
+        scope: "./",
       });
       console.log("Service Worker registered successfully");
       return true;
@@ -47,11 +48,14 @@ class NotificationService {
 
     console.log("Attempting to send notification:", title, body);
 
+    // Get the correct base path
+    const basePath = process.env.NODE_ENV === "production" ? "/vizy" : "";
+
     try {
       await this.registration.showNotification(title, {
         body: body,
-        icon: "/vizy.svg",
-        badge: "/vizy.svg",
+        icon: `${basePath}/vizy.svg`,
+        badge: `${basePath}/vizy.svg`,
         requireInteraction: true,
         silent: false,
         tag: "vizy-notification",

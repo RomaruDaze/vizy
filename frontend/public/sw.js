@@ -1,8 +1,19 @@
+// Get the correct base path for assets
+const getBasePath = () => {
+    // Check if we're in production (GitHub Pages)
+    if (self.location.hostname === 'romarudaze.github.io') {
+        return '/vizy';
+    }
+    return '';
+};
+
+const basePath = getBasePath();
+
 self.addEventListener('push', function (event) {
     const options = {
         body: event.data ? event.data.text() : 'Test notification from Vizy!',
-        icon: '/vizy.svg',
-        badge: '/badge.svg',
+        icon: `${basePath}/vizy.svg`,
+        badge: `${basePath}/vizy.svg`,
         vibrate: [200, 100, 200],
         data: {
             dateOfArrival: Date.now(),
@@ -12,12 +23,12 @@ self.addEventListener('push', function (event) {
             {
                 action: 'explore',
                 title: 'Open App',
-                icon: '/vizy.svg'
+                icon: `${basePath}/vizy.svg`
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: '/vizy.svg'
+                icon: `${basePath}/vizy.svg`
             }
         ]
     };
@@ -32,7 +43,9 @@ self.addEventListener('notificationclick', function (event) {
 
     if (event.action === 'explore') {
         event.waitUntil(
-            clients.openWindow('/vizy/')
+            clients.openWindow(`${basePath}/`)
         );
     }
-}); 
+});
+
+console.log('Service Worker loaded with base path:', basePath); 

@@ -14,8 +14,8 @@ const LoginPage = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
-      console.log('User already logged in, redirecting to home');
-      navigate('/');
+      console.log("User already logged in, redirecting to home");
+      navigate("/");
     }
   }, [currentUser, navigate]);
 
@@ -62,11 +62,7 @@ const LoginPage = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <img
-            src="/src/assets/icons/vizy.svg"
-            alt="Vizy Logo"
-            className="logo"
-          />
+          <img src="/vizy.svg" alt="Vizy Logo" className="logo" />
           <h1>Welcome to Vizy</h1>
           <p>Your immigration assistant</p>
         </div>
@@ -138,4 +134,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
- 

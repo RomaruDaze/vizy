@@ -30,7 +30,7 @@ const Settings = () => {
     try {
       await logout();
       // Redirect to login page
-      window.location.href = "/vizy/login";
+      window.location.href = "/";
     } catch (error) {
       console.error("Failed to logout:", error);
       alert("Failed to logout. Please try again.");

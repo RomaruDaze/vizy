@@ -4,5 +4,9 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/", // Changed from "/vizy/" for local development
+  base: "./", // Use relative paths for mobile
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+  },
 });

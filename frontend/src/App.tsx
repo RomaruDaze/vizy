@@ -15,7 +15,7 @@ import "./App.css";
 
 function App() {
   return (
-    <Router basename="/vizy">
+    <Router>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
