@@ -10,7 +10,6 @@
     display: flex;
     align-items: center;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .top-section img {
@@ -46,7 +45,7 @@
     position: absolute;
     bottom: 115px;
     right: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
     color: white;
     border: none;
     border-radius: 50px;
@@ -118,7 +117,7 @@
 }
 
 .locator-option.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
     color: white;
 }
 

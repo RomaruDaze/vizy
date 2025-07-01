@@ -1,6 +1,6 @@
 .account-container {
     height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -179,14 +179,14 @@
     gap: 1rem;
 }
 
-.save-button{
+.save-button {
     border: none;
     width: 40px;
     height: 40px;
     cursor: pointer;
     padding: 0.4rem;
     border-radius: 8px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
     transition: background-color 0.3s;
 }
 
@@ -218,7 +218,7 @@
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
     color: #fff;
     font-weight: 600;
     transition: background 0.2s, opacity 0.2s;
@@ -242,4 +242,112 @@
 
 .message.error {
     color: #dc3545;
+}
+
+.logout-section {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.logout-button {
+    width: 70%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.logout-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    transition: left 0.5s;
+}
+
+
+.logout-icon {
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.logout-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.logout-content h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.logout-content p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+.logout-popup .popup-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.logout-popup .cancel-button {
+    flex: 1;
+    padding: 12px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.logout-popup .cancel-button:hover {
+    background: var(--color-border);
+}
+
+.logout-popup .confirm-button {
+    flex: 1;
+    padding: 12px;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.logout-popup .confirm-button:hover {
+    background: #b91c1c;
+}
+
+.logout-popup .confirm-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.account-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--app-bg);
+}
+
+.profile-section {
+    flex: 1;
+    padding: 20px;
 }

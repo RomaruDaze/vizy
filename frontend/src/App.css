@@ -34,6 +34,7 @@ html {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: var(--app-bg);
 }
 
 /* Content area - takes up space above bottom navigation */
@@ -51,7 +52,7 @@ html {
     display: flex;
     align-items: center;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--app-bg);
 }
 
 /* Middle section - Reminder & Checklist (80%) */
@@ -80,7 +81,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--app-bg);
   color: white;
 }
 
@@ -98,3 +99,4 @@ html {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+

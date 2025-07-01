@@ -178,7 +178,7 @@
 }
 
 .auth-button.primary {
-    background-color: #667eea;
+    background-color: var(--app-bg);
     color: white;
 }
 
