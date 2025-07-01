@@ -9,9 +9,9 @@ import BottomNavigation from "../shared/bottom-navigation";
 const Home = () => {
   const [showAccount, setShowAccount] = useState(false);
 
-  const handleAccountClick = () => {
-    setShowAccount(true);
-  };
+  // const handleAccountClick = () => {
+  //   setShowAccount(true);
+  // };
 
   const handleBackFromAccount = () => {
     setShowAccount(false);

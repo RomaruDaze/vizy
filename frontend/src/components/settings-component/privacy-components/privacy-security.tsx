@@ -1,5 +1,4 @@
 // frontend/src/components/settings-component/privacy-security.tsx
-import React from "react";
 import "../account-components/account.styles.css";
 
 interface PrivacySecurityProps {

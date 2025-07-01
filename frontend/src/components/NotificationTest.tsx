@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { notificationService } from "../services/notificationService";
 import "./NotificationTest.styles.css";
 

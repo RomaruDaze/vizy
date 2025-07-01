@@ -1,4 +1,3 @@
-import React from "react";
 import "../account-components/account.styles.css";
 
 interface HelpProps {
