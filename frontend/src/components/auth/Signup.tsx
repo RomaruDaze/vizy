@@ -235,3 +235,4 @@ const Signup = ({ onSwitchToLogin, onClose }: SignupProps) => {
 };
 
 export default Signup;
+ 

@@ -29,3 +29,4 @@ export const database = getDatabase(app);
 
 // Initialize Authentication and get a reference to the service
 export const auth = getAuth(app);
+ 
