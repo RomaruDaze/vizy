@@ -9,9 +9,9 @@ import BottomNavigation from "../shared/bottom-navigation";
 const Home = () => {
   const [showAccount, setShowAccount] = useState(false);
 
-  // const handleAccountClick = () => {
-  //   setShowAccount(true);
-  // };
+  const handleAccountClick = () => {
+    setShowAccount(true);
+  };
 
   const handleBackFromAccount = () => {
     setShowAccount(false);
@@ -25,7 +25,7 @@ const Home = () => {
     <div className="home-container">
       {/* Top section - User Profile (15%) */}
       <div className="top-section">
-        <UserProfile />
+        <UserProfile onAccountClick={handleAccountClick} />
       </div>
 
       {/* Middle section - Reminder & Checklist (85%) */}
