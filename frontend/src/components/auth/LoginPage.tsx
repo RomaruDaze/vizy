@@ -108,17 +108,19 @@ const LoginPage = () => {
           <span>or</span>
         </div>
 
-        <button
-          onClick={handleGoogleAuth}
-          className="login-button google"
-          disabled={loading}
-        >
-          <img
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/google.png"
-            alt="Google"
-          />
-          Continue with Google
-        </button>
+        <div className="button-container">
+          <button
+            onClick={handleGoogleAuth}
+            className="login-button google"
+            disabled={loading}
+          >
+            <img
+              src="https://img.icons8.com/color/480/google-logo.png"
+              alt="Google"
+            />
+            Continue with Google
+          </button>
+        </div>
 
         <div className="login-footer">
           <p>
