@@ -9,15 +9,14 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAjgircs1OZfvCnvo2GNA3y2-UYRcy-W4k",
-  authDomain: "vizy-12155.firebaseapp.com",
-  databaseURL:
-    "https://vizy-12155-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "vizy-12155",
-  storageBucket: "vizy-12155.firebasestorage.app",
-  messagingSenderId: "207196912841",
-  appId: "1:207196912841:web:005f743a35c5149d882118",
-  measurementId: "G-Q1JJF9C716",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -29,4 +28,3 @@ export const database = getDatabase(app);
 
 // Initialize Authentication and get a reference to the service
 export const auth = getAuth(app);
- 

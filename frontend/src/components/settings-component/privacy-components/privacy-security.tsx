@@ -98,25 +98,25 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
 
       <div className="privacy-content">
         {/* Password Reset Button */}
-        <div className="password-reset-section">
+        <div className="privacy-section">
           <button
-            className="password-reset-button"
+            className="privacy-button"
             onClick={() => setShowPasswordPopup(true)}
             disabled={loading}
           >
-            <div className="password-icon">
+            <div className="privacy-icon">
               <img
                 src="https://img.icons8.com/sf-black-filled/100/FFFFFF/lock.png"
                 alt="Password"
               />
             </div>
-            <div className="password-content">
-              <span className="password-text">Reset Password</span>
-              <span className="password-subtitle">
+            <div className="privacy-content">
+              <span className="privacy-text">Reset Password</span>
+              <span className="privacy-subtitle">
                 Send password reset email to {currentUser?.email}
               </span>
             </div>
-            <div className="password-arrow">
+            <div className="privacy-arrow">
               <img
                 src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
                 alt="Back"
@@ -126,24 +126,24 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         </div>
 
         {/* Delete Account Button */}
-        <div className="password-reset-section">
+        <div className="privacy-section">
           <button
-            className="password-reset-button"
+            className="privacy-button"
             onClick={handleDeleteAccount}
           >
-            <div className="password-icon">
+            <div className="privacy-icon">
               <img
                 src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
                 alt="Delete"
               />
             </div>
-            <div className="password-content">
-              <span className="password-text">Delete Account</span>
-              <span className="password-subtitle">
+            <div className="privacy-content">
+              <span className="privacy-text">Delete Account</span>
+              <span className="privacy-subtitle">
                 Permanently delete your account and data
               </span>
             </div>
-            <div className="password-arrow">
+            <div className="privacy-arrow">
               <img
                 src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
                 alt="Back"

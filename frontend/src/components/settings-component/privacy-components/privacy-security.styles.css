@@ -5,14 +5,15 @@
     margin: 10% auto;
 }
 
-.password-reset-section {
+.privacy-section {
     padding: 0 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 /* Button Styles */
-.password-reset-button {
+.privacy-button {
     width: 100%;
+    height: 100px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -29,7 +30,7 @@
     overflow: hidden;
 }
 
-.password-reset-button::before {
+.privacy-button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -40,21 +41,21 @@
     transition: left 0.5s ease;
 }
 
-.password-reset-button:hover::before {
+.privacy-button:hover::before {
     left: 100%;
 }
 
-.password-reset-button:hover {
+.privacy-button:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.password-reset-button:active {
+.privacy-button:active {
     transform: translateY(0);
 }
 
-.password-icon {
+.privacy-icon {
     width: 48px;
     height: 48px;
     background: rgba(255, 255, 255, 0.1);
@@ -65,41 +66,41 @@
     flex-shrink: 0;
 }
 
-.password-icon img {
+.privacy-icon img {
     width: 24px;
     height: 24px;
     filter: brightness(0) invert(1);
 }
 
-.password-content {
+.privacy-content {
     flex: 1;
     text-align: left;
 }
 
-.password-text {
+.privacy-text {
     display: block;
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
 
-.password-subtitle {
+.privacy-subtitle {
     display: block;
     font-size: 0.9rem;
     opacity: 0.7;
     line-height: 1.4;
 }
 
-.password-arrow {
+.privacy-arrow {
     opacity: 0.5;
     transition: opacity 0.3s ease;
 }
 
-.password-reset-button:hover .password-arrow {
+.privacy-button:hover .privacy-arrow {
     opacity: 1;
 }
 
-.password-arrow img {
+.privacy-arrow img {
     width: 16px;
     height: 16px;
     filter: brightness(0) invert(1);
@@ -406,16 +407,16 @@
         padding: 1rem;
     }
 
-    .password-reset-button {
+    .privacy-button {
         padding: 1rem;
     }
 
-    .password-icon {
+    .privacy-icon {
         width: 40px;
         height: 40px;
     }
 
-    .password-icon img {
+    .privacy-icon img {
         width: 20px;
         height: 20px;
     }

@@ -13,6 +13,7 @@
     "upload-data": "node scripts/uploadData.js"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "firebase": "^11.9.1",
     "leaflet": "^1.9.4",
     "react": "^19.1.0",
