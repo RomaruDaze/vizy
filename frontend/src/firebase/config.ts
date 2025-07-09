@@ -27,17 +27,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Debug: Log the config to see what's being loaded
-console.log("Firebase Config:", {
-  apiKey: firebaseConfig.apiKey ? "✅ Set" : "❌ Missing",
-  authDomain: firebaseConfig.authDomain ? "✅ Set" : "❌ Missing",
-  databaseURL: firebaseConfig.databaseURL ? "✅ Set" : "❌ Missing",
-  projectId: firebaseConfig.projectId ? "✅ Set" : "❌ Missing",
-  storageBucket: firebaseConfig.storageBucket ? "✅ Set" : "❌ Missing",
-  messagingSenderId: firebaseConfig.messagingSenderId ? "✅ Set" : "❌ Missing",
-  appId: firebaseConfig.appId ? "✅ Set" : "❌ Missing",
-});
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
