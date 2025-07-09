@@ -34,11 +34,11 @@
 [data-theme="midnight"] {
     --color-text-primary: #ffffff;
     --color-text-secondary: #cbd5e1;
-    --color-bg-primary: #1e293b;
-    --color-bg-secondary: #334155;
-    --color-border: #475569;
-    --color-border-dark: #64748b;
-}
+        --color-bg-primary: #1e293b;
+        --color-bg-secondary: #334155;
+        --color-border: #475569;
+        --color-border-dark: #64748b;
+    }
 
 [data-theme="lavender"] {
     --color-text-primary: #1e293b;

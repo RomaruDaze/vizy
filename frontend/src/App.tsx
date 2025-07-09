@@ -18,7 +18,7 @@ import "./colors.css";
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+    <Router>
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
@@ -51,7 +51,7 @@ function App() {
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
-      </Router>
+    </Router>
     </ThemeProvider>
   );
 }

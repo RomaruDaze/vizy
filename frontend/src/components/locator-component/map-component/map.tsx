@@ -143,40 +143,40 @@ interface MapRef {
 
 const Map = forwardRef<MapRef, MapProps>(
   ({ locationType, onViewChange }, ref) => {
-    const [userPosition, setUserPosition] = useState<[number, number] | null>(
-      null
-    );
+  const [userPosition, setUserPosition] = useState<[number, number] | null>(
+    null
+  );
     const [nearbyLocations, setNearbyLocations] = useState<Location[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
     const [selectedLocation, setSelectedLocation] = useState<Location | null>(
       null
     );
-    const [showDetailPopup, setShowDetailPopup] = useState(false);
+  const [showDetailPopup, setShowDetailPopup] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
       const fetchData = async () => {
         try {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
               async (position) => {
-                const userLat = position.coords.latitude;
-                const userLon = position.coords.longitude;
-                setUserPosition([userLat, userLon]);
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+          setUserPosition([userLat, userLon]);
 
                 // Use the optimized function
                 const nearby = await getLocationsNearby(
-                  locationType === "immigration"
+            locationType === "immigration"
                     ? "immigration-offices"
                     : "photo-booths",
-                  userLat,
-                  userLon,
+              userLat,
+              userLon,
                   20
                 );
 
-                setNearbyLocations(nearby);
-                setIsLoading(false);
-              },
-              (error) => {
+          setNearbyLocations(nearby);
+          setIsLoading(false);
+        },
+        (error) => {
                 console.error("Geolocation error:", error);
                 fetchFallbackData();
               }
@@ -195,42 +195,42 @@ const Map = forwardRef<MapRef, MapProps>(
           let dataSource: Location[] = [];
           if (locationType === "immigration") {
             dataSource = await getImmigrationOffices();
-          } else {
+    } else {
             dataSource = await getPhotoBooths();
           }
-          setNearbyLocations(dataSource);
-          setIsLoading(false);
+      setNearbyLocations(dataSource);
+      setIsLoading(false);
         } catch (error) {
           console.error("Error fetching fallback data:", error);
           setIsLoading(false);
-        }
+    }
       };
 
       fetchData();
-    }, [locationType]);
+  }, [locationType]);
 
     const handleLocationClick = (location: Location) => {
-      setSelectedLocation(location);
-      setShowDetailPopup(true);
-    };
+    setSelectedLocation(location);
+    setShowDetailPopup(true);
+  };
 
-    const handlePhoneClick = () => {
-      // For now, just show an alert. You can replace this with actual phone functionality
-      alert("Phone functionality will be implemented here");
-    };
+  const handlePhoneClick = () => {
+    // For now, just show an alert. You can replace this with actual phone functionality
+    alert("Phone functionality will be implemented here");
+  };
 
-    const handleDirectionClick = () => {
-      if (selectedLocation) {
-        // Open Google Maps with directions from user's current location
-        const url = `https://www.google.com/maps/dir/?api=1&origin=${userPosition?.[0]},${userPosition?.[1]}&destination=${selectedLocation.lat},${selectedLocation.lon}&travelmode=driving`;
-        window.open(url, "_blank");
-      }
-    };
+  const handleDirectionClick = () => {
+    if (selectedLocation) {
+      // Open Google Maps with directions from user's current location
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userPosition?.[0]},${userPosition?.[1]}&destination=${selectedLocation.lat},${selectedLocation.lon}&travelmode=driving`;
+      window.open(url, "_blank");
+    }
+  };
 
-    const handleCloseDetailPopup = () => {
-      setShowDetailPopup(false);
-      setSelectedLocation(null);
-    };
+  const handleCloseDetailPopup = () => {
+    setShowDetailPopup(false);
+    setSelectedLocation(null);
+  };
 
     const handleViewChange = (isAtUserLocation: boolean) => {
       if (onViewChange) {
@@ -249,29 +249,29 @@ const Map = forwardRef<MapRef, MapProps>(
       }
     }, [ref]);
 
-    // Don't render map until we have the user position
-    if (isLoading) {
-      return (
-        <div className="map-wrapper map-loading">
+  // Don't render map until we have the user position
+  if (isLoading) {
+    return (
+      <div className="map-wrapper map-loading">
           <div className="loading-spinner"></div>
           <div>Loading nearby locations...</div>
-        </div>
-      );
-    }
+      </div>
+    );
+  }
 
-    const locationTypeName =
-      locationType === "immigration" ? "offices" : "photo machines";
+  const locationTypeName =
+    locationType === "immigration" ? "offices" : "photo machines";
 
-    return (
-      <div className="map-wrapper">
-        <MapContainer
-          center={userPosition!}
-          zoom={13}
-          className="map-container"
-          zoomControl={true}
-          attributionControl={false}
-        >
-          <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+  return (
+    <div className="map-wrapper">
+      <MapContainer
+        center={userPosition!}
+        zoom={13}
+        className="map-container"
+        zoomControl={true}
+        attributionControl={false}
+      >
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
 
           {/* Map Controls with view tracking */}
           <MapControls
@@ -284,98 +284,98 @@ const Map = forwardRef<MapRef, MapProps>(
             }
           />
 
-          {/* Show nearby locations */}
-          {nearbyLocations.map((location, index) => {
-            const distance = userPosition
-              ? calculateDistance(
-                  userPosition[0],
-                  userPosition[1],
-                  location.lat,
-                  location.lon
-                )
-              : 0;
+        {/* Show nearby locations */}
+        {nearbyLocations.map((location, index) => {
+          const distance = userPosition
+            ? calculateDistance(
+                userPosition[0],
+                userPosition[1],
+                location.lat,
+                location.lon
+              )
+            : 0;
 
-            return (
-              <Marker key={index} position={[location.lat, location.lon]}>
-                <Popup closeButton={false}>
-                  <div
-                    className="location-popup clickable"
-                    onClick={() => handleLocationClick(location)}
-                  >
-                    <strong>{location.name}</strong>
-                    {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
-                    <p className="click-for-more">Click for more details</p>
-                  </div>
-                </Popup>
-              </Marker>
-            );
-          })}
-
-          {/* Show user location with red marker */}
-          {userPosition && (
-            <Marker position={userPosition} icon={redIcon}>
+          return (
+            <Marker key={index} position={[location.lat, location.lon]}>
               <Popup closeButton={false}>
-                <div>
-                  <strong>Your Location</strong>
-                  <p>
-                    Found {nearbyLocations.length} {locationTypeName} within
-                    20km
-                  </p>
+                <div
+                  className="location-popup clickable"
+                  onClick={() => handleLocationClick(location)}
+                >
+                  <strong>{location.name}</strong>
+                  {userPosition && <p>Distance: {distance.toFixed(1)} km</p>}
+                  <p className="click-for-more">Click for more details</p>
                 </div>
               </Popup>
             </Marker>
-          )}
-        </MapContainer>
+          );
+        })}
 
-        {/* Detailed popup overlay */}
-        {showDetailPopup && selectedLocation && (
-          <div className="detail-popup-overlay">
-            <div className="detail-popup">
-              <button className="close-button" onClick={handleCloseDetailPopup}>
-                ×
-              </button>
-              <div className="detail-content">
-                <h3>{selectedLocation.name}</h3>
-                {userPosition && (
-                  <p className="distance">
-                    Distance:{" "}
-                    {calculateDistance(
-                      userPosition[0],
-                      userPosition[1],
-                      selectedLocation.lat,
-                      selectedLocation.lon
-                    ).toFixed(1)}{" "}
-                    km
-                  </p>
-                )}
-                <div className="action-buttons">
-                  <button
-                    className="action-btn phone-btn"
-                    onClick={handlePhoneClick}
-                  >
-                    <img
-                      src="https://img.icons8.com/ios-filled/50/FFFFFF/phone.png"
-                      alt="Phone"
-                    />
-                    <span>Call</span>
-                  </button>
-                  <button
-                    className="action-btn direction-btn"
-                    onClick={handleDirectionClick}
-                  >
-                    <img
-                      src="https://img.icons8.com/ios-filled/50/FFFFFF/compass.png"
-                      alt="Directions"
-                    />
-                    <span>Directions</span>
-                  </button>
-                </div>
+        {/* Show user location with red marker */}
+        {userPosition && (
+          <Marker position={userPosition} icon={redIcon}>
+            <Popup closeButton={false}>
+              <div>
+                <strong>Your Location</strong>
+                <p>
+                    Found {nearbyLocations.length} {locationTypeName} within
+                    20km
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        )}
+      </MapContainer>
+
+      {/* Detailed popup overlay */}
+      {showDetailPopup && selectedLocation && (
+        <div className="detail-popup-overlay">
+          <div className="detail-popup">
+            <button className="close-button" onClick={handleCloseDetailPopup}>
+              ×
+            </button>
+            <div className="detail-content">
+              <h3>{selectedLocation.name}</h3>
+              {userPosition && (
+                <p className="distance">
+                  Distance:{" "}
+                  {calculateDistance(
+                    userPosition[0],
+                    userPosition[1],
+                    selectedLocation.lat,
+                    selectedLocation.lon
+                  ).toFixed(1)}{" "}
+                  km
+                </p>
+              )}
+              <div className="action-buttons">
+                <button
+                  className="action-btn phone-btn"
+                  onClick={handlePhoneClick}
+                >
+                  <img
+                    src="https://img.icons8.com/ios-filled/50/FFFFFF/phone.png"
+                    alt="Phone"
+                  />
+                  <span>Call</span>
+                </button>
+                <button
+                  className="action-btn direction-btn"
+                  onClick={handleDirectionClick}
+                >
+                  <img
+                    src="https://img.icons8.com/ios-filled/50/FFFFFF/compass.png"
+                    alt="Directions"
+                  />
+                  <span>Directions</span>
+                </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
-    );
+        </div>
+      )}
+    </div>
+  );
   }
 );
 
