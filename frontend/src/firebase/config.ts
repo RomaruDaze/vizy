@@ -9,15 +9,34 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey:
+    import.meta.env.VITE_FIREBASE_API_KEY ||
+    "AIzaSyAjgircs1OZfvCnvo2GNA3y2-UYRcy-W4k",
+  authDomain:
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "vizy-12155.firebaseapp.com",
+  databaseURL:
+    import.meta.env.VITE_FIREBASE_DATABASE_URL ||
+    "https://vizy-12155-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "vizy-12155",
+  storageBucket:
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
+    "vizy-12155.firebasestorage.app",
+  messagingSenderId:
+    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+// Debug: Log the config to see what's being loaded
+console.log("Firebase Config:", {
+  apiKey: firebaseConfig.apiKey ? "✅ Set" : "❌ Missing",
+  authDomain: firebaseConfig.authDomain ? "✅ Set" : "❌ Missing",
+  databaseURL: firebaseConfig.databaseURL ? "✅ Set" : "❌ Missing",
+  projectId: firebaseConfig.projectId ? "✅ Set" : "❌ Missing",
+  storageBucket: firebaseConfig.storageBucket ? "✅ Set" : "❌ Missing",
+  messagingSenderId: firebaseConfig.messagingSenderId ? "✅ Set" : "❌ Missing",
+  appId: firebaseConfig.appId ? "✅ Set" : "❌ Missing",
+});
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
