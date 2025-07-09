@@ -1,7 +1,7 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import { useAuth } from "../../../contexts/AuthContext";
-import "../account-components/account.styles.css";
+import FAQ from "./faq-components/faq";
 import "./help.styles.css";
 
 interface HelpProps {
@@ -11,6 +11,7 @@ interface HelpProps {
 const Help = ({ onBack }: HelpProps) => {
   const { currentUser } = useAuth();
   const [showContactPopup, setShowContactPopup] = useState(false);
+  const [showFAQPopup, setShowFAQPopup] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -20,8 +21,7 @@ const Help = ({ onBack }: HelpProps) => {
   const [message, setMessage] = useState("");
 
   const handleFAQ = () => {
-    // TODO: Implement FAQ functionality
-    console.log("FAQ clicked");
+    setShowFAQPopup(true);
   };
 
   const handleUserGuide = () => {
@@ -94,6 +94,10 @@ const Help = ({ onBack }: HelpProps) => {
     setShowContactPopup(false);
     setFormData({ title: "", category: "", message: "" });
     setMessage("");
+  };
+
+  const closeFAQPopup = () => {
+    setShowFAQPopup(false);
   };
 
   return (
@@ -181,6 +185,27 @@ const Help = ({ onBack }: HelpProps) => {
           </button>
         </div>
       </div>
+
+      {/* FAQ Popup */}
+      {showFAQPopup && (
+        <div className="popup-overlay" onClick={closeFAQPopup}>
+          <div
+            className="popup-content faq-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="popup-header">
+              <button className="close-button" onClick={closeFAQPopup}>
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
+                  alt="Close"
+                />
+              </button>
+              <h3>FAQs</h3>
+            </div>
+            <FAQ onBack={closeFAQPopup} />
+          </div>
+        </div>
+      )}
 
       {/* Contact Support Popup */}
       {showContactPopup && (

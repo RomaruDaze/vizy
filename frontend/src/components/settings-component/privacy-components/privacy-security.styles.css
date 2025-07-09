@@ -133,7 +133,7 @@
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 0px;
 }
 
 .popup-header {
@@ -395,7 +395,6 @@
 /* Responsive Design */
 @media (max-width: 480px) {
     .popup-content {
-        margin: 1rem;
         max-width: calc(100vw - 2rem);
     }
 

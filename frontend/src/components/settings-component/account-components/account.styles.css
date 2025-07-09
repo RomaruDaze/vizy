@@ -427,7 +427,6 @@
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .popup-content {
-        margin: 1rem;
         padding: 1.5rem;
         min-width: auto;
     }

@@ -141,6 +141,7 @@ const Settings = () => {
           <button
             className="settings-card"
             onClick={() => handleSectionClick("notification-test")}
+            style={{ opacity:0 }}
           >
             <div className="card-icon">
               <img

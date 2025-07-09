@@ -228,6 +228,7 @@
 }
 
 .settings-card {
+    height: 110px;
     background: white;
     border: none;
     border-radius: 16px;
@@ -385,6 +386,7 @@
 
     .settings-card {
         padding: 1.25rem;
+        height: 100px;
     }
 
     .card-icon {
