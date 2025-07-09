@@ -4,7 +4,7 @@ import Help from "./help-components/help";
 import PrivacySecurity from "./privacy-components/privacy-security";
 import Accessibility from "./accessibility-components/accessibility";
 import BottomNavigation from "../shared/bottom-navigation";
-import NotificationTest from "../NotificationTest";
+import NotificationTest from "../notification-components/NotificationTest";
 import "./settings.styles.css";
 
 const Settings = () => {

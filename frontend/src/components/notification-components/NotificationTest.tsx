@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { notificationService } from "../services/notificationService";
+import { notificationService } from "../../services/notificationService";
 import "./NotificationTest.styles.css";
 
 const NotificationTest = () => {

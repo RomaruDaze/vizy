@@ -4,7 +4,6 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase/config";
 import "../account-components/account.styles.css";
-import "../../shared/shared.styles.css";
 import "./privacy-security.styles.css";
 
 interface PrivacySecurityProps {
@@ -27,14 +26,6 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
 
   const [securityOptions, setSecurityOptions] = useState<SecurityOption[]>([
-    {
-      id: "twoFactor",
-      title: "Two-Factor Authentication",
-      description: "Enable or manage 2FA for extra security",
-      icon: "🔒",
-      status: false,
-      action: () => handleTwoFactorToggle(),
-    },
     {
       id: "appPermissions",
       title: "App Permissions",
@@ -68,27 +59,33 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
 
     setLoading(true);
     try {
-      await sendPasswordResetEmail(auth, currentUser.email);
+      // Add action code settings for better compatibility
+      const actionCodeSettings = {
+        url: `${window.location.origin}/vizy/login`,
+        handleCodeInApp: false,
+      };
+
+      await sendPasswordResetEmail(auth, currentUser.email, actionCodeSettings);
       setMessage("Password reset email sent! Check your inbox.");
       setTimeout(() => {
         setShowPasswordPopup(false);
         setMessage("");
       }, 3000);
-    } catch (error) {
-      setMessage("Failed to send reset email. Please try again.");
+    } catch (error: any) {
+      console.error("Password reset error:", error);
+      // Provide more specific error messages
+      if (error.code === "auth/user-not-found") {
+        setMessage("No account found with this email address.");
+      } else if (error.code === "auth/invalid-email") {
+        setMessage("Invalid email address format.");
+      } else if (error.code === "auth/too-many-requests") {
+        setMessage("Too many requests. Please try again later.");
+      } else {
+        setMessage(`Failed to send reset email: ${error.message}`);
+      }
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleTwoFactorToggle = () => {
-    setSecurityOptions((prev) =>
-      prev.map((option) =>
-        option.id === "twoFactor"
-          ? { ...option, status: !option.status }
-          : option
-      )
-    );
   };
 
   const handleAppPermissions = () => {
@@ -216,29 +213,25 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                 We'll send a password reset link to{" "}
                 <strong>{currentUser?.email}</strong>
               </p>
-            </div>
-            <div className="popup-actions">
+
               <button
                 className="confirm-password-button"
                 onClick={handlePasswordReset}
                 disabled={loading}
               >
-                {loading ? (
-                  <div className="loading-spinner"></div>
-                ) : (
-                  "Send Reset Email"
-                )}
+                {loading ? "Sending..." : "Send Reset Email"}
               </button>
+
+              {message && (
+                <div
+                  className={`message ${
+                    message.includes("sent") ? "success" : "error"
+                  }`}
+                >
+                  {message}
+                </div>
+              )}
             </div>
-            {message && (
-              <div
-                className={`message ${
-                  message.includes("sent") ? "success" : "error"
-                }`}
-              >
-                {message}
-              </div>
-            )}
           </div>
         </div>
       )}

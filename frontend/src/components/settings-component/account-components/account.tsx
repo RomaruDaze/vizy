@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { updateProfile } from "firebase/auth";
 import type { User } from "firebase/auth";
-import { auth } from "../../../firebase/config";
-import "../../shared/shared.styles.css";
 import "./account.styles.css";
 
 interface AccountProps {

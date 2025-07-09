@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./contexts/ProtectedRoute";
 import Home from "./components/home-component/home";
 import Locator from "./components/locator-component/locator";
 import Settings from "./components/settings-component/settings";
@@ -18,7 +18,7 @@ import "./colors.css";
 function App() {
   return (
     <ThemeProvider>
-    <Router>
+      <Router>
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
@@ -51,7 +51,7 @@ function App() {
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
-    </Router>
+      </Router>
     </ThemeProvider>
   );
 }

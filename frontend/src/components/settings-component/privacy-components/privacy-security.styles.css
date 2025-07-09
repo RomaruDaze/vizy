@@ -351,7 +351,7 @@
 
 /* Message Styles */
 .message {
-    margin: 1rem 1.5rem 0 1.5rem;
+    margin: 1rem 0rem 0rem 0rem;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     font-weight: 500;
@@ -503,10 +503,6 @@
 
     .popup-body {
         padding: 1rem;
-    }
-
-    .popup-actions {
-        padding: 0.75rem 1rem 1rem 1rem;
     }
 
     .privacy-title {
