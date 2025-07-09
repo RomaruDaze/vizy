@@ -95,6 +95,21 @@ html {
   margin-bottom: 16px;
 }
 
+.close-button {
+    background: none;
+    border: none;
+    color: var(--app-bg);
+    cursor: pointer;
+    padding: 0 0;
+}
+
+.close-button img {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(1000%) hue-rotate(250deg) brightness(0.8) contrast(1);
+}
+
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

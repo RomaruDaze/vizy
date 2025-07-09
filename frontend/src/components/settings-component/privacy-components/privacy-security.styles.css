@@ -1,0 +1,547 @@
+.privacy-content {
+    width: 100%;
+    max-width: 600px;
+    margin: 10% auto;
+}
+
+.password-reset-section {
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.password-reset-button {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    color: white;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.password-reset-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.password-reset-button:hover::before {
+    left: 100%;
+}
+
+.password-reset-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.password-reset-button:active {
+    transform: translateY(0);
+}
+
+.password-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.password-icon img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+.password-content {
+    flex: 1;
+    text-align: left;
+}
+
+.password-text {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.password-subtitle {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+.password-arrow {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.password-reset-button:hover .password-arrow {
+    opacity: 1;
+}
+
+.password-arrow img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+    transform: rotate(180deg);
+}
+
+/* Enhanced Popup Styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    padding: 0;
+    min-width: 320px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.popup-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.popup-body {
+    color: #374151;
+    line-height: 1.6;
+}
+
+.popup-body p {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+}
+
+.popup-body strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.cancel-button {
+    flex: 1;
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.cancel-button:hover {
+    background: #e2e8f0;
+    color: #475569;
+    transform: translateY(-1px);
+}
+
+.cancel-button:active {
+    transform: translateY(0);
+}
+
+/* Password Reset Popup Specific Styles */
+.password-popup {
+    max-width: 420px;
+}
+
+.password-popup .popup-body {
+    text-align: center;
+    padding: 2rem 1.5rem;
+}
+
+.password-popup .popup-body p {
+    font-size: 1.1rem;
+    color: #4b5563;
+}
+
+.confirm-password-button {
+    flex: 1;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.confirm-password-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.confirm-password-button:hover::before {
+    left: 100%;
+}
+
+.confirm-password-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.confirm-password-button:active {
+    transform: translateY(0);
+}
+
+.confirm-password-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Delete Account Popup Specific Styles */
+.delete-popup {
+    max-width: 450px;
+}
+
+.delete-popup .popup-header {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-bottom: 1px solid #fecaca;
+}
+
+.delete-popup .popup-header h3 {
+    color: #dc2626;
+}
+
+.delete-warning {
+    text-align: center;
+    color: #374151;
+}
+
+.warning-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.delete-warning p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.delete-warning ul {
+    text-align: left;
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+    background: #fef2f2;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #fca5a5;
+}
+
+.delete-warning li {
+    margin: 0.5rem 0;
+    color: #7f1d1d;
+    font-weight: 500;
+}
+
+.delete-popup .popup-actions {
+    background: #fef2f2;
+    border-top: 1px solid #fecaca;
+}
+
+.confirm-delete-button {
+    flex: 1;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.confirm-delete-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.confirm-delete-button:hover::before {
+    left: 100%;
+}
+
+.confirm-delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+}
+
+.confirm-delete-button:active {
+    transform: translateY(0);
+}
+
+/* Message Styles */
+.message {
+    margin: 1rem 1.5rem 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.message.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.message.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+.loading-spinner svg {
+    width: 16px;
+    height: 16px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Security Options */
+.security-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.security-option {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.security-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.option-icon {
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.option-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.option-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+}
+
+.option-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.option-status {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch {
+    width: 48px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-switch.active {
+    background: var(--master-gradient);
+}
+
+.toggle-slider {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-slider {
+    transform: translateX(24px);
+}
+
+.delete-indicator {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .popup-content {
+        margin: 1rem;
+        max-width: calc(100vw - 2rem);
+    }
+
+    .popup-header {
+        padding: 1rem 1rem 0.75rem 1rem;
+    }
+
+    .popup-body {
+        padding: 1rem;
+    }
+
+    .popup-actions {
+        padding: 0.75rem 1rem 1rem 1rem;
+    }
+
+    .privacy-title {
+        font-size: 1.75rem;
+    }
+
+    .security-option {
+        padding: 1rem;
+    }
+
+    .option-icon {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .option-title {
+        font-size: 1rem;
+    }
+
+    .option-description {
+        font-size: 0.85rem;
+    }
+
+    .password-reset-button {
+        padding: 1rem;
+    }
+
+    .password-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .password-icon img {
+        width: 20px;
+        height: 20px;
+    }
+}

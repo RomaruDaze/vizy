@@ -73,8 +73,8 @@ const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="accessibility-container">
-      <div className="accessibility-header">
+    <div className="settings-container-page">
+      <div className="settings-header">
         <button className="back-button" onClick={onBack}>
           <img
             src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"

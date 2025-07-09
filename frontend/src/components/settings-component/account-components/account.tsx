@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { updateProfile } from "firebase/auth";
 import type { User } from "firebase/auth";
-import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase/config";
+import "../../shared/shared.styles.css";
 import "./account.styles.css";
 
 interface AccountProps {
@@ -43,24 +43,6 @@ const Account = ({ onBack }: AccountProps) => {
     }
   };
 
-  const handleResetPassword = async () => {
-    if (!currentUser?.email) return;
-
-    setLoading(true);
-    try {
-      await sendPasswordResetEmail(auth, currentUser.email);
-      setMessage("Password reset email sent! Check your inbox.");
-      setTimeout(() => {
-        setShowPopup(false);
-        setMessage("");
-      }, 3000);
-    } catch (error) {
-      setMessage("Failed to send reset email. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleLogoutClick = () => {
     setShowLogoutPopup(true);
   };
@@ -85,8 +67,8 @@ const Account = ({ onBack }: AccountProps) => {
   };
 
   return (
-    <div className="account-container">
-      <div className="account-header">
+    <div className="settings-container-page ">
+      <div className="settings-header">
         <button className="back-button" onClick={onBack}>
           <img
             src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
@@ -152,13 +134,16 @@ const Account = ({ onBack }: AccountProps) => {
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
             <div className="popup-header">
-              <h3>Edit Profile</h3>
               <button
                 className="close-button"
                 onClick={() => setShowPopup(false)}
               >
-                ×
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/back.png"
+                  alt="Close"
+                />
               </button>
+              <h3>Edit Profile</h3>
             </div>
 
             <div className="popup-body">
@@ -192,22 +177,10 @@ const Account = ({ onBack }: AccountProps) => {
                 </div>
               </div>
 
-              <div className="popup-actions">
-                <button
-                  className="reset-password-button"
-                  onClick={handleResetPassword}
-                  disabled={loading}
-                >
-                  {loading ? "Sending..." : "Reset Password"}
-                </button>
-              </div>
-
               {message && (
                 <div
                   className={`message ${
-                    message.includes("successfully") || message.includes("sent")
-                      ? "success"
-                      : "error"
+                    message.includes("successfully") ? "success" : "error"
                   }`}
                 >
                   {message}

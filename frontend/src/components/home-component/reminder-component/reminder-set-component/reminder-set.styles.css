@@ -23,26 +23,6 @@
     position: relative;
 }
 
-.close-button {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background-color: white !important;
-    border: none;
-    font-size: 1.5rem;
-    color: #333 !important;
-    padding: 0.5rem;
-    line-height: 1;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    cursor: pointer;
-}
-
 @keyframes modalSlideIn {
     from {
         transform: translateY(-20px);
