@@ -312,11 +312,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
-    background: rgba(220, 38, 38, 0.1);
-    border-radius: 50%;
+    gap: 1rem;
     margin: 0 auto;
+}
+
+.logout-popup-icon img {
+    width: 40px;
+    height: 40px;
 }
 
 .logout-popup .popup-body {

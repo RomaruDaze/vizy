@@ -125,7 +125,7 @@ const LoginPage = () => {
         <div className="login-footer">
           <p>
             Don't have an account?{" "}
-            <a href="/vizy/signup" className="link-button">
+            <a href="/signup" className="link-button">
               Sign up
             </a>
           </p>

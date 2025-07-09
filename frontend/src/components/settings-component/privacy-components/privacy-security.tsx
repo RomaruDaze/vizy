@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase/config";
+import { deleteUser } from "firebase/auth";
 import "../account-components/account.styles.css";
 import "./privacy-security.styles.css";
 
@@ -10,48 +11,11 @@ interface PrivacySecurityProps {
   onBack: () => void;
 }
 
-interface SecurityOption {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  status: boolean;
-  action: () => void;
-}
-
 const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
-
-  const [securityOptions, setSecurityOptions] = useState<SecurityOption[]>([
-    {
-      id: "appPermissions",
-      title: "App Permissions",
-      description: "Manage what data the app can access",
-      icon: "📱",
-      status: true,
-      action: () => handleAppPermissions(),
-    },
-    {
-      id: "dataSharing",
-      title: "Data Sharing",
-      description: "Control how your data is shared with third parties",
-      icon: "📊",
-      status: false,
-      action: () => handleDataSharing(),
-    },
-    {
-      id: "deleteAccount",
-      title: "Delete Account",
-      description: "Permanently delete your account and data",
-      icon: "🗑️",
-      status: false,
-      action: () => handleDeleteAccount(),
-    },
-  ]);
-
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handlePasswordReset = async () => {
@@ -88,28 +52,31 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
     }
   };
 
-  const handleAppPermissions = () => {
-    // TODO: Implement app permissions management
-    console.log("App permissions requested");
-  };
-
-  const handleDataSharing = () => {
-    setSecurityOptions((prev) =>
-      prev.map((option) =>
-        option.id === "dataSharing"
-          ? { ...option, status: !option.status }
-          : option
-      )
-    );
-  };
-
   const handleDeleteAccount = () => {
     setShowDeleteConfirm(true);
   };
 
-  const confirmDeleteAccount = () => {
-    // TODO: Implement account deletion
-    console.log("Account deletion confirmed");
+  const confirmDeleteAccount = async () => {
+    try {
+      if (currentUser) {
+        // Delete the user account from Firebase
+        await deleteUser(currentUser);
+        console.log("Account deleted successfully");
+
+        // Redirect to signup page
+        window.location.href = "/vizy/signup";
+      }
+    } catch (error: any) {
+      console.error("Error deleting account:", error);
+
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "For security reasons, please log out and log back in before deleting your account."
+        );
+      } else {
+        alert("Failed to delete account. Please try again.");
+      }
+    }
     setShowDeleteConfirm(false);
   };
 
@@ -158,31 +125,31 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
           </button>
         </div>
 
-        <div className="security-options">
-          {securityOptions.map((option) => (
-            <div
-              key={option.id}
-              className="security-option"
-              onClick={option.action}
-            >
-              <div className="option-icon">{option.icon}</div>
-              <div className="option-content">
-                <h3 className="option-title">{option.title}</h3>
-                <p className="option-description">{option.description}</p>
-              </div>
-              <div className="option-status">
-                {option.id === "deleteAccount" ? (
-                  <span className="delete-indicator">⚠️</span>
-                ) : (
-                  <div
-                    className={`toggle-switch ${option.status ? "active" : ""}`}
-                  >
-                    <div className="toggle-slider"></div>
-                  </div>
-                )}
-              </div>
+        {/* Delete Account Button */}
+        <div className="password-reset-section">
+          <button
+            className="password-reset-button"
+            onClick={handleDeleteAccount}
+          >
+            <div className="password-icon">
+              <img
+                src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
+                alt="Delete"
+              />
             </div>
-          ))}
+            <div className="password-content">
+              <span className="password-text">Delete Account</span>
+              <span className="password-subtitle">
+                Permanently delete your account and data
+              </span>
+            </div>
+            <div className="password-arrow">
+              <img
+                src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
+                alt="Back"
+              />
+            </div>
+          </button>
         </div>
       </div>
 
@@ -243,17 +210,22 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
             <div className="popup-header">
               <h3>Delete Account</h3>
               <button className="close-button" onClick={cancelDeleteAccount}>
-                ✕
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
+                  alt="Delete"
+                />
               </button>
             </div>
             <div className="popup-body">
               <div className="delete-warning">
-                <span className="warning-icon">⚠️</span>
                 <p>
-                  <strong>This action cannot be undone.</strong>
+                  <strong>
+                    <span className="warning-icon">⚠️</span> This action cannot
+                    be undone.
+                  </strong>
                 </p>
                 <p>All your data, including:</p>
-                <ul>
+                <ul className="delete-list">
                   <li>Profile information</li>
                   <li>Saved preferences</li>
                   <li>Account history</li>
@@ -266,10 +238,11 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
               <button className="cancel-button" onClick={cancelDeleteAccount}>
                 Cancel
               </button>
-              <button
-                className="confirm-delete-button"
-                onClick={confirmDeleteAccount}
-              >
+              <button className="delete-button" onClick={confirmDeleteAccount}>
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
+                  alt="Delete"
+                />
                 Delete Account
               </button>
             </div>

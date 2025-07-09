@@ -142,7 +142,7 @@
     color: #5a6fd8;
 }
 
-.signup-button {
+.login-button {
     padding: 14px 20px;
     border: none;
     border-radius: 8px;
@@ -156,27 +156,34 @@
     gap: 8px;
 }
 
-.signup-button.primary {
-    background: var(--app-bg);
+.login-button.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 }
 
-.signup-button.primary:hover:not(:disabled) {
+.login-button.primary:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.signup-button.google {
-    background-color: #4285f4;
-    color: white;
+.login-button.google {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
 }
 
-.signup-button.google:hover:not(:disabled) {
-    background-color: #3367d6;
+.login-button.google img {
+    width: 30px;
+    height: 30px;
+}
+
+.login-button.google:hover:not(:disabled) {
+    background-color: #000000;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
-.signup-button:disabled {
+.login-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;

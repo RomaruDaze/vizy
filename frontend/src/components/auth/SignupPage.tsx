@@ -4,7 +4,7 @@ import "./signupPage.styles.css";
 import { updateProfile } from "firebase/auth";
 
 const SignupPage = () => {
-  const [firstName, setFirstName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,8 +18,8 @@ const SignupPage = () => {
     e.preventDefault();
 
     // Validation
-    if (!firstName.trim()) {
-      return setError("First name is required");
+    if (!nickname.trim()) {
+      return setError("Nickname is required");
     }
 
     if (password !== confirmPassword) {
@@ -41,13 +41,13 @@ const SignupPage = () => {
       // Create the user account
       const userCredential = await signup(email, password);
       
-      // Update the user's display name with the first name
+      // Update the user's display name with the nickname
       if (userCredential.user) {
         await updateProfile(userCredential.user, { 
-          displayName: firstName.trim() 
+          displayName: nickname.trim() 
         });
       }
-      
+
       // Redirect to home page after successful signup
       window.location.href = "/vizy/";
     } catch (error: any) {
@@ -83,14 +83,14 @@ const SignupPage = () => {
 
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
+            <label htmlFor="nickname">Nickname</label>
             <input
               type="text"
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              id="nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
               required
-              placeholder="Enter your first name"
+              placeholder="Enter your nickname"
             />
           </div>
 
@@ -164,22 +164,24 @@ const SignupPage = () => {
           <span>or</span>
         </div>
 
-        <button 
-          onClick={handleGoogleSignup}
-          className="signup-button google"
-          disabled={loading}
-        >
-          <img 
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/google.png" 
-            alt="Google"
-          />
-          Continue with Google
-        </button>
+        <div className="button-container">
+          <button
+            onClick={handleGoogleSignup}
+            className="signup-button google"
+            disabled={loading}
+          >
+            <img
+              src="https://img.icons8.com/color/480/google-logo.png"
+              alt="Google"
+            />
+            Continue with Google
+          </button>
+        </div>
 
         <div className="signup-footer">
           <p>
             Already have an account?{' '}
-            <a href="/vizy/login" className="link-button">
+            <a href="/login" className="link-button">
               Log in
             </a>
           </p>

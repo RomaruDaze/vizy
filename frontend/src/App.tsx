@@ -18,7 +18,7 @@ import "./colors.css";
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <Router basename="">
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />

@@ -198,34 +198,12 @@ const Account = ({ onBack }: AccountProps) => {
           >
             <div className="popup-header">
               <div className="logout-popup-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-                    stroke="#dc2626"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M16 17L21 12L16 7"
-                    stroke="#dc2626"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M21 12H9"
-                    stroke="#dc2626"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/exit.png"
+                  alt="Logout"
+                />
+                <h3>Sign Out</h3>
               </div>
-              <h3>Sign Out</h3>
-              <button className="close-button" onClick={handleCancelLogout}>
-                ×
-              </button>
             </div>
             <div className="popup-body">
               <p>Are you sure you want to sign out of your account?</p>

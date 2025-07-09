@@ -1,3 +1,4 @@
+/* Privacy & Security Page Styles */
 .privacy-content {
     width: 100%;
     max-width: 600px;
@@ -9,6 +10,7 @@
     margin-bottom: 2rem;
 }
 
+/* Button Styles */
 .password-reset-button {
     width: 100%;
     background: rgba(255, 255, 255, 0.1);
@@ -104,7 +106,7 @@
     transform: rotate(180deg);
 }
 
-/* Enhanced Popup Styles */
+/* Popup Overlay */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -139,21 +141,40 @@
     justify-content: space-between;
     padding: 1.5rem 1.5rem 1rem 1.5rem;
     border-bottom: 1px solid #e2e8f0;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: var(--master-gradient);
 }
 
 .popup-header h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1e293b;
+    color: white;
     margin: 0;
     flex: 1;
     text-align: center;
 }
 
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
 .popup-body {
     color: #374151;
     line-height: 1.6;
+    padding: 1.5rem;
 }
 
 .popup-body p {
@@ -174,30 +195,7 @@
     background: #f8fafc;
 }
 
-.cancel-button {
-    flex: 1;
-    background: #f1f5f9;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.95rem;
-}
-
-.cancel-button:hover {
-    background: #e2e8f0;
-    color: #475569;
-    transform: translateY(-1px);
-}
-
-.cancel-button:active {
-    transform: translateY(0);
-}
-
-/* Password Reset Popup Specific Styles */
+/* Password Reset Popup */
 .password-popup {
     max-width: 420px;
 }
@@ -257,101 +255,123 @@
     transform: none;
 }
 
-/* Delete Account Popup Specific Styles */
+/* Delete Account Popup */
 .delete-popup {
-    max-width: 450px;
+    max-width: 420px;
+    width: 95%;
+    animation: popup-fade-in 0.25s;
+}
+
+@keyframes popup-fade-in {
+    from {
+        transform: translateY(40px) scale(0.98);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
 .delete-popup .popup-header {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border-bottom: 1px solid #fecaca;
+    background: var(--master-gradient);
+    color: #fff;
+    padding: 20px 24px 16px 24px;
+    border-radius: 18px 18px 0 0;
 }
 
 .delete-popup .popup-header h3 {
-    color: #dc2626;
+    color: white;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.delete-popup .close-button img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+}
+
+.delete-popup .popup-body {
+    padding: 28px 24px 12px 24px;
 }
 
 .delete-warning {
-    text-align: center;
-    color: #374151;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 18px;
 }
 
-.warning-icon {
-    font-size: 3.5rem;
-    display: block;
-    margin-bottom: 1.5rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.delete-warning p {
-    margin: 0.75rem 0;
-    line-height: 1.6;
-    font-size: 1rem;
-}
-
-.delete-warning ul {
-    text-align: left;
-    margin: 1.5rem 0;
-    padding-left: 1.5rem;
-    background: #fef2f2;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    border-left: 4px solid #fca5a5;
-}
-
-.delete-warning li {
-    margin: 0.5rem 0;
-    color: #7f1d1d;
-    font-weight: 500;
+.delete-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    gap: 1px;
+    border-left: 3px solid #d32f2f;
+    padding-left: 12px;
 }
 
 .delete-popup .popup-actions {
-    background: #fef2f2;
-    border-top: 1px solid #fecaca;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 24px 22px 24px;
+    background: #fafbfc;
+    border-radius: 0 0 18px 18px;
 }
 
-.confirm-delete-button {
-    flex: 1;
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
-    color: white;
+.cancel-button {
+    background: #e0e0e0;
+    color: #333;
     border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancel-button:hover {
+    background: #d5d5d5;
+}
+
+.delete-button {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ee5a52 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.12);
+    transition: background 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.confirm-delete-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+.delete-button:hover {
+    background: linear-gradient(90deg, #ff5252 0%, #d32f2f 100%);
+    box-shadow: 0 4px 16px rgba(255, 107, 107, 0.18);
 }
 
-.confirm-delete-button:hover::before {
-    left: 100%;
-}
-
-.confirm-delete-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
-}
-
-.confirm-delete-button:active {
-    transform: translateY(0);
+.delete-button img {
+    width: 24px;
+    height: 24px;
 }
 
 /* Message Styles */
 .message {
-    margin: 1rem 0rem 0rem 0rem;
+    margin: 1rem 0 0 0;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     font-weight: 500;
@@ -371,125 +391,6 @@
     border: 1px solid #fecaca;
 }
 
-/* Loading Spinner */
-.loading-spinner {
-    display: inline-block;
-    animation: spin 1s linear infinite;
-}
-
-.loading-spinner svg {
-    width: 16px;
-    height: 16px;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Security Options */
-.security-options {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 1rem;
-}
-
-.security-option {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.security-option:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.option-icon {
-    font-size: 2rem;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    flex-shrink: 0;
-}
-
-.option-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.option-title {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 0.25rem 0;
-}
-
-.option-description {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    margin: 0;
-    line-height: 1.4;
-}
-
-.option-status {
-    display: flex;
-    align-items: center;
-}
-
-.toggle-switch {
-    width: 48px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-switch.active {
-    background: var(--master-gradient);
-}
-
-.toggle-slider {
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-switch.active .toggle-slider {
-    transform: translateX(24px);
-}
-
-.delete-indicator {
-    font-size: 1.5rem;
-    opacity: 0.8;
-}
-
 /* Responsive Design */
 @media (max-width: 480px) {
     .popup-content {
@@ -505,28 +406,6 @@
         padding: 1rem;
     }
 
-    .privacy-title {
-        font-size: 1.75rem;
-    }
-
-    .security-option {
-        padding: 1rem;
-    }
-
-    .option-icon {
-        font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
-    }
-
-    .option-title {
-        font-size: 1rem;
-    }
-
-    .option-description {
-        font-size: 0.85rem;
-    }
-
     .password-reset-button {
         padding: 1rem;
     }
@@ -539,5 +418,17 @@
     .password-icon img {
         width: 20px;
         height: 20px;
+    }
+
+    .delete-popup .popup-header,
+    .delete-popup .popup-body,
+    .delete-popup .popup-actions {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .delete-popup .popup-body {
+        padding-top: 18px;
+        padding-bottom: 8px;
     }
 }

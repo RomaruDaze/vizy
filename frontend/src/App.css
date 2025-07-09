@@ -106,7 +106,7 @@ html {
 .close-button img {
     width: 30px;
     height: 30px;
-    filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(1000%) hue-rotate(250deg) brightness(0.8) contrast(1);
+    filter: brightness(0) invert(1);
 }
 
 
