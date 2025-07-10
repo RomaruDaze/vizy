@@ -202,7 +202,7 @@ const Help = ({ onBack }: HelpProps) => {
               </button>
               <h3>FAQs</h3>
             </div>
-            <FAQ onBack={closeFAQPopup} />
+            <FAQ/>
           </div>
         </div>
       )}

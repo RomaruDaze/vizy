@@ -4,12 +4,10 @@ import {
   updateUserProfile,
   getUserProfile,
 } from "../../../services/userProfileService";
-import type { UserProfile } from "../../../types/userProfile";
 import "./visa-status.styles.css";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
-  onBack: () => void;
 }
 
 interface DocumentItem {
@@ -19,7 +17,7 @@ interface DocumentItem {
   checked: boolean;
 }
 
-const VisaStatus = ({ answers, onBack }: VisaStatusProps) => {
+const VisaStatus = ({ answers }: VisaStatusProps) => {
   const { currentUser } = useAuth();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);

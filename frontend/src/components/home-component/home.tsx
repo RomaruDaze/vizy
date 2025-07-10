@@ -7,7 +7,6 @@ import VisaStatus from "./visa-status-component/visa-status";
 import BottomNavigation from "../shared/bottom-navigation";
 import { useAuth } from "../../contexts/AuthContext";
 import { getUserProfile } from "../../services/userProfileService";
-import type { UserProfile as UserProfileType } from "../../types/userProfile";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -90,10 +89,7 @@ const Home = () => {
       {/* Middle section - Getting Started or Visa Status (85%) */}
       <div className="middle-section">
         {userAnswers ? (
-          <VisaStatus
-            answers={userAnswers}
-            onBack={() => setUserAnswers(null)}
-          />
+          <VisaStatus answers={userAnswers} />
         ) : (
           <div className="getting-started-card">
             <div className="getting-started-content">

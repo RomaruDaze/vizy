@@ -20,7 +20,7 @@ interface Question {
   conditionalOptions?: string[]; // For the dropdown that appears
 }
 
-const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
+const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const { currentUser } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -305,14 +305,7 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
   return (
     <div className="getting-started-question-container">
       <div className="getting-started-question-content">
-        {/* Back Button */}
-        <button className="back-button" onClick={onBack}>
-          <img
-            src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
-            alt="Back"
-          />
-          Back
-        </button>
+
 
         {/* Progress Bar */}
         <div className="progress-container">

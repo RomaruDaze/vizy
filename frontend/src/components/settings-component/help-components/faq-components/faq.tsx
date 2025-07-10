@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./faq.styles.css";
 
 interface FAQProps {
-  onBack: () => void;
+  // Removed: onBack: () => void;
 }
 
 interface FAQItem {
@@ -12,7 +12,7 @@ interface FAQItem {
   category: string;
 }
 
-const FAQ = ({ onBack }: FAQProps) => {
+const FAQ = ({}: FAQProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
