@@ -12,7 +12,7 @@
 /* Top Card - Deadline */
 .deadline-card {
   background: var(--app-bg);
-  flex: 0.8;
+  flex: 0.6;
   border-radius: 20px;
   padding: 2rem;
   backdrop-filter: blur(10px);
@@ -69,7 +69,6 @@
 }
 
 .documents-card:hover {
-  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
@@ -80,9 +79,9 @@
   gap: 1rem;
 }
 
-.documents-icon {
-  font-size: 2rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+.documents-icon img {
+  width: 50px;
+  height: 50px;
 }
 
 .documents-text {
@@ -150,20 +149,18 @@
 .deadline-availability.not-available {
   background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
   color: white;
-  border: 2px solid #ff9800;
   box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
 }
 
 .deadline-availability.expired {
   background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
   color: white;
-  border: 2px solid #f44336;
   box-shadow: 0 6px 20px rgba(244, 67, 54, 0.3);
 }
 
 .deadline-availability p {
   color: white;
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.5;
   margin: 0;
   flex: 1;
@@ -175,6 +172,489 @@
   height: 40px;
   filter: brightness(0) invert(1);
   margin-left: 1rem;
+}
+
+.deadline-reminder {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Reminder Button */
+.deadline-reminder {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.reminder-button {
+  background: rgba(244, 67, 54);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.reminder-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.reminder-button:hover {
+  background: rgba(244, 67, 54, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.3);
+  border-color: #f44336;
+}
+
+.reminder-button:hover::before {
+  left: 100%;
+}
+
+.reminder-button:active {
+  transform: translateY(0);
+}
+
+/* When reminder IS set, make it green */
+.reminder-button.reminder-set {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  border-color: #4caf50;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.reminder-button.reminder-set:hover {
+  background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+}
+
+.reminder-icon {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.reminder-button.reminder-set .reminder-icon {
+  opacity: 1;
+}
+
+/* Reminder Popup */
+.reminder-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.reminder-popup-content {
+  background: var(--master-gradient);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reminder-popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.reminder-popup-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.close-button img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+.reminder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+
+.reminder-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.clear-button,
+.set-button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.clear-button {
+  background: #f44336;
+  color: white;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.clear-button:hover {
+  background: rgba(244, 67, 54, 0.3);
+  color: #f44336;
+}
+
+.set-button {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 600;
+}
+
+.set-button:hover:not(:disabled) {
+  background: white;
+  transform: translateY(-1px);
+}
+
+.set-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Documents Popup */
+.documents-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.documents-popup-content {
+  background: var(--master-gradient);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.documents-popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.documents-popup-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.document-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.document-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.document-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.document-checkbox input[type="checkbox"]:checked+.checkmark {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.document-checkbox input[type="checkbox"]:checked+.checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.document-name {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Remove required badge styles */
+.required-badge {
+  display: none;
+}
+
+/* Update documents summary to actions */
+.documents-actions {
+  text-align: center;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.save-button {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.save-button:hover {
+  background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.save-button:active {
+  transform: translateY(0);
+}
+
+/* Documents Popup */
+.documents-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.documents-popup-content {
+  background: var(--master-gradient);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.document-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.document-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.document-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.document-checkbox input[type="checkbox"]:checked+.checkmark {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.document-checkbox input[type="checkbox"]:checked+.checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.document-name {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Remove required badge styles */
+.required-badge {
+  display: none;
+}
+
+/* Update documents summary to actions */
+.documents-actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.save-button {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.save-button:hover {
+  background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.save-button:active {
+  transform: translateY(0);
 }
 
 /* Responsive Design */
