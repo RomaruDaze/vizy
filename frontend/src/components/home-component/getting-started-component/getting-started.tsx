@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { saveUserProfile, getUserProfile } from "../../../services/userProfileService";
-import type { UserProfile } from "../../../types/userProfile";
+import {
+  saveUserProfile,
+  getUserProfile,
+} from "../../../services/userProfileService";
 import "./getting-started.styles.css";
 
 interface GettingStartedProps {
@@ -303,6 +305,15 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
   return (
     <div className="getting-started-question-container">
       <div className="getting-started-question-content">
+        {/* Back Button */}
+        <button className="back-button" onClick={onBack}>
+          <img
+            src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
+            alt="Back"
+          />
+          Back
+        </button>
+
         {/* Progress Bar */}
         <div className="progress-container">
           <div className="progress-bar">
