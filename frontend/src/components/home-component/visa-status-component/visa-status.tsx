@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
+import {
+  updateUserProfile,
+  getUserProfile,
+} from "../../../services/userProfileService";
+import type { UserProfile } from "../../../types/userProfile";
 import "./visa-status.styles.css";
 
 interface VisaStatusProps {
@@ -14,6 +20,7 @@ interface DocumentItem {
 }
 
 const VisaStatus = ({ answers, onBack }: VisaStatusProps) => {
+  const { currentUser } = useAuth();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);
   const [reminderTime, setReminderTime] = useState("");
@@ -59,6 +66,35 @@ const VisaStatus = ({ answers, onBack }: VisaStatusProps) => {
     },
   ]);
 
+  // Load saved data from Firebase
+  useEffect(() => {
+    const loadSavedData = async () => {
+      if (currentUser) {
+        try {
+          const profile = await getUserProfile(currentUser.uid);
+          if (profile) {
+            setReminderDate(profile.reminderDate || "");
+            setReminderTime(profile.reminderTime || "");
+            setReminderSet(profile.reminderSet || false);
+
+            // Load document progress
+            if (profile.documentProgress) {
+              const updatedDocuments = documents.map((doc) => ({
+                ...doc,
+                checked: profile.documentProgress![doc.id] || false,
+              }));
+              setDocuments(updatedDocuments);
+            }
+          }
+        } catch (error) {
+          console.error("Error loading saved data:", error);
+        }
+      }
+    };
+
+    loadSavedData();
+  }, [currentUser]);
+
   // Initialize documents based on user answers
   useState(() => {
     if (answers.documents) {
@@ -90,9 +126,19 @@ const VisaStatus = ({ answers, onBack }: VisaStatusProps) => {
     setShowDocumentsPopup(false);
   };
 
-  const handleSaveDocuments = () => {
-    setShowDocumentsPopup(false);
-    console.log("Documents saved:", documents);
+  const handleSaveDocuments = async () => {
+    if (currentUser) {
+      const documentProgress: { [key: string]: boolean } = {};
+      documents.forEach((doc) => {
+        documentProgress[doc.id] = doc.checked;
+      });
+
+      await updateUserProfile(currentUser.uid, {
+        documentProgress,
+      });
+
+      setShowDocumentsPopup(false);
+    }
   };
 
   const getDeadlineStatus = (deadline: string) => {
@@ -137,19 +183,34 @@ const VisaStatus = ({ answers, onBack }: VisaStatusProps) => {
     setShowReminderPopup(true);
   };
 
-  const handleSetReminder = () => {
-    if (reminderDate && reminderTime) {
+  const handleSetReminder = async () => {
+    if (reminderDate && reminderTime && currentUser) {
       setReminderSet(true);
       setShowReminderPopup(false);
-      console.log("Reminder set for:", reminderDate, reminderTime);
+
+      // Save to Firebase
+      await updateUserProfile(currentUser.uid, {
+        reminderDate,
+        reminderTime,
+        reminderSet: true,
+      });
     }
   };
 
-  const handleClearReminder = () => {
-    setReminderSet(false);
-    setReminderDate("");
-    setReminderTime("");
-    setShowReminderPopup(false);
+  const handleClearReminder = async () => {
+    if (currentUser) {
+      setReminderSet(false);
+      setReminderDate("");
+      setReminderTime("");
+      setShowReminderPopup(false);
+
+      // Save to Firebase
+      await updateUserProfile(currentUser.uid, {
+        reminderDate: "",
+        reminderTime: "",
+        reminderSet: false,
+      });
+    }
   };
 
   const handleCloseReminderPopup = () => {

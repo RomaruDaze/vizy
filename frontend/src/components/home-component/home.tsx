@@ -1,17 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./home.styles.css";
 import UserProfile from "./user-profile-component/user-profile";
 import Account from "../settings-component/account-components/account";
 import GettingStarted from "./getting-started-component/getting-started";
 import VisaStatus from "./visa-status-component/visa-status";
 import BottomNavigation from "../shared/bottom-navigation";
+import { useAuth } from "../../contexts/AuthContext";
+import { getUserProfile } from "../../services/userProfileService";
+import type { UserProfile as UserProfileType } from "../../types/userProfile";
 
 const Home = () => {
+  const { currentUser } = useAuth();
   const [showAccount, setShowAccount] = useState(false);
   const [showGettingStarted, setShowGettingStarted] = useState(false);
   const [userAnswers, setUserAnswers] = useState<Record<string, any> | null>(
     null
   );
+  const [loading, setLoading] = useState(true);
+
+  // Load user profile on component mount
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      // Only try to load profile if user is authenticated
+      if (currentUser && currentUser.uid) {
+        try {
+          const profile = await getUserProfile(currentUser.uid);
+          if (profile && Object.keys(profile).length > 0) {
+            setUserAnswers(profile);
+          }
+        } catch (error) {
+          console.error("Error loading user profile:", error);
+          // Don't show error if user just isn't logged in
+          if (error instanceof Error && error.message !== "Permission denied") {
+            console.error("Unexpected error:", error);
+          }
+        }
+      }
+      setLoading(false);
+    };
+
+    loadUserProfile();
+  }, [currentUser]);
 
   const handleAccountClick = () => {
     setShowAccount(true);
@@ -33,6 +62,10 @@ const Home = () => {
     setUserAnswers(answers);
     setShowGettingStarted(false);
   };
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
 
   if (showAccount) {
     return <Account onBack={handleBackFromAccount} />;

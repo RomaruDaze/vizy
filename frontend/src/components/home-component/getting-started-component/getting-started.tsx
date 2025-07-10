@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
+import { saveUserProfile, getUserProfile } from "../../../services/userProfileService";
+import type { UserProfile } from "../../../types/userProfile";
 import "./getting-started.styles.css";
 
 interface GettingStartedProps {
   onBack: () => void;
-  onComplete: (answers: Record<string, any>) => void; // Add this prop
+  onComplete: (answers: Record<string, any>) => void;
 }
 
 interface Question {
@@ -16,9 +19,30 @@ interface Question {
 }
 
 const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
+  const { currentUser } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [showConditional, setShowConditional] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Load existing profile data on component mount
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (currentUser) {
+        try {
+          const profile = await getUserProfile(currentUser.uid);
+          if (profile) {
+            setAnswers(profile);
+          }
+        } catch (error) {
+          console.error("Error loading user profile:", error);
+        }
+      }
+      setLoading(false);
+    };
+
+    loadUserProfile();
+  }, [currentUser]);
 
   const questions: Question[] = [
     {
@@ -77,11 +101,21 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
     },
   ];
 
-  const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers((prev) => ({
-      ...prev,
+  const handleAnswer = async (questionId: string, answer: any) => {
+    const newAnswers = {
+      ...answers,
       [questionId]: answer,
-    }));
+    };
+    setAnswers(newAnswers);
+
+    // Auto-save to Firebase after each answer
+    if (currentUser) {
+      try {
+        await saveUserProfile(currentUser.uid, newAnswers);
+      } catch (error) {
+        console.error("Error auto-saving:", error);
+      }
+    }
 
     // Show conditional dropdown for purpose question
     if (
@@ -94,13 +128,21 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Handle completion
-      console.log("All answers:", answers);
-      onComplete(answers); // Pass answers back to parent
+      // Save to Firebase before completing
+      if (currentUser) {
+        try {
+          await saveUserProfile(currentUser.uid, answers);
+          console.log("Profile saved to Firebase");
+        } catch (error) {
+          console.error("Error saving profile:", error);
+        }
+      }
+
+      onComplete(answers);
     }
   };
 
@@ -250,6 +292,14 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="getting-started-container">
+        <div className="loading-spinner">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="getting-started-question-container">
       <div className="getting-started-question-content">
@@ -277,7 +327,7 @@ const GettingStarted = ({ onBack, onComplete }: GettingStartedProps) => {
         {/* Navigation */}
         <div className="navigation-buttons">
           {currentStep > 0 && (
-            <button className="back-button" onClick={handleBack}>
+            <button className="previous-button" onClick={handleBack}>
               <img
                 src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
                 alt="Back"

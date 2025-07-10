@@ -293,7 +293,7 @@
     gap: 1rem;
 }
 
-.back-button,
+.previous-button,
 .next-button {
     display: flex;
     align-items: center;
@@ -307,13 +307,13 @@
     font-size: 1rem;
 }
 
-.back-button {
+.previous-button {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.back-button:hover {
+.previous-button:hover {
     background: rgba(255, 255, 255, 0.15);
 }
 
@@ -336,7 +336,7 @@
     transform: none;
 }
 
-.back-button img,
+.previous-button img,
 .next-button img {
     width: 20px;
     height: 20px;
@@ -366,7 +366,7 @@
         flex-direction: row;
     }
 
-    .back-button,
+    .previous-button,
     .next-button {
         width: 100%;
         justify-content: center;

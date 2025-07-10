@@ -122,22 +122,11 @@ const FAQ = ({ onBack }: FAQProps) => {
   return (
     <div className="settings-container-page">
       <div className="faq-content">
-        {/* Header with back button */}
-        <div className="faq-header">
-          <button className="back-button" onClick={onBack}>
-            <img
-              src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
-              alt="Back"
-            />
-            Back
-          </button>
-        </div>
-
         {/* Search Section */}
         <div className="search-section">
           <div className="search-input-container">
             <img
-              src="https://img.icons8.com/sf-black-filled/100/999999/search.png"
+              src="https://img.icons8.com/ios-filled/100/FFFFFF/search--v1.png"
               alt="Search"
               className="search-icon"
             />
