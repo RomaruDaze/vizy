@@ -1,0 +1,374 @@
+/* Getting Started Container */
+.getting-started-question-container {
+    min-height: 100vh;
+    background: var(--master-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.getting-started-question-content {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar */
+.progress-container {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    /* Changed to white */
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.progress-text {
+    color: white;
+    /* Changed to white */
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Question Section */
+.question-section {
+    margin-bottom: 2rem;
+}
+
+.question-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.question-content {
+    margin-bottom: 1rem;
+}
+
+/* Input Styles */
+.question-input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.question-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.question-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Date Input Styling */
+.question-input[type="date"] {
+    width: 100%;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    position: relative;
+}
+
+.question-input[type="date"]:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.question-input[type="date"]:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.15),
+        0 0 0 3px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Custom calendar icon */
+.question-input[type="date"]::before {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+.question-input[type="date"]:focus::before {
+    opacity: 1;
+}
+
+/* Remove default calendar icon */
+.question-input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.question-input[type="date"]::-webkit-datetime-edit {
+    color: white;
+    font-weight: 500;
+}
+
+.question-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+}
+
+.question-input[type="date"]::-webkit-datetime-edit-text {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0 0.2rem;
+}
+
+.question-input[type="date"]::-webkit-datetime-edit-month-field,
+.question-input[type="date"]::-webkit-datetime-edit-day-field,
+.question-input[type="date"]::-webkit-datetime-edit-year-field {
+    color: white;
+    font-weight: 500;
+}
+
+/* Placeholder styling */
+.question-input[type="date"]:not([value])::-webkit-datetime-edit {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Mobile optimization */
+@media (max-width: 480px) {
+    .question-input[type="date"] {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .question-input[type="date"]::before {
+        font-size: 1rem;
+        right: 0.75rem;
+    }
+}
+
+/* Focus ring for accessibility */
+.question-input[type="date"]:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Options Container */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option-button {
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    backdrop-filter: blur(10px);
+}
+
+.option-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.option-button.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Conditional Select Styling */
+.conditional-select-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.conditional-options {
+    padding: 1.5rem;
+    animation: slideDown 0.3s ease;
+}
+
+.conditional-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.conditional-select {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.conditional-select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.conditional-select option {
+    background: #2a2a2a;
+    color: white;
+    padding: 0.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Navigation Buttons */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-button,
+.next-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 1rem;
+}
+
+.back-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.next-button {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: 600;
+}
+
+.next-button.active:hover {
+    background: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.next-button.disabled {
+    background: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.back-button img,
+.next-button img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+.next-button img {
+    filter: none;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .getting-started-content {
+        padding: 1.5rem;
+    }
+
+    .question-title {
+        font-size: 1.3rem;
+    }
+
+    .option-button {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .navigation-buttons {
+        flex-direction: row;
+    }
+
+    .back-button,
+    .next-button {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -62,6 +62,7 @@ html {
     flex-direction: column;
     padding: 1rem;
     overflow-y: auto;
+    justify-content: center;
 }
 
 /* Bottom section - Navigation (10%) */

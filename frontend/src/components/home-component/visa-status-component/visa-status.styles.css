@@ -1,0 +1,143 @@
+/* Visa Status Container */
+.visa-status-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+/* Top Card - Deadline */
+.deadline-card {
+  background: var(--app-bg);
+  flex: 0.8;
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.deadline-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.deadline-header h2 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.deadline-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.deadline-date {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.deadline-info p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Bottom Card - Documents */
+.documents-card {
+  background: var(--app-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.documents-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.documents-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.documents-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.documents-text {
+  flex: 1;
+}
+
+.documents-text h3 {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.documents-text p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.documents-arrow {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.documents-card:hover .documents-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .visa-status-container {
+    gap: 0.75rem;
+  }
+
+  .deadline-card {
+    padding: 1.5rem;
+  }
+
+  .deadline-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .deadline-date {
+    font-size: 1.5rem;
+  }
+
+  .documents-card {
+    padding: 1.25rem;
+  }
+
+  .documents-text h3 {
+    font-size: 1.1rem;
+  }
+}
