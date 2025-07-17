@@ -31,8 +31,16 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   });
 
   // Add these state variables for touch handling
-  const [form1TouchStart, setForm1TouchStart] = useState({ x: 0, y: 0, time: 0 });
-  const [form2TouchStart, setForm2TouchStart] = useState({ x: 0, y: 0, time: 0 });
+  const [form1TouchStart, setForm1TouchStart] = useState({
+    x: 0,
+    y: 0,
+    time: 0,
+  });
+  const [form2TouchStart, setForm2TouchStart] = useState({
+    x: 0,
+    y: 0,
+    time: 0,
+  });
 
   const handleFieldClick = (fieldId: string) => {
     setSelectedField(fieldId);
@@ -125,9 +133,13 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       const deltaX = Math.abs(touch.clientX - form1TouchStart.x);
       const deltaY = Math.abs(touch.clientY - form1TouchStart.y);
       const deltaTime = Date.now() - form1TouchStart.time;
-      
+
       // Only start dragging if there's significant movement and it's been a short time
-      if (!form1State.isDragging && (deltaX > 10 || deltaY > 10) && deltaTime < 300) {
+      if (
+        !form1State.isDragging &&
+        (deltaX > 10 || deltaY > 10) &&
+        deltaTime < 300
+      ) {
         setForm1State((prev) => ({
           ...prev,
           isDragging: true,
@@ -137,7 +149,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           },
         }));
       }
-      
+
       if (form1State.isDragging) {
         e.preventDefault();
         const newPan = {
@@ -252,9 +264,13 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       const deltaX = Math.abs(touch.clientX - form2TouchStart.x);
       const deltaY = Math.abs(touch.clientY - form2TouchStart.y);
       const deltaTime = Date.now() - form2TouchStart.time;
-      
+
       // Only start dragging if there's significant movement and it's been a short time
-      if (!form2State.isDragging && (deltaX > 10 || deltaY > 10) && deltaTime < 300) {
+      if (
+        !form2State.isDragging &&
+        (deltaX > 10 || deltaY > 10) &&
+        deltaTime < 300
+      ) {
         setForm2State((prev) => ({
           ...prev,
           isDragging: true,
@@ -264,7 +280,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           },
         }));
       }
-      
+
       if (form2State.isDragging) {
         e.preventDefault();
         const newPan = {
@@ -406,10 +422,17 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   return (
-    <div className="visa-form-container">
+    <div
+      className="visa-form-container"
+      style={{
+        height: "100vh",
+        overflowY: "scroll",
+        scrollbarColor: "#667eea #f0f0f0",
+      }}
+    >
       {/* Header */}
       <div className="form-header">
-        <button className="back-button" onClick={onBack}>
+        <button className="back-button-form" onClick={onBack}>
           <img src="https://img.icons8.com/sf-black-filled/100/back.png" />
         </button>
         <h1>Application Form Guide</h1>
