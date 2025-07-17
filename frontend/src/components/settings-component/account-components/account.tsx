@@ -49,7 +49,6 @@ const Account = ({ onBack }: AccountProps) => {
     setLoading(true);
     try {
       await logout();
-      // Redirect to login page
       window.location.href = "/";
     } catch (error) {
       console.error("Failed to logout:", error);

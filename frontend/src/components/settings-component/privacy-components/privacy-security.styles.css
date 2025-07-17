@@ -431,3 +431,43 @@
         padding-bottom: 8px;
     }
 }
+
+.password-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+}
+
+.password-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.password-input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-spinner svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

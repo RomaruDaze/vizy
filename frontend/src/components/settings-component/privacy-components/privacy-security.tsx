@@ -4,8 +4,12 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase/config";
 import { deleteUser } from "firebase/auth";
+import { ref, remove } from "firebase/database";
+import { database } from "../../../firebase/config";
+import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import "../account-components/account.styles.css";
 import "./privacy-security.styles.css";
+import { signOut } from "firebase/auth";
 
 interface PrivacySecurityProps {
   onBack: () => void;
@@ -14,16 +18,19 @@ interface PrivacySecurityProps {
 const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showReauthPopup, setShowReauthPopup] = useState(false);
+  const [password, setPassword] = useState("");
+  const [deleteError, setDeleteError] = useState("");
 
   const handlePasswordReset = async () => {
     if (!currentUser?.email) return;
 
     setLoading(true);
     try {
-      // Add action code settings for better compatibility
       const actionCodeSettings = {
         url: `${window.location.origin}/vizy/login`,
         handleCodeInApp: false,
@@ -37,7 +44,6 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
       }, 3000);
     } catch (error: any) {
       console.error("Password reset error:", error);
-      // Provide more specific error messages
       if (error.code === "auth/user-not-found") {
         setMessage("No account found with this email address.");
       } else if (error.code === "auth/invalid-email") {
@@ -57,31 +63,83 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
   };
 
   const confirmDeleteAccount = async () => {
+    setDeleteLoading(true);
+
     try {
       if (currentUser) {
-        // Delete the user account from Firebase
+        // Clean up user data from Realtime Database FIRST
+        if (currentUser.uid) {
+          const userRef = ref(database, `users/${currentUser.uid}`);
+          await remove(userRef);
+        }
+
+        // Delete the Firebase Auth user
         await deleteUser(currentUser);
-        console.log("Account deleted successfully");
 
         // Redirect to signup page
-        window.location.href = "/vizy/signup";
+        window.location.href = "/signup";
       }
     } catch (error: any) {
       console.error("Error deleting account:", error);
 
       if (error.code === "auth/requires-recent-login") {
-        alert(
-          "For security reasons, please log out and log back in before deleting your account."
-        );
+        setShowDeleteConfirm(false);
+        setShowReauthPopup(true);
       } else {
         alert("Failed to delete account. Please try again.");
       }
+    } finally {
+      setDeleteLoading(false);
     }
-    setShowDeleteConfirm(false);
+  };
+
+  const handleReauthenticate = async () => {
+    if (!currentUser?.email || !password) {
+      setDeleteError("Please enter your password");
+      return;
+    }
+
+    setDeleteLoading(true);
+    setDeleteError("");
+
+    try {
+      const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        password
+      );
+      await reauthenticateWithCredential(currentUser, credential);
+
+      // Clean up user data FIRST
+      if (currentUser.uid) {
+        const userRef = ref(database, `users/${currentUser.uid}`);
+        await remove(userRef);
+      }
+
+      // Delete the Firebase Auth user
+      await deleteUser(currentUser);
+
+      // Redirect to signup page
+      window.location.href = "/signup";
+    } catch (error: any) {
+      console.error("Re-authentication error:", error);
+
+      if (error.code === "auth/wrong-password") {
+        setDeleteError("Incorrect password. Please try again.");
+      } else if (error.code === "auth/user-mismatch") {
+        setDeleteError("Authentication failed. Please try again.");
+      } else {
+        setDeleteError(`Re-authentication failed: ${error.message}`);
+      }
+    } finally {
+      setDeleteLoading(false);
+    }
   };
 
   const cancelDeleteAccount = () => {
     setShowDeleteConfirm(false);
+    setShowReauthPopup(false);
+    setPassword("");
+    setDeleteError("");
   };
 
   return (
@@ -130,6 +188,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
           <button
             className="privacy-button"
             onClick={handleDeleteAccount}
+            disabled={deleteLoading}
           >
             <div className="privacy-icon">
               <img
@@ -238,13 +297,97 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
               <button className="cancel-button" onClick={cancelDeleteAccount}>
                 Cancel
               </button>
-              <button className="delete-button" onClick={confirmDeleteAccount}>
-                <img
-                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
-                  alt="Delete"
-                />
-                Delete Account
+              <button
+                className="delete-button"
+                onClick={confirmDeleteAccount}
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? (
+                  <div className="loading-spinner">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeDasharray="31.416"
+                        strokeDashoffset="31.416"
+                      >
+                        <animate
+                          attributeName="stroke-dasharray"
+                          dur="2s"
+                          values="0 31.416;15.708 15.708;0 31.416"
+                          repeatCount="indefinite"
+                        />
+                        <animate
+                          attributeName="stroke-dashoffset"
+                          dur="2s"
+                          values="0;-15.708;-31.416"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                    </svg>
+                  </div>
+                ) : (
+                  <>
+                    <img
+                      src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
+                      alt="Delete"
+                    />
+                    Delete Account
+                  </>
+                )}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Re-authentication Popup */}
+      {showReauthPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content password-popup">
+            <div className="popup-header">
+              <button className="close-button" onClick={cancelDeleteAccount}>
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/back.png"
+                  alt="Close"
+                />
+              </button>
+              <h3>Re-authenticate</h3>
+            </div>
+            <div className="popup-body">
+              <p>
+                For security reasons, please enter your password to confirm
+                account deletion.
+              </p>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="password-input"
+                disabled={deleteLoading}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && password && !deleteLoading) {
+                    handleReauthenticate();
+                  }
+                }}
+                autoFocus
+              />
+              <button
+                className="confirm-password-button"
+                onClick={handleReauthenticate}
+                disabled={deleteLoading || !password}
+              >
+                {deleteLoading ? "Deleting..." : "Confirm Deletion"}
+              </button>
+
+              {deleteError && (
+                <div className="message error">{deleteError}</div>
+              )}
             </div>
           </div>
         </div>

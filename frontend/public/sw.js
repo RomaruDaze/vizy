@@ -46,6 +46,4 @@ self.addEventListener('notificationclick', function (event) {
             clients.openWindow(`${basePath}/`)
         );
     }
-});
-
-console.log('Service Worker loaded with base path:', basePath); 
+}); 

@@ -19,12 +19,11 @@ export interface ImmigrationOffice extends Location {
 // Function to get all immigration offices
 export const getImmigrationOffices = async (): Promise<ImmigrationOffice[]> => {
   try {
-    const immigrationRef = ref(database, "immigration-offices");
-    const snapshot = await get(immigrationRef);
+    const immigrationOfficesRef = ref(database, "immigration-offices");
+    const snapshot = await get(immigrationOfficesRef);
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      // Convert object to array if needed
       return Array.isArray(data) ? data : Object.values(data);
     }
 
@@ -43,7 +42,6 @@ export const getPhotoBooths = async (): Promise<PhotoBoothLocation[]> => {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      // Convert object to array if needed
       return Array.isArray(data) ? data : Object.values(data);
     }
 
@@ -150,4 +148,3 @@ export const getLocationsNearby = async (
     return [];
   }
 };
- 

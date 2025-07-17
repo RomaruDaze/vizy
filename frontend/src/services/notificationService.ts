@@ -1,54 +1,33 @@
 class NotificationService {
   private registration: ServiceWorkerRegistration | null = null;
-  private intervalId: NodeJS.Timeout | null = null;
 
-  async requestPermission(): Promise<boolean> {
+  constructor() {
+    this.init();
+  }
+
+  private async init() {
     if (!("Notification" in window)) {
-      console.log("This browser does not support notifications");
-      return false;
-    }
-
-    if (Notification.permission === "granted") {
-      return true;
+      return;
     }
 
     if (Notification.permission === "denied") {
-      console.log("Notification permission denied");
-      return false;
+      return;
     }
 
-    const permission = await Notification.requestPermission();
-    return permission === "granted";
-  }
-
-  async registerServiceWorker(): Promise<boolean> {
-    if (!("serviceWorker" in navigator)) {
-      console.log("Service Worker not supported");
-      return false;
-    }
-
-    try {
-      // Use relative path
-      this.registration = await navigator.serviceWorker.register("./sw.js", {
-        scope: "./",
-      });
-      console.log("Service Worker registered successfully");
-      return true;
-    } catch (error) {
-      console.error("Service Worker registration failed:", error);
-      return false;
+    if ("serviceWorker" in navigator) {
+      try {
+        this.registration = await navigator.serviceWorker.register("/sw.js");
+      } catch (error) {
+        console.error("Service Worker registration failed:", error);
+      }
     }
   }
 
   async sendNotification(title: string, body: string): Promise<void> {
     if (!this.registration) {
-      console.log("Service Worker not registered");
       return;
     }
 
-    console.log("Attempting to send notification:", title, body);
-
-    // Get the correct base path
     const basePath = process.env.NODE_ENV === "production" ? "/vizy" : "";
 
     try {
@@ -64,95 +43,67 @@ class NotificationService {
           primaryKey: 1,
         },
       } as NotificationOptions);
-      console.log("Notification sent successfully");
     } catch (error) {
       console.error("Failed to send notification:", error);
     }
   }
 
-  startTestNotifications(): void {
-    if (this.intervalId) {
-      console.log("Test notifications already running");
+  private testNotificationInterval: NodeJS.Timeout | null = null;
+
+  startTestNotifications() {
+    if (this.testNotificationInterval) {
       return;
     }
 
-    console.log("Starting test notifications every 1 second...");
-    console.log("Service Worker registration:", this.registration);
-
-    this.intervalId = setInterval(async () => {
+    const sendTestNotification = () => {
       const timestamp = new Date().toLocaleTimeString();
-      console.log("Sending notification at:", timestamp);
-      await this.sendNotification(
-        "Vizy Test Notification",
-        `This is a test notification sent at ${timestamp}`
-      );
-    }, 1000); // 1 second
+      this.sendNotification("Test Notification", `Test at ${timestamp}`);
+    };
+
+    this.testNotificationInterval = setInterval(sendTestNotification, 1000);
   }
 
-  stopTestNotifications(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-      console.log("Test notifications stopped");
+  stopTestNotifications() {
+    if (this.testNotificationInterval) {
+      clearInterval(this.testNotificationInterval);
+      this.testNotificationInterval = null;
     }
   }
 
-  async initialize(): Promise<boolean> {
-    const hasPermission = await this.requestPermission();
-    if (!hasPermission) {
-      return false;
+  testBasicNotification() {
+    if (Notification.permission !== "granted") {
+      return;
     }
 
-    const isRegistered = await this.registerServiceWorker();
-    return isRegistered;
-  }
+    try {
+      const notification = new Notification("Test Notification", {
+        body: "This is a test notification",
+        icon: "/vizy.svg",
+        badge: "/vizy.svg",
+        requireInteraction: true,
+        silent: false,
+        tag: "test-notification",
+        data: {
+          dateOfArrival: Date.now(),
+          primaryKey: 1,
+        },
+      });
 
-  async testBasicNotification(): Promise<void> {
-    console.log("Testing basic notification...");
-    console.log("Notification permission:", Notification.permission);
+      notification.onclick = () => {
+        notification.close();
+      };
 
-    if (Notification.permission === "granted") {
-      try {
-        const notification = new Notification("Test Notification", {
-          body: "This is a basic test notification",
-          tag: "test-notification",
-          requireInteraction: true,
-          silent: false,
-        });
-
-        console.log("Basic notification created:", notification);
-
-        notification.onshow = () => {
-          console.log("Notification shown!");
-        };
-
-        notification.onclick = () => {
-          console.log("Notification clicked!");
-          notification.close();
-        };
-
-        notification.onclose = () => {
-          console.log("Notification closed!");
-        };
-
-        notification.onerror = (error) => {
-          console.error("Notification error:", error);
-        };
-
+      notification.onclose = () => {
+        // Auto-close after 5 seconds
         setTimeout(() => {
-          if (notification) {
-            console.log("Auto-closing notification");
-            notification.close();
-          }
+          notification.close();
         }, 5000);
-      } catch (error) {
-        console.error("Basic notification failed:", error);
-      }
-    } else {
-      console.log("Notification permission not granted");
+      };
+    } catch (error) {
+      console.error("Basic notification failed:", error);
     }
   }
 }
 
-export const notificationService = new NotificationService();
+export default NotificationService;
  

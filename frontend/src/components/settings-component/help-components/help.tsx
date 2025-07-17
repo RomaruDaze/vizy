@@ -26,7 +26,6 @@ const Help = ({ onBack }: HelpProps) => {
 
   const handleUserGuide = () => {
     // TODO: Implement User Guide functionality
-    console.log("User Guide clicked");
   };
 
   const handleContactSupport = () => {
@@ -202,7 +201,7 @@ const Help = ({ onBack }: HelpProps) => {
               </button>
               <h3>FAQs</h3>
             </div>
-            <FAQ/>
+            <FAQ />
           </div>
         </div>
       )}

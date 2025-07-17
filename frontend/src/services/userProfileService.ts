@@ -9,7 +9,6 @@ export const saveUserProfile = async (
   try {
     const userRef = ref(database, `users/${userId}`);
     await set(userRef, profileData);
-    console.log("User profile saved successfully");
   } catch (error) {
     console.error("Error saving user profile:", error);
     throw error;
@@ -45,7 +44,6 @@ export const updateUserProfile = async (
   try {
     const userRef = ref(database, `users/${userId}`);
     await update(userRef, updates);
-    console.log("User profile updated successfully");
   } catch (error) {
     console.error("Error updating user profile:", error);
     throw error;

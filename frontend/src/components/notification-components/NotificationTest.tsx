@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { notificationService } from "../../services/notificationService";
+import NotificationService from "../../services/notificationService";
 import "./NotificationTest.styles.css";
 
 const NotificationTest = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [status, setStatus] = useState("");
+  const [notificationService] = useState(() => new NotificationService());
 
   useEffect(() => {
     initializeNotifications();
@@ -13,15 +14,39 @@ const NotificationTest = () => {
 
   const initializeNotifications = async () => {
     setStatus("Initializing notifications...");
-    const success = await notificationService.initialize();
-    setIsInitialized(success);
-    setStatus(success ? "Ready to send notifications" : "Failed to initialize");
+
+    // Check if notifications are supported
+    if (!("Notification" in window)) {
+      setStatus("Notifications not supported in this browser");
+      setIsInitialized(false);
+      return;
+    }
+
+    // Check permission
+    if (Notification.permission === "denied") {
+      setStatus("Notification permission denied");
+      setIsInitialized(false);
+      return;
+    }
+
+    // Request permission if needed
+    if (Notification.permission === "default") {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        setStatus("Notification permission denied");
+        setIsInitialized(false);
+        return;
+      }
+    }
+
+    setIsInitialized(true);
+    setStatus("Ready to send notifications");
   };
 
   const startNotifications = () => {
     notificationService.startTestNotifications();
     setIsRunning(true);
-    setStatus("Sending notifications every 10 seconds...");
+    setStatus("Sending notifications every 1 second...");
   };
 
   const stopNotifications = () => {
@@ -39,7 +64,8 @@ const NotificationTest = () => {
   };
 
   const testBasicNotification = async () => {
-    await notificationService.testBasicNotification();
+    notificationService.testBasicNotification();
+    setStatus("Basic notification sent");
   };
 
   return (
@@ -69,7 +95,7 @@ const NotificationTest = () => {
           onClick={startNotifications}
           disabled={!isInitialized || isRunning}
         >
-          Start 10-Second Test
+          Start 1-Second Test
         </button>
 
         <button
@@ -94,7 +120,7 @@ const NotificationTest = () => {
         <ul>
           <li>Click "Send Single Notification" to send one notification</li>
           <li>
-            Click "Start 10-Second Test" to send notifications every 10 seconds
+            Click "Start 1-Second Test" to send notifications every 1 second
           </li>
           <li>Click "Stop Test" to stop the automatic notifications</li>
           <li>Notifications will appear even when the app is closed</li>

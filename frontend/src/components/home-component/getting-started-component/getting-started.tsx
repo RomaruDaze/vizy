@@ -27,20 +27,19 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const [showConditional, setShowConditional] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Load existing profile data on component mount
+  // Load user profile on component mount
   useEffect(() => {
     const loadUserProfile = async () => {
       if (currentUser) {
         try {
           const profile = await getUserProfile(currentUser.uid);
-          if (profile) {
+          if (profile && Object.keys(profile).length > 0) {
             setAnswers(profile);
           }
         } catch (error) {
           console.error("Error loading user profile:", error);
         }
       }
-      setLoading(false);
     };
 
     loadUserProfile();
@@ -138,7 +137,6 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
       if (currentUser) {
         try {
           await saveUserProfile(currentUser.uid, answers);
-          console.log("Profile saved to Firebase");
         } catch (error) {
           console.error("Error saving profile:", error);
         }

@@ -14,7 +14,6 @@ const LoginPage = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
-      console.log("User already logged in, redirecting to home");
       navigate("/");
     }
   }, [currentUser, navigate]);
