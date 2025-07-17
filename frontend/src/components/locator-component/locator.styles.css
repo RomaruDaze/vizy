@@ -1,160 +1,160 @@
 .locator-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .top-section {
-    height: 12.5%;
-    display: flex;
-    align-items: center;
-    padding: 1rem;
+  height: 12.5%;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
 }
 
 .top-section img {
-    width: 32px;
-    height: 32px;
-    margin-right: 12px;
-    filter: brightness(0) invert(1);
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  filter: brightness(0) invert(1);
 }
 
 .top-section h1 {
-    color: white;
-    font-size: 1.5rem;
-    margin: 0;
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
 }
 
 .middle-section {
-    height: 72.5%;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    overflow: hidden;
-    position: relative;
+  height: 72.5%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .map-wrapper {
-    flex: 1;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .reset-button {
-    position: absolute;
-    bottom: 115px;
-    right: 30px;
-    background: var(--app-bg);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    animation: slideIn 0.3s ease;
-    opacity: 1;
+  position: absolute;
+  bottom: 115px;
+  right: 30px;
+  background: var(--app-bg);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+  opacity: 1;
 }
 
 .reset-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
 .reset-button img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1);
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .locator-options-overlay {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 1000;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 .locator-buttons {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
 }
 
 .locator-option {
-    flex: 1;
-    gap: 12px;
-    background: white;
-    border: none;
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+  flex: 1;
+  gap: 12px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 .locator-option:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .locator-option.active {
-    background: var(--app-bg);
-    color: white;
+  background: var(--app-bg);
+  color: white;
 }
 
 .option-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .option-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    /* Default state - no filter (original colors) */
-    filter: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Default state - no filter (original colors) */
+  filter: none;
 }
 
 /* Only apply white filter when button is active */
 .locator-option.active .option-icon img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .option-info h2 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .bottom-section {
-    height: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background-color: transparent;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: transparent;
 }
 
 /* Locator Loading Overlay */
@@ -232,6 +232,7 @@
     transform: translate(-50%, -50%) scale(0.8);
     opacity: 1;
   }
+
   100% {
     transform: translate(-50%, -50%) scale(1.3);
     opacity: 0;
@@ -260,9 +261,12 @@
 }
 
 @keyframes locator-float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-5px);
   }
@@ -299,10 +303,14 @@
 }
 
 @keyframes locator-dots {
-  0%, 80%, 100% {
+
+  0%,
+  80%,
+  100% {
     transform: scale(0.8);
     opacity: 0.5;
   }
+
   40% {
     transform: scale(1);
     opacity: 1;
@@ -322,71 +330,71 @@
 
 /* Responsive design for mobile */
 @media (max-width: 768px) {
-    .locator-buttons {
-        flex-direction: row;
-        gap: 0.75rem;
-    }
+  .locator-buttons {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
 
-    .locator-option {
-        min-height: 70px;
-        padding: 0.75rem;
-    }
+  .locator-option {
+    min-height: 70px;
+    padding: 0.75rem;
+  }
 
-    .option-icon {
-        width: 40px;
-        height: 40px;
-    }
+  .option-icon {
+    width: 40px;
+    height: 40px;
+  }
 
-    .option-icon img {
-        width: 20px;
-        height: 20px;
-    }
+  .option-icon img {
+    width: 20px;
+    height: 20px;
+  }
 
-    .option-info h2 {
-        font-size: 0.9rem;
-    }
+  .option-info h2 {
+    font-size: 0.9rem;
+  }
 
-    .option-info p {
-        font-size: 0.75rem;
-    }
+  .option-info p {
+    font-size: 0.75rem;
+  }
 
-    .locator-options-overlay {
-        padding: 0.75rem;
-    }
+  .locator-options-overlay {
+    padding: 0.75rem;
+  }
 
-    .locator-loading-content {
-      padding: 20px;
-      border-radius: 12px;
-    }
-    
-    .locator-loading-text h3 {
-      font-size: 14px;
-    }
-    
-    .locator-icon {
-      width: 35px;
-      height: 35px;
-    }
-    
-    .locator-icon img {
-      width: 18px;
-      height: 18px;
-    }
-    
-    .locator-pulse-ring {
-      width: 50px;
-      height: 50px;
-    }
-    
-    .locator-pulse-ring::before {
-      width: 35px;
-      height: 35px;
-    }
-    
-    .locator-pulse-ring::after {
-      width: 20px;
-      height: 20px;
-    }
+  .locator-loading-content {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .locator-loading-text h3 {
+    font-size: 14px;
+  }
+
+  .locator-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .locator-icon img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .locator-pulse-ring {
+    width: 50px;
+    height: 50px;
+  }
+
+  .locator-pulse-ring::before {
+    width: 35px;
+    height: 35px;
+  }
+
+  .locator-pulse-ring::after {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Smooth transitions for button states */
@@ -402,4 +410,26 @@
 .locator-option.active:not(.disabled) {
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add these styles to hide scrollbars in the locator component */
+
+/* Hide scrollbars for map wrapper */
+.map-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.map-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for any scrollable content in locator */
+.locator-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.locator-container::-webkit-scrollbar {
+  display: none;
 }

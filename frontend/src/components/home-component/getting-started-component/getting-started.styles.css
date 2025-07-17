@@ -372,3 +372,25 @@
         justify-content: center;
     }
 }
+
+/* Add these styles to hide scrollbars in the getting started component */
+
+/* Hide scrollbars for the getting started container */
+.getting-started-question-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.getting-started-question-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbars for options container */
+.options-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.options-container::-webkit-scrollbar {
+    display: none;
+}

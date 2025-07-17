@@ -82,13 +82,27 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
       question: "Which documents do you already have?",
       type: "multiSelect",
       options: [
+        "Application for Extension of Period of Stay",
         "Passport",
+        "Residence Card",
+        "ID Photo",
+        "Processing Fee",
+        "Certificate of Employment",
+        "Company Registration Certificate",
+        "Company's Financial Documents",
+        "Resident Tax Certificate",
+        "Tax Payment Certificate",
+        "Certificate of Enrollment",
+        "Academic Transcript",
+        "Bank Balance Certificate",
+        "Scholarship Award Certificate",
+        "Certificate of Remittance",
+        "Letter of Guarantee",
+        "Marriage Certificate",
         "Birth Certificate",
-        "Educational Certificates",
-        "Employment Records",
-        "Financial Statements",
-        "Medical Records",
-        "Police Clearance",
+        "Bank Statement",
+        "Family Register",
+        "Resident Certificate",
       ],
     },
     {
@@ -305,8 +319,6 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   return (
     <div className="getting-started-question-container">
       <div className="getting-started-question-content">
-
-
         {/* Progress Bar */}
         <div className="progress-container">
           <div className="progress-bar">
