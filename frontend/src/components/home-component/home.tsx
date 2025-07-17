@@ -15,12 +15,10 @@ const Home = () => {
   const [userAnswers, setUserAnswers] = useState<Record<string, any> | null>(
     null
   );
-  const [loading, setLoading] = useState(true);
 
   // Load user profile on component mount
   useEffect(() => {
     const loadUserProfile = async () => {
-      // Only try to load profile if user is authenticated
       if (currentUser && currentUser.uid) {
         try {
           const profile = await getUserProfile(currentUser.uid);
@@ -29,13 +27,8 @@ const Home = () => {
           }
         } catch (error) {
           console.error("Error loading user profile:", error);
-          // Don't show error if user just isn't logged in
-          if (error instanceof Error && error.message !== "Permission denied") {
-            console.error("Unexpected error:", error);
-          }
         }
       }
-      setLoading(false);
     };
 
     loadUserProfile();
@@ -61,10 +54,6 @@ const Home = () => {
     setUserAnswers(answers);
     setShowGettingStarted(false);
   };
-
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
 
   if (showAccount) {
     return <Account onBack={handleBackFromAccount} />;
