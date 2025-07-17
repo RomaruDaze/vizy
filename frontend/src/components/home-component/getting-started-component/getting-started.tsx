@@ -40,6 +40,8 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
           console.error("Error loading user profile:", error);
         }
       }
+      // Set loading to false after profile loading is complete
+      setLoading(false);
     };
 
     loadUserProfile();
