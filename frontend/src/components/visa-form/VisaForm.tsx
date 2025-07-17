@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./visa-form.styles.css";
 import visaForm1 from "../../assets/images/form-page1.jpg";
 import visaForm2 from "../../assets/images/form-page2.jpg";
+import pinchToZoom from "../../assets/images/pinchzoom.png";
 
 interface VisaFormProps {
   onBack: () => void;
@@ -10,6 +11,7 @@ interface VisaFormProps {
 const VisaForm = ({ onBack }: VisaFormProps) => {
   const [showAIPopup, setShowAIPopup] = useState(false);
   const [selectedField, setSelectedField] = useState<string>("");
+  const [showGuide, setShowGuide] = useState(true); // Add this state
 
   // Separate state for each form
   const [form1State, setForm1State] = useState({
@@ -444,8 +446,69 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     );
   };
 
+  const handleCloseGuide = () => {
+    setShowGuide(false);
+  };
+
   return (
     <div className="visa-form-container">
+      {/* Guide Overlay */}
+      {showGuide && (
+        <div className="guide-overlay" onClick={handleCloseGuide}>
+          <div className="guide-content" onClick={(e) => e.stopPropagation()}>
+            <div className="guide-header">
+              <h2>Welcome to the Form Guide!</h2>
+            </div>
+            <div className="guide-body">
+              <div className="guide-section">
+                <h3>🔍 Zoom & Pan</h3>
+                <div className="guide-section-image">
+                  <img src={pinchToZoom} alt="Pinch to Zoom" />
+                  <div className="guide-section-reset-button-container">
+                    <div className="guide-section-reset-button">
+                      <img
+                        src="https://img.icons8.com/ios-glyphs/100/FFFFFF/restart.png"
+                        alt="Reset"
+                      />
+                    </div>
+                    <p>Click to reset</p>
+                  </div>
+                </div>
+              </div>
+              <div className="guide-section">
+                <h3>📜 Scroll</h3>
+                <p>
+                  • <strong>Scroll down</strong> to see both forms
+                </p>
+                <p>
+                  • Use the <strong>scrollbar on the right</strong> for easy
+                  navigation
+                </p>
+              </div>
+              <div className="guide-section">
+                <h3>💡 Interactive Help</h3>
+                <p>
+                  • Click the <strong>numbered buttons</strong> on the form for
+                  field-specific help
+                </p>
+                <p>
+                  • Each button opens detailed guidance
+                </p>
+                <p>
+                  • AI button is coming soon!
+                </p>
+              </div>
+              <button
+                className="guide-got-it-button"
+                onClick={handleCloseGuide}
+              >
+                Got it! Let's start
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="form-header">
         <button className="back-button-form" onClick={onBack}>

@@ -419,7 +419,7 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: #ff6b6b;
+  background: #667eea;
   color: white;
   border: none;
   border-radius: 50%;
@@ -459,5 +459,154 @@
     font-size: 40px;
     bottom: 5px;
     right: 5px;
+  }
+}
+
+/* Guide Overlay Styles */
+.guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+.guide-content {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: guideSlideIn 0.3s ease-out;
+}
+
+@keyframes guideSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.guide-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.guide-body {
+  padding: 1.5rem;
+}
+
+.guide-section {
+  margin-bottom: 1.5rem;
+}
+
+.guide-section img {
+  width: 50%;
+  height: auto;
+}
+
+.guide-section-image {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide-section-reset-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide-section-reset-button {
+  background: #667eea;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+} 
+
+.guide-section h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.guide-section p {
+  margin: 0.25rem 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.guide-section strong {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.guide-got-it-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.guide-got-it-button:hover {
+  background: #5a6fd8;
+}
+
+/* Mobile styles for guide */
+@media (max-width: 768px) {
+  .guide-content {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .guide-header h2 {
+    font-size: 18px;
+  }
+
+  .guide-section h3 {
+    font-size: 15px;
+  }
+
+  .guide-section p {
+    font-size: 13px;
   }
 }
