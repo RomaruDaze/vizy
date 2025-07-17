@@ -334,6 +334,29 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     }
   };
 
+  // Add reset handlers
+  const handleForm1Reset = () => {
+    setForm1State({
+      zoomLevel: 1,
+      isDragging: false,
+      dragStart: { x: 0, y: 0 },
+      panOffset: { x: 0, y: 0 },
+      initialDistance: 0,
+      initialZoom: 1,
+    });
+  };
+
+  const handleForm2Reset = () => {
+    setForm2State({
+      zoomLevel: 1,
+      isDragging: false,
+      dragStart: { x: 0, y: 0 },
+      panOffset: { x: 0, y: 0 },
+      initialDistance: 0,
+      initialZoom: 1,
+    });
+  };
+
   const getFieldInfo = (fieldId: string) => {
     const fieldInfo: Record<string, { title: string; description: string }> = {
       "field-1": {
@@ -422,9 +445,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   return (
-    <div
-      className="visa-form-container"
-    >
+    <div className="visa-form-container">
       {/* Header */}
       <div className="form-header">
         <button className="back-button-form" onClick={onBack}>
@@ -451,6 +472,17 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
             onWheel={handleForm1Wheel}
             style={{ cursor: form1State.isDragging ? "grabbing" : "grab" }}
           >
+            {/* Reset Button for Form 1 */}
+            {form1State.zoomLevel > 1 && (
+              <button
+                className="reset-button-form"
+                onClick={handleForm1Reset}
+                title="Reset zoom and position"
+              >
+                ↺
+              </button>
+            )}
+
             <div
               className="form-content-wrapper"
               style={{
@@ -611,6 +643,17 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
         onWheel={handleForm2Wheel}
         style={{ cursor: form2State.isDragging ? "grabbing" : "grab" }}
       >
+        {/* Reset Button for Form 2 */}
+        {form2State.zoomLevel > 1 && (
+          <button
+            className="reset-button-form"
+            onClick={handleForm2Reset}
+            title="Reset zoom and position"
+          >
+            ↺
+          </button>
+        )}
+
         <div
           className="form-content-wrapper"
           style={{
@@ -684,7 +727,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="ai-popup-header">
-              <h3>🤖 AI Assistant - {getFieldInfo(selectedField).title}</h3>
+              <h3>{getFieldInfo(selectedField).title}</h3>
               <button className="close-button" onClick={handleClosePopup}>
                 ×
               </button>
