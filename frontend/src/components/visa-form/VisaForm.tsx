@@ -119,7 +119,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
 
   const handleForm1TouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 1 && form1State.isDragging) {
-      e.preventDefault();
+      e.preventDefault(); // Only prevent default when actually dragging
       const touch = e.touches[0];
       const newPan = {
         x: touch.clientX - form1State.dragStart.x,
@@ -132,7 +132,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       );
       setForm1State((prev) => ({ ...prev, panOffset: constrained }));
     } else if (e.touches.length === 2) {
-      e.preventDefault();
+      e.preventDefault(); // Only prevent default when zooming
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / form1State.initialDistance;
       const newZoom = Math.max(1, Math.min(3, form1State.initialZoom * scale));
@@ -144,6 +144,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       );
       setForm1State((prev) => ({ ...prev, panOffset: constrained }));
     }
+    // If not dragging or zooming, don't prevent default - allow normal scrolling
   };
 
   const handleForm1TouchEnd = () => {
@@ -228,7 +229,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
 
   const handleForm2TouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 1 && form2State.isDragging) {
-      e.preventDefault();
+      e.preventDefault(); // Only prevent default when actually dragging
       const touch = e.touches[0];
       const newPan = {
         x: touch.clientX - form2State.dragStart.x,
@@ -241,7 +242,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       );
       setForm2State((prev) => ({ ...prev, panOffset: constrained }));
     } else if (e.touches.length === 2) {
-      e.preventDefault();
+      e.preventDefault(); // Only prevent default when zooming
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / form2State.initialDistance;
       const newZoom = Math.max(1, Math.min(3, form2State.initialZoom * scale));
@@ -253,6 +254,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       );
       setForm2State((prev) => ({ ...prev, panOffset: constrained }));
     }
+    // If not dragging or zooming, don't prevent default - allow normal scrolling
   };
 
   const handleForm2TouchEnd = () => {
