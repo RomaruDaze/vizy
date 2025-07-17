@@ -13,6 +13,8 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [initialDistance, setInitialDistance] = useState(0);
+  const [initialZoom, setInitialZoom] = useState(1);
 
   const handleFieldClick = (fieldId: string) => {
     setSelectedField(fieldId);
@@ -35,6 +37,13 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   const handleResetZoom = () => {
     setZoomLevel(1);
     setPanOffset({ x: 0, y: 0 });
+  };
+
+  // Calculate distance between two touch points
+  const getDistance = (touch1: React.Touch, touch2: React.Touch) => {
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   };
 
   // Mouse event handlers
@@ -63,28 +72,44 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   // Touch event handlers for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
+      // Single touch - dragging
       const touch = e.touches[0];
       setIsDragging(true);
       setDragStart({
         x: touch.clientX - panOffset.x,
         y: touch.clientY - panOffset.y,
       });
+    } else if (e.touches.length === 2) {
+      // Two touches - pinch to zoom
+      setIsDragging(false);
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      setInitialDistance(distance);
+      setInitialZoom(zoomLevel);
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (isDragging && e.touches.length === 1) {
-      e.preventDefault(); // Prevent scrolling while dragging
+    if (e.touches.length === 1 && isDragging) {
+      // Single touch dragging
+      e.preventDefault();
       const touch = e.touches[0];
       setPanOffset({
         x: touch.clientX - dragStart.x,
         y: touch.clientY - dragStart.y,
       });
+    } else if (e.touches.length === 2) {
+      // Two touches - pinch to zoom
+      e.preventDefault();
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      const scale = distance / initialDistance;
+      const newZoom = Math.max(0.5, Math.min(3, initialZoom * scale));
+      setZoomLevel(newZoom);
     }
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+    setInitialDistance(0);
   };
 
   const handleWheel = (e: React.WheelEvent) => {
