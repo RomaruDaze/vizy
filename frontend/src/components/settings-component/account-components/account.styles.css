@@ -132,9 +132,8 @@
 }
 
 .save-button {
+    flex: 0.1;
     border: none;
-    width: 40px;
-    height: 40px;
     cursor: pointer;
     padding: 0.4rem;
     border-radius: 8px;
@@ -148,6 +147,7 @@
 }
 
 .name-input {
+    flex: 0.9;
     width: 100%;
     padding: 0.5rem;
     border-radius: 8px;
@@ -434,11 +434,6 @@
     .name-input-container {
         flex-direction: row;
         gap: 0.75rem;
-    }
-
-    .save-button {
-        width: 40px;
-        height: 40px;
     }
 
     .logout-button {
