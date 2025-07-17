@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./visa-form.styles.css";
 import visaForm1 from "../../assets/images/form-page1.jpg";
+import visaForm2 from "../../assets/images/form-page2.jpg";
 
 interface VisaFormProps {
   onBack: () => void;
@@ -9,12 +10,25 @@ interface VisaFormProps {
 const VisaForm = ({ onBack }: VisaFormProps) => {
   const [showAIPopup, setShowAIPopup] = useState(false);
   const [selectedField, setSelectedField] = useState<string>("");
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
-  const [initialDistance, setInitialDistance] = useState(0);
-  const [initialZoom, setInitialZoom] = useState(1);
+
+  // Separate state for each form
+  const [form1State, setForm1State] = useState({
+    zoomLevel: 1,
+    isDragging: false,
+    dragStart: { x: 0, y: 0 },
+    panOffset: { x: 0, y: 0 },
+    initialDistance: 0,
+    initialZoom: 1,
+  });
+
+  const [form2State, setForm2State] = useState({
+    zoomLevel: 1,
+    isDragging: false,
+    dragStart: { x: 0, y: 0 },
+    panOffset: { x: 0, y: 0 },
+    initialDistance: 0,
+    initialZoom: 1,
+  });
 
   const handleFieldClick = (fieldId: string) => {
     setSelectedField(fieldId);
@@ -26,19 +40,6 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     setSelectedField("");
   };
 
-  const handleZoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev + 0.2, 3));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev - 0.2, 1)); // Changed from 0.5 to 1
-  };
-
-  const handleResetZoom = () => {
-    setZoomLevel(1);
-    setPanOffset({ x: 0, y: 0 });
-  };
-
   // Calculate distance between two touch points
   const getDistance = (touch1: React.Touch, touch2: React.Touch) => {
     const dx = touch1.clientX - touch2.clientX;
@@ -48,8 +49,8 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
 
   // Add this function to constrain pan movement
   const constrainPan = (x: number, y: number, zoom: number) => {
-    const containerWidth = 1200; // Approximate container width
-    const containerHeight = 800; // Approximate container height
+    const containerWidth = 1200;
+    const containerHeight = 800;
     const maxX = (containerWidth * zoom - containerWidth) / 2;
     const maxY = (containerHeight * zoom - containerHeight) / 2;
 
@@ -59,81 +60,221 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     };
   };
 
-  // Mouse event handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setDragStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
+  // Form 1 handlers
+  const handleForm1MouseDown = (e: React.MouseEvent) => {
+    setForm1State((prev) => ({
+      ...prev,
+      isDragging: true,
+      dragStart: {
+        x: e.clientX - prev.panOffset.x,
+        y: e.clientY - prev.panOffset.y,
+      },
+    }));
   };
 
-  // Update handleMouseMove
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
+  const handleForm1MouseMove = (e: React.MouseEvent) => {
+    if (form1State.isDragging) {
       const newPan = {
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y,
+        x: e.clientX - form1State.dragStart.x,
+        y: e.clientY - form1State.dragStart.y,
       };
-      const constrained = constrainPan(newPan.x, newPan.y, zoomLevel);
-      setPanOffset(constrained);
+      const constrained = constrainPan(
+        newPan.x,
+        newPan.y,
+        form1State.zoomLevel
+      );
+      setForm1State((prev) => ({ ...prev, panOffset: constrained }));
     }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  const handleForm1MouseUp = () => {
+    setForm1State((prev) => ({ ...prev, isDragging: false }));
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
+  const handleForm1MouseLeave = () => {
+    setForm1State((prev) => ({ ...prev, isDragging: false }));
   };
 
-  // Touch event handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleForm1TouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
-      // Single touch - dragging
       const touch = e.touches[0];
-      setIsDragging(true);
-      setDragStart({
-        x: touch.clientX - panOffset.x,
-        y: touch.clientY - panOffset.y,
-      });
+      setForm1State((prev) => ({
+        ...prev,
+        isDragging: true,
+        dragStart: {
+          x: touch.clientX - prev.panOffset.x,
+          y: touch.clientY - prev.panOffset.y,
+        },
+      }));
     } else if (e.touches.length === 2) {
-      // Two touches - pinch to zoom
-      setIsDragging(false);
       const distance = getDistance(e.touches[0], e.touches[1]);
-      setInitialDistance(distance);
-      setInitialZoom(zoomLevel);
+      setForm1State((prev) => ({
+        ...prev,
+        isDragging: false,
+        initialDistance: distance,
+        initialZoom: prev.zoomLevel,
+      }));
     }
   };
 
-  // Update handleTouchMove
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length === 1 && isDragging) {
+  const handleForm1TouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1 && form1State.isDragging) {
       e.preventDefault();
       const touch = e.touches[0];
       const newPan = {
-        x: touch.clientX - dragStart.x,
-        y: touch.clientY - dragStart.y,
+        x: touch.clientX - form1State.dragStart.x,
+        y: touch.clientY - form1State.dragStart.y,
       };
-      const constrained = constrainPan(newPan.x, newPan.y, zoomLevel);
-      setPanOffset(constrained);
+      const constrained = constrainPan(
+        newPan.x,
+        newPan.y,
+        form1State.zoomLevel
+      );
+      setForm1State((prev) => ({ ...prev, panOffset: constrained }));
     } else if (e.touches.length === 2) {
       e.preventDefault();
       const distance = getDistance(e.touches[0], e.touches[1]);
-      const scale = distance / initialDistance;
-      const newZoom = Math.max(1, Math.min(3, initialZoom * scale)); // Changed from 0.5 to 1
-      setZoomLevel(newZoom);
+      const scale = distance / form1State.initialDistance;
+      const newZoom = Math.max(1, Math.min(3, form1State.initialZoom * scale));
+      setForm1State((prev) => ({ ...prev, zoomLevel: newZoom }));
+      const constrained = constrainPan(
+        form1State.panOffset.x,
+        form1State.panOffset.y,
+        newZoom
+      );
+      setForm1State((prev) => ({ ...prev, panOffset: constrained }));
     }
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    setInitialDistance(0);
+  const handleForm1TouchEnd = () => {
+    setForm1State((prev) => ({
+      ...prev,
+      isDragging: false,
+      initialDistance: 0,
+    }));
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
+  const handleForm1Wheel = (e: React.WheelEvent) => {
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
       const delta = e.deltaY > 0 ? -0.1 : 0.1;
-      setZoomLevel((prev) => Math.max(1, Math.min(3, prev + delta))); // Changed from 0.5 to 1
+      const newZoom = Math.max(1, Math.min(3, form1State.zoomLevel + delta));
+      setForm1State((prev) => ({ ...prev, zoomLevel: newZoom }));
+      const constrained = constrainPan(
+        form1State.panOffset.x,
+        form1State.panOffset.y,
+        newZoom
+      );
+      setForm1State((prev) => ({ ...prev, panOffset: constrained }));
+    }
+  };
+
+  // Form 2 handlers (same logic but for form2State)
+  const handleForm2MouseDown = (e: React.MouseEvent) => {
+    setForm2State((prev) => ({
+      ...prev,
+      isDragging: true,
+      dragStart: {
+        x: e.clientX - prev.panOffset.x,
+        y: e.clientY - prev.panOffset.y,
+      },
+    }));
+  };
+
+  const handleForm2MouseMove = (e: React.MouseEvent) => {
+    if (form2State.isDragging) {
+      const newPan = {
+        x: e.clientX - form2State.dragStart.x,
+        y: e.clientY - form2State.dragStart.y,
+      };
+      const constrained = constrainPan(
+        newPan.x,
+        newPan.y,
+        form2State.zoomLevel
+      );
+      setForm2State((prev) => ({ ...prev, panOffset: constrained }));
+    }
+  };
+
+  const handleForm2MouseUp = () => {
+    setForm2State((prev) => ({ ...prev, isDragging: false }));
+  };
+
+  const handleForm2MouseLeave = () => {
+    setForm2State((prev) => ({ ...prev, isDragging: false }));
+  };
+
+  const handleForm2TouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setForm2State((prev) => ({
+        ...prev,
+        isDragging: true,
+        dragStart: {
+          x: touch.clientX - prev.panOffset.x,
+          y: touch.clientY - prev.panOffset.y,
+        },
+      }));
+    } else if (e.touches.length === 2) {
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      setForm2State((prev) => ({
+        ...prev,
+        isDragging: false,
+        initialDistance: distance,
+        initialZoom: prev.zoomLevel,
+      }));
+    }
+  };
+
+  const handleForm2TouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1 && form2State.isDragging) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const newPan = {
+        x: touch.clientX - form2State.dragStart.x,
+        y: touch.clientY - form2State.dragStart.y,
+      };
+      const constrained = constrainPan(
+        newPan.x,
+        newPan.y,
+        form2State.zoomLevel
+      );
+      setForm2State((prev) => ({ ...prev, panOffset: constrained }));
+    } else if (e.touches.length === 2) {
+      e.preventDefault();
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      const scale = distance / form2State.initialDistance;
+      const newZoom = Math.max(1, Math.min(3, form2State.initialZoom * scale));
+      setForm2State((prev) => ({ ...prev, zoomLevel: newZoom }));
+      const constrained = constrainPan(
+        form2State.panOffset.x,
+        form2State.panOffset.y,
+        newZoom
+      );
+      setForm2State((prev) => ({ ...prev, panOffset: constrained }));
+    }
+  };
+
+  const handleForm2TouchEnd = () => {
+    setForm2State((prev) => ({
+      ...prev,
+      isDragging: false,
+      initialDistance: 0,
+    }));
+  };
+
+  const handleForm2Wheel = (e: React.WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      const newZoom = Math.max(1, Math.min(3, form2State.zoomLevel + delta));
+      setForm2State((prev) => ({ ...prev, zoomLevel: newZoom }));
+      const constrained = constrainPan(
+        form2State.panOffset.x,
+        form2State.panOffset.y,
+        newZoom
+      );
+      setForm2State((prev) => ({ ...prev, panOffset: constrained }));
     }
   };
 
@@ -226,7 +367,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
 
   return (
     <div className="visa-form-container">
-      {/* Header with Zoom Controls */}
+      {/* Header */}
       <div className="form-header">
         <button className="back-button" onClick={onBack}>
           <img src="https://img.icons8.com/sf-black-filled/100/back.png" />
@@ -234,23 +375,23 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
         <h1>Application Form Guide</h1>
       </div>
 
-      {/* Form Image with Interactive Buttons */}
+      {/* Form 1 */}
       <div
-        className="form-image-container"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onWheel={handleWheel}
-        style={{ cursor: isDragging ? "grabbing" : "grab" }}
+        className="form-1-image-container"
+        onMouseDown={handleForm1MouseDown}
+        onMouseMove={handleForm1MouseMove}
+        onMouseUp={handleForm1MouseUp}
+        onMouseLeave={handleForm1MouseLeave}
+        onTouchStart={handleForm1TouchStart}
+        onTouchMove={handleForm1TouchMove}
+        onTouchEnd={handleForm1TouchEnd}
+        onWheel={handleForm1Wheel}
+        style={{ cursor: form1State.isDragging ? "grabbing" : "grab" }}
       >
         <div
           className="form-content-wrapper"
           style={{
-            transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoomLevel})`,
+            transform: `translate(${form1State.panOffset.x}px, ${form1State.panOffset.y}px) scale(${form1State.zoomLevel})`,
             transformOrigin: "center",
           }}
         >
@@ -262,6 +403,164 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           />
 
           {/* Interactive Field Buttons */}
+          <button
+            className="field-button field-1"
+            onClick={() => handleFieldClick("field-1")}
+            title="Click for help with Nationality/Region"
+          >
+            <span className="field-number">1</span>
+          </button>
+
+          <button
+            className="field-button field-2"
+            onClick={() => handleFieldClick("field-2")}
+            title="Click for help with Date of Birth"
+          >
+            <span className="field-number">2</span>
+          </button>
+
+          <button
+            className="field-button field-3"
+            onClick={() => handleFieldClick("field-3")}
+            title="Click for help with Name"
+          >
+            <span className="field-number">3</span>
+          </button>
+
+          <button
+            className="field-button field-4"
+            onClick={() => handleFieldClick("field-4")}
+            title="Click for help with Sex"
+          >
+            <span className="field-number">4</span>
+          </button>
+
+          <button
+            className="field-button field-5"
+            onClick={() => handleFieldClick("field-5")}
+            title="Click for help with Marital Status"
+          >
+            <span className="field-number">5</span>
+          </button>
+
+          <button
+            className="field-button field-6"
+            onClick={() => handleFieldClick("field-6")}
+            title="Click for help with Occupation"
+          >
+            <span className="field-number">6</span>
+          </button>
+
+          <button
+            className="field-button field-7"
+            onClick={() => handleFieldClick("field-7")}
+            title="Click for help with Home Town/City"
+          >
+            <span className="field-number">7</span>
+          </button>
+
+          <button
+            className="field-button field-8"
+            onClick={() => handleFieldClick("field-8")}
+            title="Click for help with Address in Japan"
+          >
+            <span className="field-number">8</span>
+          </button>
+
+          <button
+            className="field-button field-9"
+            onClick={() => handleFieldClick("field-9")}
+            title="Click for help with Telephone Number"
+          >
+            <span className="field-number">9</span>
+          </button>
+
+          <button
+            className="field-button field-10"
+            onClick={() => handleFieldClick("field-10")}
+            title="Click for help with Passport"
+          >
+            <span className="field-number">10</span>
+          </button>
+
+          <button
+            className="field-button field-11"
+            onClick={() => handleFieldClick("field-11")}
+            title="Click for help with Status of Residence"
+          >
+            <span className="field-number">11</span>
+          </button>
+
+          <button
+            className="field-button field-12"
+            onClick={() => handleFieldClick("field-12")}
+            title="Click for help with Residence Card Number"
+          >
+            <span className="field-number">12</span>
+          </button>
+
+          <button
+            className="field-button field-13"
+            onClick={() => handleFieldClick("field-13")}
+            title="Click for help with Desired Length of Extension"
+          >
+            <span className="field-number">13</span>
+          </button>
+
+          <button
+            className="field-button field-14"
+            onClick={() => handleFieldClick("field-14")}
+            title="Click for help with Reason for Extension"
+          >
+            <span className="field-number">14</span>
+          </button>
+
+          <button
+            className="field-button field-15"
+            onClick={() => handleFieldClick("field-15")}
+            title="Click for help with Criminal Record"
+          >
+            <span className="field-number">15</span>
+          </button>
+
+          <button
+            className="field-button field-16"
+            onClick={() => handleFieldClick("field-16")}
+            title="Click for help with Family in Japan"
+          >
+            <span className="field-number">16</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Form 2 */}
+      <div
+        className="form-2-image-container"
+        onMouseDown={handleForm2MouseDown}
+        onMouseMove={handleForm2MouseMove}
+        onMouseUp={handleForm2MouseUp}
+        onMouseLeave={handleForm2MouseLeave}
+        onTouchStart={handleForm2TouchStart}
+        onTouchMove={handleForm2TouchMove}
+        onTouchEnd={handleForm2TouchEnd}
+        onWheel={handleForm2Wheel}
+        style={{ cursor: form2State.isDragging ? "grabbing" : "grab" }}
+      >
+        <div
+          className="form-content-wrapper"
+          style={{
+            transform: `translate(${form2State.panOffset.x}px, ${form2State.panOffset.y}px) scale(${form2State.zoomLevel})`,
+            transformOrigin: "center",
+          }}
+        >
+          <img
+            src={visaForm2}
+            alt="Visa Extension Application Form"
+            className="form-image"
+            draggable={false}
+          />
+
+          {/* Interactive Field Buttons for Form 2 */}
           <button
             className="field-button field-1"
             onClick={() => handleFieldClick("field-1")}
