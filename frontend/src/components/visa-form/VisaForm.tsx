@@ -608,7 +608,6 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           >
             <span className="field-number">22</span>
           </button>
-
         </div>
       </div>
 
