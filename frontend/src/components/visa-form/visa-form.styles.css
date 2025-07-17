@@ -100,6 +100,13 @@
   overflow: hidden;
   height: 70vh;
   user-select: none;
+  cursor: grab;
+  /* Shows grab cursor */
+}
+
+.form-image-container:active {
+  cursor: grabbing;
+  /* Shows grabbing cursor while dragging */
 }
 
 .form-content-wrapper {
@@ -323,8 +330,8 @@
   }
 
   .field-button {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height: 15px;
   }
 
   .field-number {
