@@ -436,6 +436,11 @@
   transition: all 0.3s ease;
 }
 
+.reset-button-form img {
+  width: 40px;
+  height: 40px;
+}
+
 .reset-button-form:hover {
   background: #ff5252;
   transform: scale(1.1);

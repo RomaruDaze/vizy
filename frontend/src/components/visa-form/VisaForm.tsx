@@ -479,7 +479,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
                 onClick={handleForm1Reset}
                 title="Reset zoom and position"
               >
-                ↺
+                <img src="https://img.icons8.com/ios-glyphs/100/FFFFFF/restart.png" />
               </button>
             )}
 
