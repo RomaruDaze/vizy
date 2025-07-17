@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./visa-form.styles.css";
+import visaForm1 from "../../assets/images/form-page1.jpg";
 
 interface VisaFormProps {
   onBack: () => void;
@@ -236,7 +237,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           }}
         >
           <img
-            src="/form-page1.png"
+            src={visaForm1}
             alt="Visa Extension Application Form"
             className="form-image"
             draggable={false}
