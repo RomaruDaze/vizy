@@ -30,6 +30,10 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     initialZoom: 1,
   });
 
+  // Add these state variables for touch handling
+  const [form1TouchStart, setForm1TouchStart] = useState({ x: 0, y: 0, time: 0 });
+  const [form2TouchStart, setForm2TouchStart] = useState({ x: 0, y: 0, time: 0 });
+
   const handleFieldClick = (fieldId: string) => {
     setSelectedField(fieldId);
     setShowAIPopup(true);
@@ -98,14 +102,12 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   const handleForm1TouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       const touch = e.touches[0];
-      setForm1State((prev) => ({
-        ...prev,
-        isDragging: true,
-        dragStart: {
-          x: touch.clientX - prev.panOffset.x,
-          y: touch.clientY - prev.panOffset.y,
-        },
-      }));
+      setForm1TouchStart({
+        x: touch.clientX,
+        y: touch.clientY,
+        time: Date.now(),
+      });
+      // Don't set isDragging immediately - wait for movement
     } else if (e.touches.length === 2) {
       const distance = getDistance(e.touches[0], e.touches[1]);
       setForm1State((prev) => ({
@@ -118,21 +120,39 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   const handleForm1TouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length === 1 && form1State.isDragging) {
-      e.preventDefault(); // Only prevent default when actually dragging
+    if (e.touches.length === 1) {
       const touch = e.touches[0];
-      const newPan = {
-        x: touch.clientX - form1State.dragStart.x,
-        y: touch.clientY - form1State.dragStart.y,
-      };
-      const constrained = constrainPan(
-        newPan.x,
-        newPan.y,
-        form1State.zoomLevel
-      );
-      setForm1State((prev) => ({ ...prev, panOffset: constrained }));
+      const deltaX = Math.abs(touch.clientX - form1TouchStart.x);
+      const deltaY = Math.abs(touch.clientY - form1TouchStart.y);
+      const deltaTime = Date.now() - form1TouchStart.time;
+      
+      // Only start dragging if there's significant movement and it's been a short time
+      if (!form1State.isDragging && (deltaX > 10 || deltaY > 10) && deltaTime < 300) {
+        setForm1State((prev) => ({
+          ...prev,
+          isDragging: true,
+          dragStart: {
+            x: touch.clientX - prev.panOffset.x,
+            y: touch.clientY - prev.panOffset.y,
+          },
+        }));
+      }
+      
+      if (form1State.isDragging) {
+        e.preventDefault();
+        const newPan = {
+          x: touch.clientX - form1State.dragStart.x,
+          y: touch.clientY - form1State.dragStart.y,
+        };
+        const constrained = constrainPan(
+          newPan.x,
+          newPan.y,
+          form1State.zoomLevel
+        );
+        setForm1State((prev) => ({ ...prev, panOffset: constrained }));
+      }
     } else if (e.touches.length === 2) {
-      e.preventDefault(); // Only prevent default when zooming
+      e.preventDefault();
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / form1State.initialDistance;
       const newZoom = Math.max(1, Math.min(3, form1State.initialZoom * scale));
@@ -153,6 +173,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       isDragging: false,
       initialDistance: 0,
     }));
+    setForm1TouchStart({ x: 0, y: 0, time: 0 });
   };
 
   const handleForm1Wheel = (e: React.WheelEvent) => {
@@ -208,14 +229,12 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   const handleForm2TouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       const touch = e.touches[0];
-      setForm2State((prev) => ({
-        ...prev,
-        isDragging: true,
-        dragStart: {
-          x: touch.clientX - prev.panOffset.x,
-          y: touch.clientY - prev.panOffset.y,
-        },
-      }));
+      setForm2TouchStart({
+        x: touch.clientX,
+        y: touch.clientY,
+        time: Date.now(),
+      });
+      // Don't set isDragging immediately - wait for movement
     } else if (e.touches.length === 2) {
       const distance = getDistance(e.touches[0], e.touches[1]);
       setForm2State((prev) => ({
@@ -228,21 +247,39 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   const handleForm2TouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length === 1 && form2State.isDragging) {
-      e.preventDefault(); // Only prevent default when actually dragging
+    if (e.touches.length === 1) {
       const touch = e.touches[0];
-      const newPan = {
-        x: touch.clientX - form2State.dragStart.x,
-        y: touch.clientY - form2State.dragStart.y,
-      };
-      const constrained = constrainPan(
-        newPan.x,
-        newPan.y,
-        form2State.zoomLevel
-      );
-      setForm2State((prev) => ({ ...prev, panOffset: constrained }));
+      const deltaX = Math.abs(touch.clientX - form2TouchStart.x);
+      const deltaY = Math.abs(touch.clientY - form2TouchStart.y);
+      const deltaTime = Date.now() - form2TouchStart.time;
+      
+      // Only start dragging if there's significant movement and it's been a short time
+      if (!form2State.isDragging && (deltaX > 10 || deltaY > 10) && deltaTime < 300) {
+        setForm2State((prev) => ({
+          ...prev,
+          isDragging: true,
+          dragStart: {
+            x: touch.clientX - prev.panOffset.x,
+            y: touch.clientY - prev.panOffset.y,
+          },
+        }));
+      }
+      
+      if (form2State.isDragging) {
+        e.preventDefault();
+        const newPan = {
+          x: touch.clientX - form2State.dragStart.x,
+          y: touch.clientY - form2State.dragStart.y,
+        };
+        const constrained = constrainPan(
+          newPan.x,
+          newPan.y,
+          form2State.zoomLevel
+        );
+        setForm2State((prev) => ({ ...prev, panOffset: constrained }));
+      }
     } else if (e.touches.length === 2) {
-      e.preventDefault(); // Only prevent default when zooming
+      e.preventDefault();
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / form2State.initialDistance;
       const newZoom = Math.max(1, Math.min(3, form2State.initialZoom * scale));
@@ -263,6 +300,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       isDragging: false,
       initialDistance: 0,
     }));
+    setForm2TouchStart({ x: 0, y: 0, time: 0 });
   };
 
   const handleForm2Wheel = (e: React.WheelEvent) => {
