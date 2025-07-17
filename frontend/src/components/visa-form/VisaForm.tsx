@@ -229,33 +229,9 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       {/* Header with Zoom Controls */}
       <div className="form-header">
         <button className="back-button" onClick={onBack}>
-          ← Back
+          <img src="https://img.icons8.com/sf-black-filled/100/back.png" />
         </button>
-        <h1>Visa Extension Application Form</h1>
-        <div className="zoom-controls">
-          <button
-            className="zoom-button"
-            onClick={handleZoomOut}
-            title="Zoom Out"
-          >
-            <span>−</span>
-          </button>
-          <span className="zoom-level">{Math.round(zoomLevel * 100)}%</span>
-          <button
-            className="zoom-button"
-            onClick={handleZoomIn}
-            title="Zoom In"
-          >
-            <span>+</span>
-          </button>
-          <button
-            className="reset-button"
-            onClick={handleResetZoom}
-            title="Reset Zoom"
-          >
-            <span>⟲</span>
-          </button>
-        </div>
+        <h1>Application Form Guide</h1>
       </div>
 
       {/* Form Image with Interactive Buttons */}
