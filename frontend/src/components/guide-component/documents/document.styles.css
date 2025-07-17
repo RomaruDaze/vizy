@@ -214,16 +214,6 @@
   margin-bottom: 30px;
 }
 
-.card-icon {
-  margin-bottom: 16px;
-}
-
-.card-icon img {
-  width: 80px;
-  height: 80px;
-  opacity: 0.8;
-}
-
 .residence-card-header h2 {
   font-size: 24px;
   font-weight: 600;
