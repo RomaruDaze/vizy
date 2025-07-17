@@ -31,7 +31,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   const handleZoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev - 0.2, 0.5));
+    setZoomLevel((prev) => Math.max(prev - 0.2, 1)); // Changed from 0.5 to 1
   };
 
   const handleResetZoom = () => {
@@ -102,7 +102,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
       e.preventDefault();
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / initialDistance;
-      const newZoom = Math.max(0.5, Math.min(3, initialZoom * scale));
+      const newZoom = Math.max(1, Math.min(3, initialZoom * scale)); // Changed from 0.5 to 1
       setZoomLevel(newZoom);
     }
   };
@@ -116,7 +116,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
       const delta = e.deltaY > 0 ? -0.1 : 0.1;
-      setZoomLevel((prev) => Math.max(0.5, Math.min(3, prev + delta)));
+      setZoomLevel((prev) => Math.max(1, Math.min(3, prev + delta))); // Changed from 0.5 to 1
     }
   };
 
