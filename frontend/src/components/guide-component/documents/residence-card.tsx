@@ -1,4 +1,3 @@
-import React from "react";
 import "./document.styles.css";
 
 const ResidenceCard = () => {

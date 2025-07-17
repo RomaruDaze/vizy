@@ -510,6 +510,10 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     });
   };
 
+  const handleAIFormClick = () => {
+    navigate("/visa-form");
+  };
+
   // Group documents by category
   const groupedDocuments = documents.reduce((groups, doc) => {
     const category = doc.category || "General";
@@ -641,6 +645,9 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
             <div className="documents-actions">
               <button className="save-button" onClick={handleSaveDocuments}>
                 Save Changes
+              </button>
+              <button className="ai-form-button" onClick={handleAIFormClick}>
+                AI Form
               </button>
             </div>
           </div>

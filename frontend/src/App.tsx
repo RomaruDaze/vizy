@@ -13,6 +13,7 @@ import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import Guide from "./components/guide-component/guide";
+import VisaForm from "./components/visa-form/VisaForm";
 import "./App.css";
 import "./colors.css";
 
@@ -53,6 +54,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Guide />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/visa-form"
+              element={
+                <ProtectedRoute>
+                  <VisaForm onBack={() => window.history.back()} />
                 </ProtectedRoute>
               }
             />
