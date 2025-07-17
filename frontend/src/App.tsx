@@ -12,6 +12,7 @@ import Locator from "./components/locator-component/locator";
 import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
+import Guide from "./components/guide-component/guide";
 import "./App.css";
 import "./colors.css";
 
@@ -44,6 +45,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/guide"
+              element={
+                <ProtectedRoute>
+                  <Guide />
                 </ProtectedRoute>
               }
             />

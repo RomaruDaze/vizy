@@ -4,8 +4,8 @@ import {
   updateUserProfile,
   getUserProfile,
 } from "../../../services/userProfileService";
-import DocumentHelp from "../../document-help/DocumentHelp";
 import "./visa-status.styles.css";
+import { useNavigate } from "react-router-dom";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
@@ -24,16 +24,11 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
   const { currentUser } = useAuth();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);
-  const [showDocumentHelp, setShowDocumentHelp] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState<DocumentItem | null>(
-    null
-  );
   const [reminderTime, setReminderTime] = useState("");
   const [reminderDate, setReminderDate] = useState("");
   const [reminderSet, setReminderSet] = useState(false);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
-  const [showHelp, setShowHelp] = useState(false);
-  const [selectedDocumentId, setSelectedDocumentId] = useState<string>("");
+  const navigate = useNavigate();
 
   // Document descriptions
   const documentDescriptions: Record<string, string> = {
@@ -405,16 +400,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     setShowDocumentsPopup(false);
   };
 
-  const handleDocumentHelpClick = (document: DocumentItem) => {
-    setSelectedDocument(document);
-    setShowDocumentHelp(true);
-  };
-
-  const handleCloseDocumentHelp = () => {
-    setShowDocumentHelp(false);
-    setSelectedDocument(null);
-  };
-
   const handleSaveDocuments = async () => {
     if (currentUser) {
       const documentProgress: { [key: string]: boolean } = {};
@@ -513,19 +498,17 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     setShowReminderPopup(false);
   };
 
-  const handleBackFromHelp = () => {
-    setShowHelp(false);
-    setSelectedDocumentId("");
+  // Update the handleDocumentHelpClick function to accept document information
+  const handleDocumentHelpClick = (document: DocumentItem) => {
+    // Pass document information as URL state
+    navigate("/guide", {
+      state: {
+        documentId: document.id,
+        documentName: document.name,
+        documentDescription: document.description,
+      },
+    });
   };
-
-  if (showHelp) {
-    return (
-      <DocumentHelp
-        documentId={selectedDocumentId}
-        onBack={handleBackFromHelp}
-      />
-    );
-  }
 
   // Group documents by category
   const groupedDocuments = documents.reduce((groups, doc) => {
@@ -546,7 +529,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
             src="https://img.icons8.com/ios-filled/100/FFFFFF/overtime.png"
             alt="Deadline"
           />
-          <h2>Your Visa Deadline</h2>
+          <h2>Your Residency Deadline</h2>
         </div>
         <div className="deadline-date">
           {answers.deadline
@@ -642,11 +625,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                       </label>
                       <button
                         className="document-help-button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDocumentHelpClick(doc);
-                        }}
-                        title="Learn more about this document"
+                        onClick={() => handleDocumentHelpClick(doc)}
                       >
                         <img
                           src="https://img.icons8.com/ios-filled/100/FFFFFF/help.png"
@@ -663,59 +642,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
               <button className="save-button" onClick={handleSaveDocuments}>
                 Save Changes
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Document Help Popup */}
-      {showDocumentHelp && selectedDocument && (
-        <div
-          className="document-help-overlay"
-          onClick={handleCloseDocumentHelp}
-        >
-          <div
-            className="document-help-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="document-help-header">
-              <button
-                className="close-button"
-                onClick={handleCloseDocumentHelp}
-              >
-                <img
-                  src="https://img.icons8.com/ios-filled/100/FFFFFF/back.png"
-                  alt="Close"
-                />
-              </button>
-              <h3>{selectedDocument.name}</h3>
-            </div>
-            <div className="document-help-body">
-              <div className="document-info">
-                <h4>What is this document?</h4>
-                <p>{selectedDocument.description}</p>
-              </div>
-              <div className="document-tips">
-                <h4>Important Tips:</h4>
-                <ul>
-                  <li>Make sure the document is not expired</li>
-                  <li>Bring the original document, not a copy</li>
-                  <li>
-                    If the document is in a foreign language, bring a Japanese
-                    translation
-                  </li>
-                  <li>Keep extra copies for your records</li>
-                </ul>
-              </div>
-              <div className="document-requirements">
-                <h4>Requirements:</h4>
-                <ul>
-                  <li>Document must be recent (usually within 3-6 months)</li>
-                  <li>Must be officially issued and stamped</li>
-                  <li>Translations must be done by a certified translator</li>
-                  <li>All documents must be in good condition</li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>

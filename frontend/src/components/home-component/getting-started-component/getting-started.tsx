@@ -14,10 +14,10 @@ interface GettingStartedProps {
 interface Question {
   id: string;
   question: string;
-  type: "text" | "select" | "multiSelect" | "date" | "conditionalSelect"; // Added conditionalSelect
+  type: "text" | "select" | "multiSelect" | "date" | "conditionalSelect";
   options?: string[];
   placeholder?: string;
-  conditionalOptions?: string[]; // For the dropdown that appears
+  conditionalOptions?: string[];
 }
 
 const GettingStarted = ({ onComplete }: GettingStartedProps) => {
@@ -40,12 +40,72 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
           console.error("Error loading user profile:", error);
         }
       }
-      // Set loading to false after profile loading is complete
       setLoading(false);
     };
 
     loadUserProfile();
   }, [currentUser]);
+
+  // Document options based on visa type
+  const getDocumentOptions = (visaType: string) => {
+    const commonDocuments = [
+      "Application for Extension of Period of Stay",
+      "Passport",
+      "Residence Card",
+      "ID Photo",
+      "Processing Fee",
+    ];
+
+    const workDocuments = [
+      "Certificate of Employment",
+      "Company Registration Certificate",
+      "Company's Financial Documents",
+      "Resident Tax Certificate",
+      "Tax Payment Certificate",
+    ];
+
+    const studentDocuments = [
+      "Certificate of Enrollment",
+      "Academic Transcript",
+      "Bank Balance Certificate",
+      "Scholarship Award Certificate",
+      "Certificate of Remittance",
+      "Letter of Guarantee",
+    ];
+
+    const familyDocuments = [
+      "Marriage Certificate",
+      "Birth Certificate",
+      "Bank Statement",
+      "Letter of Guarantee",
+      "Family Register",
+      "Resident Certificate",
+      "Certificate of Employment",
+      "Resident Tax Certificate",
+      "Tax Payment Certificate",
+    ];
+
+    const specifiedSkillDocuments = [
+      "Certificate of Employment",
+      "Company Registration Certificate",
+      "Company's Financial Documents",
+      "Resident Tax Certificate",
+      "Tax Payment Certificate",
+    ];
+
+    switch (visaType) {
+      case "Work Residency":
+        return [...commonDocuments, ...workDocuments];
+      case "International Student Residency":
+        return [...commonDocuments, ...studentDocuments];
+      case "Family Residency":
+        return [...commonDocuments, ...familyDocuments];
+      case "Specified Skill Worker Residency":
+        return [...commonDocuments, ...specifiedSkillDocuments];
+      default:
+        return commonDocuments;
+    }
+  };
 
   const questions: Question[] = [
     {
@@ -55,59 +115,40 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
       placeholder: "Select your deadline",
     },
     {
-      id: "visaType",
-      question: "What's your current visa type?",
+      id: "ResidencyType",
+      question: "What's your current Residency type?",
       type: "select",
       options: [
-        "International Student Visa",
-        "Work Visa",
-        "Family Visa",
-        "Specified Skill Worker Visa",
+        "International Student Residency",
+        "Work Residency",
+        "Family Residency",
+        "Specified Skill Worker Residency",
       ],
     },
     {
       id: "purpose",
       question: "What do you want to do?",
       type: "conditionalSelect",
-      options: ["Extend my current visa", "Change to a different visa type"],
+      options: [
+        "Extend my current Residency",
+        "Change to a different Residency type",
+      ],
       conditionalOptions: [
-        "International Student Visa",
-        "Work Visa",
-        "Family Visa",
-        "Specified Skill Worker Visa",
+        "International Student Residency",
+        "Work Residency",
+        "Family Residency",
+        "Specified Skill Worker Residency",
       ],
     },
     {
       id: "documents",
       question: "Which documents do you already have?",
       type: "multiSelect",
-      options: [
-        "Application for Extension of Period of Stay",
-        "Passport",
-        "Residence Card",
-        "ID Photo",
-        "Processing Fee",
-        "Certificate of Employment",
-        "Company Registration Certificate",
-        "Company's Financial Documents",
-        "Resident Tax Certificate",
-        "Tax Payment Certificate",
-        "Certificate of Enrollment",
-        "Academic Transcript",
-        "Bank Balance Certificate",
-        "Scholarship Award Certificate",
-        "Certificate of Remittance",
-        "Letter of Guarantee",
-        "Marriage Certificate",
-        "Birth Certificate",
-        "Bank Statement",
-        "Family Register",
-        "Resident Certificate",
-      ],
+      options: [], // This will be dynamically populated
     },
     {
       id: "experience",
-      question: "Have you applied for a visa before?",
+      question: "Have you applied for a Residency before?",
       type: "select",
       options: [
         "Yes, successfully",
@@ -117,6 +158,22 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
       ],
     },
   ];
+
+  // Get the target visa type for document filtering
+  const getTargetVisaType = () => {
+    if (answers.purpose === "Extend my current Residency") {
+      return answers.ResidencyType;
+    } else if (answers.purpose === "Change to a different Residency type") {
+      return answers.purpose_target;
+    }
+    return null;
+  };
+
+  // Update document options based on target visa type
+  const targetVisaType = getTargetVisaType();
+  const documentOptions = targetVisaType
+    ? getDocumentOptions(targetVisaType)
+    : [];
 
   const handleAnswer = async (questionId: string, answer: any) => {
     const newAnswers = {
@@ -137,7 +194,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
     // Show conditional dropdown for purpose question
     if (
       questionId === "purpose" &&
-      answer === "Change to a different visa type"
+      answer === "Change to a different Residency type"
     ) {
       setShowConditional(true);
     } else if (questionId === "purpose") {
@@ -170,10 +227,16 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
 
   const currentQuestion = questions[currentStep];
   const isLastStep = currentStep === questions.length - 1;
+
+  // Update the current question's options if it's the documents question
+  if (currentQuestion.id === "documents") {
+    currentQuestion.options = documentOptions;
+  }
+
   const canProceed = (() => {
     if (
       currentQuestion.type === "conditionalSelect" &&
-      answers[currentQuestion.id] === "Change to a different visa type"
+      answers[currentQuestion.id] === "Change to a different Residency type"
     ) {
       return (
         answers[currentQuestion.id] && answers[`${currentQuestion.id}_target`]
@@ -196,7 +259,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
             value={answers[currentQuestion.id] || ""}
             onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
             className="question-input"
-            min={new Date().toISOString().split("T")[0]} // Set minimum date to today
+            min={new Date().toISOString().split("T")[0]}
           />
         );
 
@@ -230,32 +293,48 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
 
       case "multiSelect":
         const selectedOptions = answers[currentQuestion.id] || [];
+
+        // Show visa type info if this is the documents question
+        const showVisaInfo =
+          currentQuestion.id === "documents" && targetVisaType;
+
         return (
-          <div className="options-container">
-            {currentQuestion.options?.map((option) => (
-              <button
-                key={option}
-                className={`option-button ${
-                  selectedOptions.includes(option) ? "selected" : ""
-                }`}
-                onClick={() => {
-                  const newSelection = selectedOptions.includes(option)
-                    ? selectedOptions.filter((item: string) => item !== option)
-                    : [...selectedOptions, option];
-                  handleAnswer(currentQuestion.id, newSelection);
-                }}
-              >
-                {option}
-              </button>
-            ))}
+          <div className="multi-select-container">
+            {showVisaInfo && (
+              <div className="visa-type-info">
+                <p>
+                  Documents required for: <strong>{targetVisaType}</strong>
+                </p>
+              </div>
+            )}
+            <div className="options-container">
+              {currentQuestion.options?.map((option) => (
+                <button
+                  key={option}
+                  className={`option-button ${
+                    selectedOptions.includes(option) ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    const newSelection = selectedOptions.includes(option)
+                      ? selectedOptions.filter(
+                          (item: string) => item !== option
+                        )
+                      : [...selectedOptions, option];
+                    handleAnswer(currentQuestion.id, newSelection);
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
           </div>
         );
 
       case "conditionalSelect":
-        const currentVisaType = answers["visaType"];
+        const currentResidencyType = answers["ResidencyType"];
         const availableTargetOptions =
           currentQuestion.conditionalOptions?.filter(
-            (option) => option !== currentVisaType
+            (option) => option !== currentResidencyType
           );
 
         return (
@@ -276,10 +355,10 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
 
             {showConditional &&
               answers[currentQuestion.id] ===
-                "Change to a different visa type" && (
+                "Change to a different Residency type" && (
                 <div className="conditional-options">
                   <label className="conditional-label">
-                    Select your target visa type:
+                    Select your target Residency type:
                   </label>
                   <div className="options-container">
                     {availableTargetOptions?.map((option) => (

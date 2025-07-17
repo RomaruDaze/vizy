@@ -49,18 +49,10 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.deadline-info p {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
-  line-height: 1.5;
-  margin: 0;
-}
-
 /* Bottom Card - Documents */
 .documents-card {
   background: var(--app-bg);
   border-radius: 16px;
-  padding: 1.5rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
@@ -77,6 +69,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 0.5rem !important;
 }
 
 .documents-icon img {
@@ -125,7 +118,6 @@
   font-weight: 600;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: relative;
   overflow: hidden;
 }
 
@@ -166,7 +158,6 @@
   flex: 1;
 }
 
-/* Status icon */
 .status-icon {
   width: 40px;
   height: 40px;
@@ -174,14 +165,12 @@
   margin-left: 1rem;
 }
 
-.deadline-reminder {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
 /* Reminder Button */
 .deadline-reminder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 1.5rem;
   text-align: center;
 }
@@ -203,6 +192,7 @@
   box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
   position: relative;
   overflow: hidden;
+  border: none;
 }
 
 .reminder-button::before {
@@ -220,7 +210,6 @@
   background: rgba(244, 67, 54, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(244, 67, 54, 0.3);
-  border-color: #f44336;
 }
 
 .reminder-button:hover::before {
@@ -231,10 +220,8 @@
   transform: translateY(0);
 }
 
-/* When reminder IS set, make it green */
 .reminder-button.reminder-set {
   background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  border-color: #4caf50;
   box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
 }
 
@@ -254,8 +241,9 @@
   opacity: 1;
 }
 
-/* Reminder Popup */
-.reminder-popup-overlay {
+/* Popup Overlays */
+.reminder-popup-overlay,
+.documents-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -269,7 +257,8 @@
   backdrop-filter: blur(5px);
 }
 
-.reminder-popup-content {
+.reminder-popup-content,
+.documents-popup-content {
   background: var(--master-gradient);
   border-radius: 16px;
   padding: 2rem;
@@ -279,14 +268,29 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.reminder-popup-header {
+.documents-popup-content {
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.documents-popup-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Popup Headers */
+.reminder-popup-header,
+.documents-popup-header {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
   gap: 1rem;
 }
 
-.reminder-popup-header h3 {
+.reminder-popup-header h3,
+.documents-popup-header h3 {
   color: white;
   margin: 0;
   font-size: 1.3rem;
@@ -312,6 +316,7 @@
   filter: brightness(0) invert(1);
 }
 
+/* Form Elements */
 .reminder-form {
   display: flex;
   flex-direction: column;
@@ -340,7 +345,6 @@
   outline: none;
   transition: all 0.2s ease;
 }
-
 
 .reminder-actions {
   display: flex;
@@ -387,65 +391,52 @@
   cursor: not-allowed;
 }
 
-/* Documents Popup */
-.documents-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+/* Documents List */
+.documents-list {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.documents-popup-content {
-  background: var(--master-gradient);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.documents-list::-webkit-scrollbar {
+  display: none;
 }
 
-.documents-popup-header {
-  display: flex;
-  align-items: center;
+.document-category {
+  margin-bottom: 1.5rem;
   gap: 1rem;
+}
+
+.document-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-title {
   color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
   margin-bottom: 1rem;
 }
 
-.documents-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-
-.document-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
-  margin: 0.5rem 0;
-}
-
-.document-item:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
 .document-checkbox {
   display: flex;
   align-items: center;
@@ -489,140 +480,34 @@
   font-weight: 500;
 }
 
-/* Remove required badge styles */
-.required-badge {
-  display: none;
-}
-
-/* Update documents summary to actions */
-.documents-actions {
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
-.save-button {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
+/* Document Help Button */
+.document-help-button {
+  background: none;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-}
-
-.save-button:hover {
-  background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-}
-
-.save-button:active {
-  transform: translateY(0);
-}
-
-/* Documents Popup */
-.documents-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  padding: 4px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
+  transition: all 0.2s ease;
+  margin-left: 8px;
 }
 
-.documents-popup-content {
-  background: var(--master-gradient);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.documents-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-
-.document-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
+.document-help-button:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
-  margin: 0.5rem 0;
+  transform: scale(1.1);
 }
 
-.document-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+.document-help-button img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(1);
 }
 
-.document-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  flex: 1;
-}
-
-.document-checkbox input[type="checkbox"] {
-  display: none;
-}
-
-.checkmark {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
-  position: relative;
-  transition: all 0.2s ease;
-}
-
-.document-checkbox input[type="checkbox"]:checked+.checkmark {
-  background: #4caf50;
-  border-color: #4caf50;
-}
-
-.document-checkbox input[type="checkbox"]:checked+.checkmark::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.document-name {
-  color: white;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* Remove required badge styles */
-.required-badge {
-  display: none;
-}
-
-/* Update documents summary to actions */
+/* Save Button */
 .documents-actions {
   text-align: center;
   margin-top: 1.5rem;
@@ -676,247 +561,9 @@
   .documents-text h3 {
     font-size: 1.1rem;
   }
-}
 
-.visa-type-info {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  margin: 0;
-  font-style: italic;
-}
-
-.document-category {
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-}
-
-.category-title {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem 0;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.document-category:last-child {
-  margin-bottom: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
   .category-title {
     font-size: 1rem;
-  }
-
-  .visa-type-info {
-    font-size: 0.85rem;
-  }
-}
-
-/* Add these styles to hide scrollbars in the visa status component */
-
-/* Hide scrollbars for documents popup */
-.documents-popup-content {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.documents-popup-content::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbars for documents list */
-.documents-list {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.documents-list::-webkit-scrollbar {
-  display: none;
-}
-
-/* Document Help Button */
-.document-help-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  margin-left: 8px;
-}
-
-.document-help-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.1);
-}
-
-.document-help-button img {
-  width: 16px;
-  height: 16px;
-  filter: brightness(0) invert(1);
-}
-
-/* Update document item to accommodate help button */
-.document-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
-}
-
-.document-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  flex: 1;
-}
-
-/* Document Help Popup */
-.document-help-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-}
-
-.document-help-content {
-  background: var(--master-gradient);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.document-help-content::-webkit-scrollbar {
-  display: none;
-}
-
-.document-help-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-}
-
-.document-help-header h3 {
-  color: white;
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-  flex: 1;
-}
-
-.document-help-body {
-  color: white;
-}
-
-.document-info,
-.document-tips,
-.document-requirements {
-  margin-bottom: 1.5rem;
-}
-
-.document-info h4,
-.document-tips h4,
-.document-requirements h4 {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.document-info h4::before {
-  content: "📄";
-  font-size: 1.2rem;
-}
-
-.document-tips h4::before {
-  content: "💡";
-  font-size: 1.2rem;
-}
-
-.document-requirements h4::before {
-  content: "✅";
-  font-size: 1.2rem;
-}
-
-.document-info p {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-.document-tips ul,
-.document-requirements ul {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin: 0;
-  padding-left: 1.5rem;
-  font-size: 0.95rem;
-}
-
-.document-tips li,
-.document-requirements li {
-  margin-bottom: 0.5rem;
-}
-
-.document-tips li:last-child,
-.document-requirements li:last-child {
-  margin-bottom: 0;
-}
-
-/* Responsive design for mobile */
-@media (max-width: 480px) {
-  .document-help-content {
-    padding: 1.5rem;
-    margin: 1rem;
-  }
-
-  .document-help-header h3 {
-    font-size: 1.1rem;
-  }
-
-  .document-info h4,
-  .document-tips h4,
-  .document-requirements h4 {
-    font-size: 1rem;
-  }
-
-  .document-info p,
-  .document-tips ul,
-  .document-requirements ul {
-    font-size: 0.9rem;
   }
 
   .document-help-button {
@@ -925,62 +572,18 @@
   }
 
   .document-help-button img {
-    width: 14px;
-    height: 14px;
+    width: 24px;
+    height: 24px;
   }
-}
 
-.help-button {
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  margin-left: 10px;
-}
+  .reminder-popup-content,
+  .documents-popup-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
 
-.help-button:hover {
-  background: #5a6fd8;
-  transform: scale(1.1);
-}
-
-.document-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  margin-bottom: 8px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.document-info {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.document-name {
-  margin-left: 12px;
-  font-size: 16px;
-  color: white;
-}
-
-.required-badge {
-  background: #ff6b6b;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  margin-left: 8px;
+  .reminder-popup-header h3,
+  .documents-popup-header h3 {
+    font-size: 1.1rem;
+  }
 }

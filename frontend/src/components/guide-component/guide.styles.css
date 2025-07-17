@@ -1,0 +1,162 @@
+.guide-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  color: white;
+}
+
+.guide-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-button img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+.guide-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.guide-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Document Guide Styles */
+.document-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.document-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.document-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffd700;
+}
+
+.document-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.document-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.document-section li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  padding-left: 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.document-section li:before {
+  content: "•";
+  color: #ffd700;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.document-section li:last-child {
+  border-bottom: none;
+}
+
+/* Placeholder Content */
+.placeholder-content {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.placeholder-icon {
+  margin-bottom: 20px;
+}
+
+.placeholder-icon img {
+  width: 80px;
+  height: 80px;
+  opacity: 0.8;
+}
+
+.placeholder-content h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffd700;
+}
+
+.placeholder-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.placeholder-content p:last-child {
+  font-size: 14px;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .guide-container {
+    padding: 15px;
+  }
+  
+  .guide-header h1 {
+    font-size: 20px;
+  }
+  
+  .document-section {
+    padding: 15px;
+  }
+  
+  .document-section h2 {
+    font-size: 18px;
+  }
+  
+  .document-section p,
+  .document-section li {
+    font-size: 14px;
+  }
+  
+  .placeholder-content {
+    padding: 40px 15px;
+  }
+  
+  .placeholder-content h2 {
+    font-size: 24px;
+  }
+  
+  .placeholder-content p {
+    font-size: 14px;
+  }
+}
