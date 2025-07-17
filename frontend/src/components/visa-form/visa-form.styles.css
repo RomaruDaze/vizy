@@ -284,4 +284,22 @@
     width: 95%;
     margin: 1rem;
   }
+
+  .field-1 {top: 21%;left: 30%;}
+  .field-2 {top: 21%;left: 58%;}
+  .field-3 {top: 24%;left: 30%;}
+  .field-4 {top: 27.5%;left: 15%;}
+  .field-5 {top: 27.5%;left: 60%;}
+  .field-6 {top: 30.4%;left: 24%;}
+  .field-7 {top: 30.4%;left: 64%;}
+  .field-8 {top: 33.4%;left: 24%;}
+  .field-9 {top: 36%;left: 30%;}
+  .field-10 {top: 38.8%;left: 30%;}
+  .field-11 {top: 41.8%;left: 30%;}
+  .field-12 {top: 47.5%;left: 30%;}
+  .field-13 {top: 50.5%;left: 30%;}
+  .field-14 {top: 53.3%;left: 50%;}
+  .field-15 {top: 58.6%;left: 50%;}
+  .field-16 {top: 68%;left: 25%;}
 }
+
