@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./visa-form.styles.css";
-import visaFormImage from "../../assets/images/form-page1.jpg";
 
 interface VisaFormProps {
   onBack: () => void;
@@ -37,6 +36,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     setPanOffset({ x: 0, y: 0 });
   };
 
+  // Mouse event handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
@@ -52,6 +52,37 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
   };
 
   const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch event handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      setDragStart({
+        x: touch.clientX - panOffset.x,
+        y: touch.clientY - panOffset.y,
+      });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging && e.touches.length === 1) {
+      e.preventDefault(); // Prevent scrolling while dragging
+      const touch = e.touches[0];
+      setPanOffset({
+        x: touch.clientX - dragStart.x,
+        y: touch.clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
     setIsDragging(false);
   };
 
@@ -190,7 +221,10 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
         style={{ cursor: isDragging ? "grabbing" : "grab" }}
       >
@@ -202,7 +236,7 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
           }}
         >
           <img
-            src={visaFormImage}
+            src="/form-page1.png"
             alt="Visa Extension Application Form"
             className="form-image"
             draggable={false}
