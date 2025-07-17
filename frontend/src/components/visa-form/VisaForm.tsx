@@ -562,132 +562,53 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
 
           {/* Interactive Field Buttons for Form 2 */}
           <button
-            className="field-button field-1"
-            onClick={() => handleFieldClick("field-1")}
+            className="field-button field-17"
+            onClick={() => handleFieldClick("field-17")}
             title="Click for help with Nationality/Region"
           >
-            <span className="field-number">1</span>
+            <span className="field-number">17</span>
           </button>
 
           <button
-            className="field-button field-2"
-            onClick={() => handleFieldClick("field-2")}
+            className="field-button field-18"
+            onClick={() => handleFieldClick("field-18")}
             title="Click for help with Date of Birth"
           >
-            <span className="field-number">2</span>
+            <span className="field-number">18</span>
           </button>
 
           <button
-            className="field-button field-3"
-            onClick={() => handleFieldClick("field-3")}
+            className="field-button field-19"
+            onClick={() => handleFieldClick("field-19")}
             title="Click for help with Name"
           >
-            <span className="field-number">3</span>
+            <span className="field-number">19</span>
           </button>
 
           <button
-            className="field-button field-4"
-            onClick={() => handleFieldClick("field-4")}
+            className="field-button field-20"
+            onClick={() => handleFieldClick("field-20")}
             title="Click for help with Sex"
           >
-            <span className="field-number">4</span>
+            <span className="field-number">20</span>
           </button>
 
           <button
-            className="field-button field-5"
-            onClick={() => handleFieldClick("field-5")}
+            className="field-button field-21"
+            onClick={() => handleFieldClick("field-21")}
             title="Click for help with Marital Status"
           >
-            <span className="field-number">5</span>
+            <span className="field-number">21</span>
           </button>
 
           <button
-            className="field-button field-6"
-            onClick={() => handleFieldClick("field-6")}
+            className="field-button field-22"
+            onClick={() => handleFieldClick("field-22")}
             title="Click for help with Occupation"
           >
-            <span className="field-number">6</span>
+            <span className="field-number">22</span>
           </button>
 
-          <button
-            className="field-button field-7"
-            onClick={() => handleFieldClick("field-7")}
-            title="Click for help with Home Town/City"
-          >
-            <span className="field-number">7</span>
-          </button>
-
-          <button
-            className="field-button field-8"
-            onClick={() => handleFieldClick("field-8")}
-            title="Click for help with Address in Japan"
-          >
-            <span className="field-number">8</span>
-          </button>
-
-          <button
-            className="field-button field-9"
-            onClick={() => handleFieldClick("field-9")}
-            title="Click for help with Telephone Number"
-          >
-            <span className="field-number">9</span>
-          </button>
-
-          <button
-            className="field-button field-10"
-            onClick={() => handleFieldClick("field-10")}
-            title="Click for help with Passport"
-          >
-            <span className="field-number">10</span>
-          </button>
-
-          <button
-            className="field-button field-11"
-            onClick={() => handleFieldClick("field-11")}
-            title="Click for help with Status of Residence"
-          >
-            <span className="field-number">11</span>
-          </button>
-
-          <button
-            className="field-button field-12"
-            onClick={() => handleFieldClick("field-12")}
-            title="Click for help with Residence Card Number"
-          >
-            <span className="field-number">12</span>
-          </button>
-
-          <button
-            className="field-button field-13"
-            onClick={() => handleFieldClick("field-13")}
-            title="Click for help with Desired Length of Extension"
-          >
-            <span className="field-number">13</span>
-          </button>
-
-          <button
-            className="field-button field-14"
-            onClick={() => handleFieldClick("field-14")}
-            title="Click for help with Reason for Extension"
-          >
-            <span className="field-number">14</span>
-          </button>
-
-          <button
-            className="field-button field-15"
-            onClick={() => handleFieldClick("field-15")}
-            title="Click for help with Criminal Record"
-          >
-            <span className="field-number">15</span>
-          </button>
-
-          <button
-            className="field-button field-16"
-            onClick={() => handleFieldClick("field-16")}
-            title="Click for help with Family in Japan"
-          >
-            <span className="field-number">16</span>
-          </button>
         </div>
       </div>
 
