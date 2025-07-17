@@ -9,7 +9,6 @@ import { database } from "../../../firebase/config";
 import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import "../account-components/account.styles.css";
 import "./privacy-security.styles.css";
-import { signOut } from "firebase/auth";
 
 interface PrivacySecurityProps {
   onBack: () => void;
@@ -77,7 +76,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         await deleteUser(currentUser);
 
         // Redirect to signup page
-        window.location.href = "/signup";
+        window.location.href = "/login";
       }
     } catch (error: any) {
       console.error("Error deleting account:", error);
@@ -119,7 +118,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
       await deleteUser(currentUser);
 
       // Redirect to signup page
-      window.location.href = "/signup";
+      window.location.href = "/login";
     } catch (error: any) {
       console.error("Re-authentication error:", error);
 
