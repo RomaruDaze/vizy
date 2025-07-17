@@ -6,14 +6,34 @@ import Map from "./map-component/map";
 const Locator = () => {
   const [selectedOption, setSelectedOption] = useState<string>("immigration");
   const [isAtUserLocation, setIsAtUserLocation] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("");
   const mapRef = useRef<{ resetToUserLocation: () => void }>(null);
 
-  const handleImmigrationOffices = () => {
+  const handleImmigrationOffices = async () => {
+    if (selectedOption === "immigration") return; // Already selected
+
+    setIsLoading(true);
+    setLoadingText("Loading immigration offices...");
     setSelectedOption("immigration");
+
+    // Simulate loading time for better UX
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
   };
 
-  const handlePhotoBooths = () => {
+  const handlePhotoBooths = async () => {
+    if (selectedOption === "photobooth") return; // Already selected
+
+    setIsLoading(true);
+    setLoadingText("Loading photo booths...");
     setSelectedOption("photobooth");
+
+    // Simulate loading time for better UX
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
   };
 
   const handleResetLocation = () => {
@@ -45,6 +65,35 @@ const Locator = () => {
           />
         </div>
 
+        {/* Loading overlay when switching options */}
+        {isLoading && (
+          <div className="locator-loading-overlay">
+            <div className="locator-loading-content">
+              <div className="locator-loading-animation">
+                <div className="locator-pulse-ring"></div>
+                <div className="locator-icon">
+                  <img
+                    src={
+                      selectedOption === "immigration"
+                        ? "https://img.icons8.com/ios-filled/100/FFFFFF/office.png"
+                        : "https://img.icons8.com/ios-filled/100/FFFFFF/camera.png"
+                    }
+                    alt="Loading"
+                  />
+                </div>
+              </div>
+              <div className="locator-loading-text">
+                <h3>{loadingText}</h3>
+                <div className="locator-loading-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Only show reset button when not at user location */}
         {!isAtUserLocation && (
           <button className="reset-button" onClick={handleResetLocation}>
@@ -61,8 +110,9 @@ const Locator = () => {
             <button
               className={`locator-option immigration-offices ${
                 selectedOption === "immigration" ? "active" : ""
-              }`}
+              } ${isLoading ? "disabled" : ""}`}
               onClick={handleImmigrationOffices}
+              disabled={isLoading}
             >
               <div className="option-icon">
                 <img
@@ -78,8 +128,9 @@ const Locator = () => {
             <button
               className={`locator-option photo-booths ${
                 selectedOption === "photobooth" ? "active" : ""
-              }`}
+              } ${isLoading ? "disabled" : ""}`}
               onClick={handlePhotoBooths}
+              disabled={isLoading}
             >
               <div className="option-icon">
                 <img
