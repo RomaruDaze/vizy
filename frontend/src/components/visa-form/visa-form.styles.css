@@ -146,22 +146,85 @@
 }
 
 /* Position the buttons over the form fields */
-.field-1 { top: 15%; left: 25%; }
-.field-2 { top: 20%; left: 25%; }
-.field-3 { top: 25%; left: 25%; }
-.field-4 { top: 30%; left: 25%; }
-.field-5 { top: 35%; left: 25%; }
-.field-6 { top: 40%; left: 25%; }
-.field-7 { top: 45%; left: 25%; }
-.field-8 { top: 50%; left: 25%; }
-.field-9 { top: 55%; left: 25%; }
-.field-10 { top: 60%; left: 25%; }
-.field-11 { top: 65%; left: 25%; }
-.field-12 { top: 70%; left: 25%; }
-.field-13 { top: 75%; left: 25%; }
-.field-14 { top: 80%; left: 25%; }
-.field-15 { top: 85%; left: 25%; }
-.field-16 { top: 90%; left: 25%; }
+.field-1 {
+  top: 21.5%;
+  left: 30%;
+}
+
+.field-2 {
+  top: 21.5%;
+  left: 58%;
+}
+
+.field-3 {
+  top: 25%;
+  left: 30%;
+}
+
+.field-4 {
+  top: 30%;
+  left: 25%;
+}
+
+.field-5 {
+  top: 35%;
+  left: 25%;
+}
+
+.field-6 {
+  top: 40%;
+  left: 25%;
+}
+
+.field-7 {
+  top: 45%;
+  left: 25%;
+}
+
+.field-8 {
+  top: 50%;
+  left: 25%;
+}
+
+.field-9 {
+  top: 55%;
+  left: 25%;
+}
+
+.field-10 {
+  top: 60%;
+  left: 25%;
+}
+
+.field-11 {
+  top: 65%;
+  left: 25%;
+}
+
+.field-12 {
+  top: 70%;
+  left: 25%;
+}
+
+.field-13 {
+  top: 75%;
+  left: 25%;
+}
+
+.field-14 {
+  top: 80%;
+  left: 25%;
+}
+
+.field-15 {
+  top: 85%;
+  left: 25%;
+}
+
+.field-16 {
+  top: 90%;
+  left: 25%;
+}
 
 /* AI Popup Styles */
 .ai-popup-overlay {
@@ -249,25 +312,25 @@
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .zoom-controls {
     order: -1;
   }
-  
+
   .form-image-container {
     height: 60vh;
     padding: 0.5rem;
   }
-  
+
   .field-button {
     width: 25px;
     height: 25px;
   }
-  
+
   .field-number {
     font-size: 12px;
   }
-  
+
   .ai-popup-content {
     width: 95%;
     margin: 1rem;
