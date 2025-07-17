@@ -46,18 +46,34 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     return Math.sqrt(dx * dx + dy * dy);
   };
 
+  // Add this function to constrain pan movement
+  const constrainPan = (x: number, y: number, zoom: number) => {
+    const containerWidth = 1200; // Approximate container width
+    const containerHeight = 800; // Approximate container height
+    const maxX = (containerWidth * zoom - containerWidth) / 2;
+    const maxY = (containerHeight * zoom - containerHeight) / 2;
+
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y)),
+    };
+  };
+
   // Mouse event handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
   };
 
+  // Update handleMouseMove
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
-      setPanOffset({
+      const newPan = {
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y,
-      });
+      };
+      const constrained = constrainPan(newPan.x, newPan.y, zoomLevel);
+      setPanOffset(constrained);
     }
   };
 
@@ -88,17 +104,18 @@ const VisaForm = ({ onBack }: VisaFormProps) => {
     }
   };
 
+  // Update handleTouchMove
   const handleTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 1 && isDragging) {
-      // Single touch dragging
       e.preventDefault();
       const touch = e.touches[0];
-      setPanOffset({
+      const newPan = {
         x: touch.clientX - dragStart.x,
         y: touch.clientY - dragStart.y,
-      });
+      };
+      const constrained = constrainPan(newPan.x, newPan.y, zoomLevel);
+      setPanOffset(constrained);
     } else if (e.touches.length === 2) {
-      // Two touches - pinch to zoom
       e.preventDefault();
       const distance = getDistance(e.touches[0], e.touches[1]);
       const scale = distance / initialDistance;
