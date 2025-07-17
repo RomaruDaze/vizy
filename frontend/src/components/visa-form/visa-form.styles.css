@@ -59,8 +59,8 @@
   background: rgba(102, 126, 234, 0.8);
   border: 2px solid #667eea;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -82,9 +82,9 @@
 }
 
 /* Position the buttons over the form fields */
-.field-1 { top: 15%; left: 25%; }
-.field-2 { top: 20%; left: 25%; }
-.field-3 { top: 25%; left: 25%; }
+.field-1 { top: 21.5%; left: 30%; }
+.field-2 { top: 21.5%; left: 58%; }
+.field-3 { top: 25%; left: 30%; }
 .field-4 { top: 30%; left: 25%; }
 .field-5 { top: 35%; left: 25%; }
 .field-6 { top: 40%; left: 25%; }
@@ -186,8 +186,8 @@
   }
   
   .field-button {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height: 15px;
   }
   
   .field-number {
