@@ -1,0 +1,55 @@
+.custom-scrollbar-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+}
+
+.custom-scrollbar-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.custom-scrollbar-content::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scrollbar-track {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 100%;
+    background: #f0f0f0;
+    border-radius: 10px;
+    margin: 4px;
+}
+
+.custom-scrollbar-thumb {
+    position: absolute;
+    right: 0;
+    width: 12px;
+    background: linear-gradient(45deg, #667eea, #5a6fd8);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin: 4px;
+}
+
+.custom-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #5a6fd8, #4a5fc8);
+}
+
+.custom-scrollbar-thumb:active {
+    background: linear-gradient(45deg, #4a5fc8, #3a4fb8);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .custom-scrollbar-track {
+        width: 16px;
+    }
+
+    .custom-scrollbar-thumb {
+        width: 10px;
+    }
+}
