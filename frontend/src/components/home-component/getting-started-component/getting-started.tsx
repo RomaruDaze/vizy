@@ -4,7 +4,6 @@ import {
   saveUserProfile,
   getUserProfile,
 } from "../../../services/userProfileService";
-import "./getting-started.styles.css";
 
 interface GettingStartedProps {
   onBack: () => void;
@@ -49,10 +48,10 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   // Document options based on visa type
   const getDocumentOptions = (visaType: string) => {
     const commonDocuments = [
-      "Application for Extension of Period of Stay",
+      "Application Extension Form",
       "Passport",
       "Residence Card",
-      "ID Photo",
+      "ID Photo (3x4 cm)",
       "Processing Fee",
     ];
 
@@ -294,19 +293,8 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
       case "multiSelect":
         const selectedOptions = answers[currentQuestion.id] || [];
 
-        // Show visa type info if this is the documents question
-        const showVisaInfo =
-          currentQuestion.id === "documents" && targetVisaType;
-
         return (
           <div className="multi-select-container">
-            {showVisaInfo && (
-              <div className="visa-type-info">
-                <p>
-                  Documents required for: <strong>{targetVisaType}</strong>
-                </p>
-              </div>
-            )}
             <div className="options-container">
               {currentQuestion.options?.map((option) => (
                 <button

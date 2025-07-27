@@ -100,12 +100,11 @@ html {
 /* Bottom section - Navigation (10%) */
 .bottom-section {
     height: 15%;
-    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background-color: transparent;
+    background: var(--app-bg);
 }
 
 .loading-screen {

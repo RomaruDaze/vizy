@@ -4,7 +4,6 @@ import {
   updateUserProfile,
   getUserProfile,
 } from "../../../services/userProfileService";
-import "./visa-status.styles.css";
 import { useNavigate } from "react-router-dom";
 
 interface VisaStatusProps {
@@ -535,27 +534,30 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
           />
           <h2>Your Residency Deadline</h2>
         </div>
-        <div className="deadline-date">
-          {answers.deadline
-            ? new Date(answers.deadline).toLocaleDateString("en-US", {
-                weekday: "short",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-            : "No deadline set"}
-        </div>
+
         <div
           className={`deadline-availability ${deadlineStatus?.status || ""}`}
         >
-          <p>{deadlineStatus?.message || "No deadline set"}</p>
-          {deadlineStatus && (
-            <img
-              src={getStatusIcon(deadlineStatus.status)}
-              alt={deadlineStatus.status}
-              className="status-icon"
-            />
-          )}
+          <div className="deadline-date">
+            {answers.deadline
+              ? new Date(answers.deadline).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "No deadline set"}
+          </div>
+          <div className="deadline-status">
+            <p>{deadlineStatus?.message || "No deadline set"}</p>
+            {deadlineStatus && (
+              <img
+                src={getStatusIcon(deadlineStatus.status)}
+                alt={deadlineStatus.status}
+                className="status-icon"
+              />
+            )}
+          </div>
         </div>
         <div className="deadline-reminder">
           <button
@@ -643,7 +645,10 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
             </div>
 
             <div className="documents-actions">
-              <button className="save-button" onClick={handleSaveDocuments}>
+              <button
+                className="save-button-documents"
+                onClick={handleSaveDocuments}
+              >
                 Save Changes
               </button>
               <button className="ai-form-button" onClick={handleAIFormClick}>

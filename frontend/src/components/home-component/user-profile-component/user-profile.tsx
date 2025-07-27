@@ -1,5 +1,4 @@
 import { useAuth } from "../../../contexts/AuthContext";
-import "./user-profile.styles.css";
 
 interface UserProfileProps {
   onAccountClick?: () => void;
