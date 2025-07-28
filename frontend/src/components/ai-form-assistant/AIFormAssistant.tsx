@@ -627,76 +627,72 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
 
           <div ref={messagesEndRef} />
         </div>
-
-        <div className="input-container">
-          <div className="input-wrapper">
-            {!showMediaButtons ? (
-              <>
-                <button
-                  className="plus-button"
-                  onClick={handlePlusClick}
+      </div>
+      <div className="input-container">
+        <div className="input-wrapper">
+          {!showMediaButtons ? (
+            <>
+              <button
+                className="plus-button"
+                onClick={handlePlusClick}
+                disabled={isLoading}
+              >
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/plus-math.png"
+                  alt="Plus"
+                />
+              </button>
+              <div className="input-area">
+                <input
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Feel free to ask me anything about visa ..."
+                  className="message-input"
                   disabled={isLoading}
-                >
-                  <img
-                    src="https://img.icons8.com/ios-glyphs/100/FFFFFF/plus-math.png"
-                    alt="Plus"
-                  />
-                </button>
-                <div className="input-area">
-                  <input
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                    placeholder="Feel free to ask me anything about visa ..."
-                    className="message-input"
-                    disabled={isLoading}
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!inputText.trim() || isLoading}
-                    className="send-button"
-                  >
-                    <img
-                      src="https://img.icons8.com/ios-glyphs/100/FFFFFF/filled-sent.png"
-                      alt="Send"
-                    />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="media-buttons-container">
+                />
                 <button
-                  className="media-button camera-button"
-                  onClick={handleCameraClick}
+                  onClick={handleSendMessage}
+                  disabled={!inputText.trim() || isLoading}
+                  className="send-button"
                 >
                   <img
-                    src="https://img.icons8.com/ios-glyphs/100/FFFFFF/camera.png"
-                    alt="Camera"
-                  />
-                  <span>Camera</span>
-                </button>
-                <button
-                  className="media-button image-button"
-                  onClick={handleImageClick}
-                >
-                  <img
-                    src="https://img.icons8.com/ios-glyphs/100/FFFFFF/image.png"
-                    alt="Image"
-                  />
-                  <span>Image</span>
-                </button>
-                <button
-                  className="close-media-button"
-                  onClick={handlePlusClick}
-                >
-                  <img
-                    src="https://img.icons8.com/ios-glyphs/100/FFFFFF/multiply.png"
-                    alt="Close"
+                    src="https://img.icons8.com/ios-glyphs/100/FFFFFF/filled-sent.png"
+                    alt="Send"
                   />
                 </button>
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <div className="media-buttons-container">
+              <button
+                className="media-button camera-button"
+                onClick={handleCameraClick}
+              >
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/camera.png"
+                  alt="Camera"
+                />
+                <span>Camera</span>
+              </button>
+              <button
+                className="media-button image-button"
+                onClick={handleImageClick}
+              >
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/image.png"
+                  alt="Image"
+                />
+                <span>Image</span>
+              </button>
+              <button className="close-media-button" onClick={handlePlusClick}>
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/multiply.png"
+                  alt="Close"
+                />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
