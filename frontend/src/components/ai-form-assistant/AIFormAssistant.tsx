@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import "./ai-form-assistant.styles.css";
 import { aiModel } from "../../firebase/config";
 import { useAuth } from "../../contexts/AuthContext";
@@ -302,23 +303,25 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
   const getAIResponse = async (userInput: string): Promise<string> => {
     try {
       const systemPrompt = `You are a helpful AI assistant specializing in Japanese visa applications. 
-      You help users fill out visa extension forms by providing clear, accurate guidance.
-      
-      Key areas you can help with:
-      - Full name (as shown on passport)
-      - Date of birth (YYYY-MM-DD format)
-      - Nationality (country of citizenship)
-      - Passport number (letters and numbers only)
-      - Current address in Japan (with postal code)
-      - Phone number (Japanese format)
-      - Visa type selection
-      - Current status of residence
-      - Visa expiry date
-      - Reason for extension
-      
-      Provide helpful, specific guidance. Be concise but thorough. If the user asks about a specific field, give detailed instructions for that field.`;
+You help users fill out visa extension forms by providing clear, accurate guidance.
 
-      const fullPrompt = `${systemPrompt}\n\nUser question: ${userInput}`;
+**Key areas you can help with:**
+- **Full name** (as shown on passport)
+- **Date of birth** (YYYY-MM-DD format)
+- **Nationality** (country of citizenship)
+- **Passport number** (letters and numbers only)
+- **Current address in Japan** (with postal code)
+- **Phone number** (Japanese format)
+- **Visa type selection**
+- **Current status of residence**
+- **Visa expiry date**
+- **Reason for extension**
+
+Provide helpful, specific guidance using markdown formatting. Be concise but thorough. If the user asks about a specific field, give detailed instructions for that field.
+
+Use **bold** for important terms, \`code\` for specific formats, and bullet points for lists.`;
+
+      const fullPrompt = `${systemPrompt}\n\n**User question:** ${userInput}`;
 
       const result = await aiModel.generateContent(fullPrompt);
       const response = result.response;
@@ -526,7 +529,13 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
               className={`message ${message.sender === "user" ? "user" : "ai"}`}
             >
               <div className="message-content">
-                <div className="message-text">{message.text}</div>
+                <div className="message-text">
+                  {message.sender === "ai" ? (
+                    <ReactMarkdown>{message.text}</ReactMarkdown>
+                  ) : (
+                    message.text
+                  )}
+                </div>
                 <div className="message-time">
                   {formatTime(message.timestamp)}
                 </div>

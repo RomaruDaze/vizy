@@ -12,7 +12,6 @@ import Locator from "./components/locator-component/locator";
 import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
-import VisaForm from "./components/visa-form/VisaForm";
 import AIFormAssistant from "./components/ai-form-assistant/AIFormAssistant";
 import "./App.css";
 import "./colors.css";
@@ -46,14 +45,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/visa-form"
-              element={
-                <ProtectedRoute>
-                  <VisaForm onBack={() => window.history.back()} />
                 </ProtectedRoute>
               }
             />
