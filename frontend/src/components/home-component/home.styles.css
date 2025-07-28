@@ -1198,7 +1198,6 @@
   transform: translateY(0);
 }
 
-
 /* Responsive Design */
 @media (max-width: 480px) {
   .getting-started-card {

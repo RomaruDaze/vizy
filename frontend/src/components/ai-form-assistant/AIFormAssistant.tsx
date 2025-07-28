@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import "./ai-form-assistant.styles.css";
 import { aiModel } from "../../firebase/config";
+import { useAuth } from "../../contexts/AuthContext";
+import { getPopupState, setPopupState } from "../../services/popupService";
 
 interface Message {
   id: string;
@@ -14,6 +16,7 @@ interface AIFormAssistantProps {
 }
 
 const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
+  const { currentUser } = useAuth();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -24,6 +27,7 @@ const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
   ]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showWelcomePopup, setShowWelcomePopup] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -33,6 +37,42 @@ const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Check if user has seen the welcome popup
+  useEffect(() => {
+    const checkWelcomePopup = async () => {
+      if (currentUser?.uid) {
+        try {
+          const hasSeenWelcome = await getPopupState(
+            currentUser.uid,
+            "aiFormWelcome"
+          );
+          if (!hasSeenWelcome) {
+            setShowWelcomePopup(true);
+          }
+        } catch (error) {
+          console.error("Error checking welcome popup state:", error);
+          // Show popup if there's an error (better user experience)
+          setShowWelcomePopup(true);
+        }
+      }
+    };
+
+    checkWelcomePopup();
+  }, [currentUser]);
+
+  const handleCloseWelcomePopup = async () => {
+    setShowWelcomePopup(false);
+
+    // Mark popup as seen in Firebase
+    if (currentUser?.uid) {
+      try {
+        await setPopupState(currentUser.uid, "aiFormWelcome", true);
+      } catch (error) {
+        console.error("Error saving popup state:", error);
+      }
+    }
+  };
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
@@ -120,6 +160,66 @@ const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
 
   return (
     <div className="ai-form-container">
+      {/* Welcome Popup */}
+      {showWelcomePopup && (
+        <div className="welcome-popup-overlay">
+          <div className="welcome-popup-content">
+            <div className="welcome-popup-header">
+              <h2>Welcome to AI Form Assistant!</h2>
+              {/* Removed the X button */}
+            </div>
+
+            <div className="welcome-popup-body">
+              <div className="feature-section">
+                <h3>✨ What I can help you with:</h3>
+                <ul>
+                  <li>
+                    <strong>Form Guidance:</strong> Get step-by-step help with
+                    visa extension forms
+                  </li>
+                  <li>
+                    <strong>Field Explanations:</strong> Understand what each
+                    field requires
+                  </li>
+                </ul>
+              </div>
+
+              <div className="feature-section">
+                <h3>💡 How to use:</h3>
+                <ul>
+                  <li>I'll provide detailed explanations and examples</li>
+                  <li>Feel free to ask follow-up questions</li>
+                </ul>
+              </div>
+
+              <div className="example-section">
+                <h3>Try asking me:</h3>
+                <div className="example-questions">
+                  <button className="example-question">
+                    "How do I fill out the full name field?"
+                  </button>
+                  <button className="example-question">
+                    "What format should I use for my address?"
+                  </button>
+                  <button className="example-question">
+                    "Help me with the visa expiry date field"
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="welcome-popup-footer">
+              <button
+                className="got-it-button"
+                onClick={handleCloseWelcomePopup}
+              >
+                Let's start !
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="form-header">
         <button className="back-button" onClick={onBack}>
           <img
@@ -164,13 +264,12 @@ const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
 
         <div className="input-container">
           <div className="input-wrapper">
-            <textarea
+            <input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Feel free to ask me anything about visa ..."
               className="message-input"
-              rows={1}
               disabled={isLoading}
             />
             <button
@@ -178,28 +277,10 @@ const AIFormAssistant = ({ onBack }: AIFormAssistantProps) => {
               disabled={!inputText.trim() || isLoading}
               className="send-button"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22 2L11 13"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22 2L15 22L11 13L2 9L22 2Z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <img
+                src="https://img.icons8.com/ios-glyphs/100/FFFFFF/filled-sent.png"
+                alt="Send"
+              />
             </button>
           </div>
         </div>

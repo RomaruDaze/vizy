@@ -2,12 +2,12 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--master-gradient);
 }
 
 .form-header {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--master-gradient);
     backdrop-filter: blur(10px);
+    border-radius: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem 1.5rem;
     display: flex;
@@ -52,7 +52,6 @@
 
 .message {
     display: flex;
-    margin-bottom: 1rem;
     text-align: justify;
     padding: 0.5rem;
 }
@@ -66,6 +65,7 @@
 }
 
 .message-content {
+    background: var(--master-gradient) !important;
     max-width: 80%;
     padding: 1rem 1.5rem;
     border-radius: 18px;
@@ -104,7 +104,7 @@
 
 .input-container {
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--master-gradient);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -141,7 +141,7 @@
 }
 
 .send-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: none;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -163,6 +163,11 @@
 .send-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.send-button img {
+    width: 24px;
+    height: 24px;
 }
 
 .typing-indicator {
@@ -249,5 +254,181 @@
 
     .input-wrapper {
         padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Add these styles to your existing CSS file */
+
+/* Welcome Popup Styles */
+.welcome-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.welcome-popup-content {
+    background: var(--master-gradient);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+.welcome-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-popup-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.welcome-popup-body {
+    color: white;
+}
+
+.feature-section {
+    margin-bottom: 1.5rem;
+}
+
+.feature-section h3 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.feature-section ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.feature-section li {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.example-section {
+    margin-bottom: 1.5rem;
+}
+
+.example-section h3 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.example-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.example-question {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.example-question:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.welcome-popup-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.got-it-button {
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    width: 100%;
+}
+
+.got-it-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.got-it-button:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design for popup */
+@media (max-width: 768px) {
+    .welcome-popup-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .welcome-popup-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .feature-section h3,
+    .example-section h3 {
+        font-size: 1rem;
     }
 }

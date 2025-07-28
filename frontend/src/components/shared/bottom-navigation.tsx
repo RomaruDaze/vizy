@@ -8,6 +8,23 @@ const BottomNavigation = () => {
   return (
     <div className="bottom-navigation">
       <button
+        className={`nav-button home-button ${
+          location.pathname === "/ai-form-assistant" ? "active" : ""
+        }`}
+        onClick={() => {
+          navigate("/ai-form-assistant");
+        }}
+      >
+        <div className="nav-icon">
+          <img
+            src="https://img.icons8.com/glyph-neue/64/FFFFFF/bard--v2.png"
+            alt="chat"
+          />
+        </div>
+        <span>AI Chat</span>
+      </button>
+
+      <button
         className={`nav-button locator-button ${
           location.pathname === "/locator" ? "active" : ""
         }`}
@@ -17,7 +34,7 @@ const BottomNavigation = () => {
       >
         <div className="nav-icon">
           <img
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/marker.png"
+            src="https://img.icons8.com/ios-filled/100/FFFFFF/marker.png"
             alt="Pin Icon"
           />
         </div>
@@ -36,7 +53,7 @@ const BottomNavigation = () => {
       >
         <div className="nav-icon">
           <img
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/home.png"
+            src="https://img.icons8.com/ios-filled/100/FFFFFF/home.png"
             alt="home"
           />
         </div>
@@ -51,7 +68,7 @@ const BottomNavigation = () => {
       >
         <div className="nav-icon">
           <img
-            src="https://img.icons8.com/ios-filled/50/FFFFFF/settings.png"
+            src="https://img.icons8.com/ios-filled/100/FFFFFF/settings.png"
             alt="settings"
           />
         </div>
