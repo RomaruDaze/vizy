@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./home.styles.css";
-import UserProfile from "./user-profile-component/user-profile";
+import UserProfile from "./user-profile";
 import Account from "../settings-component/account-components/account";
-import GettingStarted from "./getting-started-component/getting-started";
-import VisaStatus from "./visa-status-component/visa-status";
+import GettingStarted from "./getting-started";
+import VisaStatus from "./visa-status";
 import BottomNavigation from "../shared/bottom-navigation";
 import { useAuth } from "../../contexts/AuthContext";
 import { getUserProfile } from "../../services/userProfileService";

@@ -12,8 +12,8 @@ import Locator from "./components/locator-component/locator";
 import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
-import Guide from "./components/guide-component/guide";
 import VisaForm from "./components/visa-form/VisaForm";
+import AIFormAssistant from "./components/ai-form-assistant/AIFormAssistant";
 import "./App.css";
 import "./colors.css";
 
@@ -50,20 +50,16 @@ function App() {
               }
             />
             <Route
-              path="/guide"
-              element={
-                <ProtectedRoute>
-                  <Guide />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/visa-form"
               element={
                 <ProtectedRoute>
                   <VisaForm onBack={() => window.history.back()} />
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/ai-form-assistant"
+              element={<AIFormAssistant onBack={() => window.history.back()} />}
             />
             {/* Fallback route */}
             <Route path="*" element={<Navigate to="/login" replace />} />

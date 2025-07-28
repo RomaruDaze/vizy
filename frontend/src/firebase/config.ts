@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { getAI, getGenerativeModel, GoogleAIBackend } from "firebase/ai";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -36,3 +37,20 @@ export const database = getDatabase(app);
 
 // Initialize Authentication and get a reference to the service
 export const auth = getAuth(app);
+
+// Initialize the Gemini Developer API backend service
+const ai = getAI(app, { backend: new GoogleAIBackend() });
+
+// Create a `GenerativeModel` instance with a model that supports your use case
+// Try different model names if one doesn't work
+export const aiModel = getGenerativeModel(ai, { model: "gemini-1.5-flash" });
+
+// Remove the test function that was causing the error
+// async function run() {
+//   const prompt = "Write a story about a magic backpack.";
+//   const result = await aiModel.generateContent(prompt);
+//   const response = result.response;
+//   const text = response.text();
+//   console.log(text);
+// }
+// run();

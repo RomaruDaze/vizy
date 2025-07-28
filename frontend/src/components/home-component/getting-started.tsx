@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   saveUserProfile,
   getUserProfile,
-} from "../../../services/userProfileService";
+} from "../../services/userProfileService";
 
 interface GettingStartedProps {
   onBack: () => void;

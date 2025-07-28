@@ -1,4 +1,4 @@
-/* Home Container */
+/*=== Home Container ===*/
 .container-top {
   display: flex;
   margin: 2rem 0 0.5rem 0;
@@ -1198,9 +1198,6 @@
   transform: translateY(0);
 }
 
-.ai-form-button {
-  display: none;
-}
 
 /* Responsive Design */
 @media (max-width: 480px) {

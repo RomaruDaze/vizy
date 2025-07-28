@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   updateUserProfile,
   getUserProfile,
-} from "../../../services/userProfileService";
+} from "../../services/userProfileService";
 import { useNavigate } from "react-router-dom";
 
 interface VisaStatusProps {
@@ -497,20 +497,8 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     setShowReminderPopup(false);
   };
 
-  // Update the handleDocumentHelpClick function to accept document information
-  const handleDocumentHelpClick = (document: DocumentItem) => {
-    // Pass document information as URL state
-    navigate("/guide", {
-      state: {
-        documentId: document.id,
-        documentName: document.name,
-        documentDescription: document.description,
-      },
-    });
-  };
-
   const handleAIFormClick = () => {
-    navigate("/visa-form");
+    navigate("/ai-form-assistant");
   };
 
   // Group documents by category
@@ -607,8 +595,8 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                 onClick={handleCloseDocumentsPopup}
               >
                 <img
-                  src="https://img.icons8.com/ios-filled/100/FFFFFF/back.png"
-                  alt="Close"
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
+                  alt="Back"
                 />
               </button>
               <h3>Document Checklist</h3>
@@ -629,15 +617,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                         <span className="checkmark"></span>
                         <span className="document-name">{doc.name}</span>
                       </label>
-                      <button
-                        className="document-help-button"
-                        onClick={() => handleDocumentHelpClick(doc)}
-                      >
-                        <img
-                          src="https://img.icons8.com/ios-filled/100/FFFFFF/help.png"
-                          alt="Help"
-                        />
-                      </button>
                     </div>
                   ))}
                 </div>
@@ -675,8 +654,8 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                 onClick={handleCloseReminderPopup}
               >
                 <img
-                  src="https://img.icons8.com/ios-filled/100/FFFFFF/back.png"
-                  alt="Close"
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
+                  alt="Back"
                 />
               </button>
               <h3>Set Reminder</h3>
