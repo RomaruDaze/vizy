@@ -8,7 +8,7 @@ const BottomNavigation = () => {
   return (
     <div className="bottom-navigation">
       <button
-        className={`nav-button home-button ${
+        className={`nav-button ai-button ${
           location.pathname === "/ai-form-assistant" ? "active" : ""
         }`}
         onClick={() => {
