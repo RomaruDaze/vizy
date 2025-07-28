@@ -34,11 +34,11 @@ const BottomNavigation = () => {
       >
         <div className="nav-icon">
           <img
-            src="https://img.icons8.com/ios-filled/100/FFFFFF/marker.png"
+            src="https://img.icons8.com/ios-filled/100/FFFFFF/map.png"
             alt="Pin Icon"
           />
         </div>
-        <span>Locator</span>
+        <span>Maps</span>
       </button>
 
       <button
