@@ -1,6 +1,7 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useLanguage } from "../../../contexts/LanguageContext";
 import FAQ from "./faq-components/faq";
 import "./help.styles.css";
 
@@ -10,6 +11,7 @@ interface HelpProps {
 
 const Help = ({ onBack }: HelpProps) => {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [showContactPopup, setShowContactPopup] = useState(false);
   const [showFAQPopup, setShowFAQPopup] = useState(false);
   const [formData, setFormData] = useState({
@@ -52,7 +54,7 @@ const Help = ({ onBack }: HelpProps) => {
       !formData.category ||
       !formData.message.trim()
     ) {
-      setMessage("Please fill in all fields");
+      setMessage(t("please_fill_all_fields"));
       return;
     }
 
@@ -75,7 +77,7 @@ const Help = ({ onBack }: HelpProps) => {
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      setMessage("Message sent successfully! We'll get back to you soon.");
+      setMessage(t("message_sent_successfully"));
       setTimeout(() => {
         setShowContactPopup(false);
         setMessage("");
@@ -83,7 +85,7 @@ const Help = ({ onBack }: HelpProps) => {
       }, 2000);
     } catch (error) {
       console.error("Email send error:", error);
-      setMessage("Failed to send message. Please try again.");
+      setMessage(t("failed_to_send_message"));
     } finally {
       setLoading(false);
     }
@@ -108,7 +110,7 @@ const Help = ({ onBack }: HelpProps) => {
             alt="Back"
           />
         </button>
-        <h1>Help & Support</h1>
+        <h1>{t("help_support")}</h1>
       </div>
 
       <div className="help-content">
@@ -124,7 +126,7 @@ const Help = ({ onBack }: HelpProps) => {
             <div className="help-content-text">
               <span className="help-text">FAQ</span>
               <span className="help-subtitle">
-                Find answers to frequently asked questions
+                {t("find_answers_frequently_asked")}
               </span>
             </div>
             <div className="help-arrow">
@@ -146,9 +148,9 @@ const Help = ({ onBack }: HelpProps) => {
               />
             </div>
             <div className="help-content-text">
-              <span className="help-text">User Guide</span>
+              <span className="help-text">{t("user_guide")}</span>
               <span className="help-subtitle">
-                Learn how to use the app effectively
+                {t("learn_use_app_effectively")}
               </span>
             </div>
             <div className="help-arrow">
@@ -170,9 +172,9 @@ const Help = ({ onBack }: HelpProps) => {
               />
             </div>
             <div className="help-content-text">
-              <span className="help-text">Contact Support</span>
+              <span className="help-text">{t("contact_support")}</span>
               <span className="help-subtitle">
-                Get in touch with our support team
+                {t("get_touch_support_team")}
               </span>
             </div>
             <div className="help-arrow">
@@ -199,7 +201,7 @@ const Help = ({ onBack }: HelpProps) => {
                   alt="Close"
                 />
               </button>
-              <h3>FAQs</h3>
+              <h3>{t("faqs")}</h3>
             </div>
             <FAQ />
           </div>
@@ -220,25 +222,25 @@ const Help = ({ onBack }: HelpProps) => {
                   alt="Close"
                 />
               </button>
-              <h3>Contact Support</h3>
+              <h3>{t("contact_support")}</h3>
             </div>
             <div className="popup-body">
               <form onSubmit={handleSubmitContact} className="contact-form">
                 <div className="form-group">
-                  <label htmlFor="title">Title *</label>
+                  <label htmlFor="title">{t("title")} *</label>
                   <input
                     type="text"
                     id="title"
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    placeholder="Brief description of your issue"
+                    placeholder={t("brief_description_issue")}
                     required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="category">Problem Category *</label>
+                  <label htmlFor="category">{t("problem_category")} *</label>
                   <select
                     id="category"
                     name="category"
@@ -246,24 +248,24 @@ const Help = ({ onBack }: HelpProps) => {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Select a category</option>
-                    <option value="technical">Technical Issue</option>
-                    <option value="account">Account Problem</option>
-                    <option value="feature">Feature Request</option>
-                    <option value="bug">Bug Report</option>
-                    <option value="general">General Inquiry</option>
-                    <option value="other">Other</option>
+                    <option value="">{t("select_category")}</option>
+                    <option value="technical">{t("technical_issue")}</option>
+                    <option value="account">{t("account_problem")}</option>
+                    <option value="feature">{t("feature_request")}</option>
+                    <option value="bug">{t("bug_report")}</option>
+                    <option value="general">{t("general_inquiry")}</option>
+                    <option value="other">{t("other")}</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="message">Message *</label>
+                  <label htmlFor="message">{t("message")} *</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder="Please describe your issue in detail..."
+                    placeholder={t("describe_issue_detail")}
                     rows={6}
                     required
                   />
@@ -272,7 +274,7 @@ const Help = ({ onBack }: HelpProps) => {
                 {message && (
                   <div
                     className={`message ${
-                      message.includes("successfully") ? "success" : "error"
+                      message.includes(t("successfully")) ? "success" : "error"
                     }`}
                   >
                     {message}
@@ -285,14 +287,14 @@ const Help = ({ onBack }: HelpProps) => {
                     className="cancel-button"
                     onClick={closeContactPopup}
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="submit"
                     className="submit-button"
                     disabled={loading}
                   >
-                    {loading ? "Sending..." : "Send Message"}
+                    {loading ? t("sending") : t("send_message")}
                   </button>
                 </div>
               </form>

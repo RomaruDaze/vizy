@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 import "./faq.styles.css";
 
 interface FAQProps {
@@ -13,6 +14,7 @@ interface FAQItem {
 }
 
 const FAQ = ({}: FAQProps) => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -20,83 +22,73 @@ const FAQ = ({}: FAQProps) => {
   const faqData: FAQItem[] = [
     {
       id: "1",
-      question: "How do I reset my password?",
-      answer:
-        "Go to Settings → Privacy & Security → Reset Password. Enter your email and we'll send you a password reset link.",
+      question: t("how_reset_password"),
+      answer: t("reset_password_answer"),
       category: "account",
     },
     {
       id: "2",
-      question: "How do I delete my account?",
-      answer:
-        "Go to Settings → Privacy & Security → Delete Account. Please note this action cannot be undone.",
+      question: t("how_delete_account"),
+      answer: t("delete_account_answer"),
       category: "account",
     },
     {
       id: "3",
-      question: "How do I change my theme?",
-      answer:
-        "Go to Settings → Accessibility → Theme. Choose from our available color themes.",
+      question: t("how_change_theme"),
+      answer: t("change_theme_answer"),
       category: "app",
     },
     {
       id: "4",
-      question: "How do I find immigration offices?",
-      answer:
-        "Use the Locator feature in the bottom navigation. It will show you nearby immigration offices on the map.",
+      question: t("how_find_immigration_offices"),
+      answer: t("find_immigration_offices_answer"),
       category: "features",
     },
     {
       id: "5",
-      question: "How do I find photo booths?",
-      answer:
-        "Use the Locator feature and toggle to 'Photo Booths' to see nearby photo booth locations.",
+      question: t("how_find_photo_booths"),
+      answer: t("find_photo_booths_answer"),
       category: "features",
     },
     {
       id: "6",
-      question: "How do I contact support?",
-      answer:
-        "Go to Settings → Help & Support → Contact Support. Fill out the form and we'll get back to you.",
+      question: t("how_contact_support"),
+      answer: t("contact_support_answer"),
       category: "support",
     },
     {
       id: "7",
-      question: "Is my data secure?",
-      answer:
-        "Yes, we use Firebase authentication and follow security best practices to protect your information.",
+      question: t("is_data_secure"),
+      answer: t("data_secure_answer"),
       category: "privacy",
     },
     {
       id: "8",
-      question: "Can I use the app offline?",
-      answer:
-        "Some features work offline, but you'll need internet for maps and real-time data.",
+      question: t("can_use_offline"),
+      answer: t("offline_usage_answer"),
       category: "app",
     },
     {
       id: "9",
-      question: "How do I update my profile?",
-      answer:
-        "Go to Settings → Account → Edit Profile to update your information.",
+      question: t("how_update_profile"),
+      answer: t("update_profile_answer"),
       category: "account",
     },
     {
       id: "10",
-      question: "What if I find incorrect information?",
-      answer:
-        "Please contact support with the details and we'll verify and update the information.",
+      question: t("incorrect_information"),
+      answer: t("incorrect_information_answer"),
       category: "support",
     },
   ];
 
   const categories = [
-    { id: "all", name: "All Questions" },
-    { id: "account", name: "Account" },
-    { id: "app", name: "App Features" },
-    { id: "features", name: "Locator Features" },
-    { id: "support", name: "Support" },
-    { id: "privacy", name: "Privacy & Security" },
+    { id: "all", name: t("all_questions") },
+    { id: "account", name: t("account") },
+    { id: "app", name: t("app_features") },
+    { id: "features", name: t("locator_features") },
+    { id: "support", name: t("support") },
+    { id: "privacy", name: t("privacy_security") },
   ];
 
   const filteredFAQ = faqData.filter((item) => {
@@ -132,7 +124,7 @@ const FAQ = ({}: FAQProps) => {
             />
             <input
               type="text"
-              placeholder="Search FAQ..."
+              placeholder={t("search_faq")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
@@ -186,7 +178,7 @@ const FAQ = ({}: FAQProps) => {
                           : "give-way--v1"
                       }.png`}
                       alt={
-                        expandedItems.includes(item.id) ? "Collapse" : "Expand"
+                        expandedItems.includes(item.id) ? t("collapse") : t("expand")
                       }
                       className="expand-icon"
                     />
@@ -205,8 +197,8 @@ const FAQ = ({}: FAQProps) => {
                   alt="No Results"
                   className="no-results-icon"
                 />
-                <p>No FAQ items found for your search.</p>
-                <p>Try different keywords or browse all categories.</p>
+                <p>{t("no_faq_items_found")}</p>
+                <p>{t("try_different_keywords")}</p>
               </div>
             )}
           </div>

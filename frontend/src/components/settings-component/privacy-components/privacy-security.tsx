@@ -1,6 +1,7 @@
 // frontend/src/components/settings-component/privacy-components/privacy-security.tsx
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useLanguage } from "../../../contexts/LanguageContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase/config";
 import { deleteUser } from "firebase/auth";
@@ -16,6 +17,7 @@ interface PrivacySecurityProps {
 
 const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -36,7 +38,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
       };
 
       await sendPasswordResetEmail(auth, currentUser.email, actionCodeSettings);
-      setMessage("Password reset email sent! Check your inbox.");
+      setMessage(t("password_reset_email_sent"));
       setTimeout(() => {
         setShowPasswordPopup(false);
         setMessage("");
@@ -44,13 +46,13 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
     } catch (error: any) {
       console.error("Password reset error:", error);
       if (error.code === "auth/user-not-found") {
-        setMessage("No account found with this email address.");
+        setMessage(t("no_account_found_email"));
       } else if (error.code === "auth/invalid-email") {
-        setMessage("Invalid email address format.");
+        setMessage(t("invalid_email_format"));
       } else if (error.code === "auth/too-many-requests") {
-        setMessage("Too many requests. Please try again later.");
+        setMessage(t("too_many_requests"));
       } else {
-        setMessage(`Failed to send reset email: ${error.message}`);
+        setMessage(`${t("failed_send_reset_email")}: ${error.message}`);
       }
     } finally {
       setLoading(false);
@@ -85,7 +87,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         setShowDeleteConfirm(false);
         setShowReauthPopup(true);
       } else {
-        alert("Failed to delete account. Please try again.");
+        alert(t("failed_delete_account"));
       }
     } finally {
       setDeleteLoading(false);
@@ -94,7 +96,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
 
   const handleReauthenticate = async () => {
     if (!currentUser?.email || !password) {
-      setDeleteError("Please enter your password");
+      setDeleteError(t("please_enter_password"));
       return;
     }
 
@@ -123,11 +125,11 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
       console.error("Re-authentication error:", error);
 
       if (error.code === "auth/wrong-password") {
-        setDeleteError("Incorrect password. Please try again.");
+        setDeleteError(t("incorrect_password"));
       } else if (error.code === "auth/user-mismatch") {
-        setDeleteError("Authentication failed. Please try again.");
+        setDeleteError(t("authentication_failed"));
       } else {
-        setDeleteError(`Re-authentication failed: ${error.message}`);
+        setDeleteError(`${t("reauthentication_failed")}: ${error.message}`);
       }
     } finally {
       setDeleteLoading(false);
@@ -150,7 +152,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
             alt="Back"
           />
         </button>
-        <h1>Privacy & Security</h1>
+        <h1>{t("privacy_security")}</h1>
       </div>
 
       <div className="privacy-content">
@@ -168,9 +170,9 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
               />
             </div>
             <div className="privacy-content">
-              <span className="privacy-text">Reset Password</span>
+              <span className="privacy-text">{t("reset_password")}</span>
               <span className="privacy-subtitle">
-                Send password reset email to {currentUser?.email}
+                {t("send_password_reset_email_to")} {currentUser?.email}
               </span>
             </div>
             <div className="privacy-arrow">
@@ -196,9 +198,9 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
               />
             </div>
             <div className="privacy-content">
-              <span className="privacy-text">Delete Account</span>
+              <span className="privacy-text">{t("delete_account")}</span>
               <span className="privacy-subtitle">
-                Permanently delete your account and data
+                {t("permanently_delete_account_data")}
               </span>
             </div>
             <div className="privacy-arrow">
@@ -231,11 +233,11 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                   alt="Close"
                 />
               </button>
-              <h3>Reset Password</h3>
+              <h3>{t("reset_password")}</h3>
             </div>
             <div className="popup-body">
               <p>
-                We'll send a password reset link to{" "}
+                {t("send_password_reset_link_to")}{" "}
                 <strong>{currentUser?.email}</strong>
               </p>
 
@@ -244,13 +246,13 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                 onClick={handlePasswordReset}
                 disabled={loading}
               >
-                {loading ? "Sending..." : "Send Reset Email"}
+                {loading ? t("sending") : t("send_reset_email")}
               </button>
 
               {message && (
                 <div
                   className={`message ${
-                    message.includes("sent") ? "success" : "error"
+                    message.includes(t("sent")) ? "success" : "error"
                   }`}
                 >
                   {message}
@@ -266,7 +268,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         <div className="popup-overlay">
           <div className="popup-content delete-popup">
             <div className="popup-header">
-              <h3>Delete Account</h3>
+              <h3>{t("delete_account")}</h3>
               <button className="close-button" onClick={cancelDeleteAccount}>
                 <img
                   src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
@@ -278,23 +280,23 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
               <div className="delete-warning">
                 <p>
                   <strong>
-                    <span className="warning-icon">⚠️</span> This action cannot
-                    be undone.
+                    <span className="warning-icon">⚠️</span>{" "}
+                    {t("action_cannot_undone")}
                   </strong>
                 </p>
-                <p>All your data, including:</p>
+                <p>{t("all_your_data_including")}:</p>
                 <ul className="delete-list">
-                  <li>Profile information</li>
-                  <li>Saved preferences</li>
-                  <li>Account history</li>
-                  <li>All app data</li>
+                  <li>{t("profile_information")}</li>
+                  <li>{t("saved_preferences")}</li>
+                  <li>{t("account_history")}</li>
+                  <li>{t("all_app_data")}</li>
                 </ul>
-                <p>will be permanently deleted.</p>
+                <p>{t("will_be_permanently_deleted")}</p>
               </div>
             </div>
             <div className="popup-actions">
               <button className="cancel-button" onClick={cancelDeleteAccount}>
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 className="delete-button"
@@ -335,7 +337,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                       src="https://img.icons8.com/sf-black-filled/100/FFFFFF/delete.png"
                       alt="Delete"
                     />
-                    Delete Account
+                    {t("delete_account")}
                   </>
                 )}
               </button>
@@ -355,16 +357,13 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                   alt="Close"
                 />
               </button>
-              <h3>Re-authenticate</h3>
+              <h3>{t("reauthenticate")}</h3>
             </div>
             <div className="popup-body">
-              <p>
-                For security reasons, please enter your password to confirm
-                account deletion.
-              </p>
+              <p>{t("security_reasons_enter_password")}</p>
               <input
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t("enter_your_password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="password-input"
@@ -381,7 +380,7 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
                 onClick={handleReauthenticate}
                 disabled={deleteLoading || !password}
               >
-                {deleteLoading ? "Deleting..." : "Confirm Deletion"}
+                {deleteLoading ? t("deleting") : t("confirm_deletion")}
               </button>
 
               {deleteError && (

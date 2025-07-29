@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "../../../contexts/ThemeContext";
+import { useLanguage } from "../../../contexts/LanguageContext";
 import "./accessibility.styles.css";
 
 interface AccessibilityProps {
@@ -8,63 +9,64 @@ interface AccessibilityProps {
 
 const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
   const { theme, setTheme } = useTheme();
+  const { t } = useLanguage();
 
   const themes = [
     {
       id: "default",
-      name: "Default",
+      name: t("default"),
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       preview: "#667eea",
-      description: "Classic purple gradient",
+      description: t("classic_purple_gradient"),
     },
     {
       id: "sunset",
-      name: "Sunset",
+      name: t("sunset"),
       gradient: "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)",
       preview: "#ff6b6b",
-      description: "Warm orange to yellow",
+      description: t("warm_orange_yellow"),
     },
     {
       id: "forest",
-      name: "Forest",
+      name: t("forest"),
       gradient: "linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%)",
       preview: "#56ab2f",
-      description: "Fresh green gradient",
+      description: t("fresh_green_gradient"),
     },
     {
       id: "midnight",
-      name: "Midnight",
+      name: t("midnight"),
       gradient: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
       preview: "#2c3e50",
-      description: "Dark blue tones",
+      description: t("dark_blue_tones"),
     },
     {
       id: "cherry",
-      name: "Cherry",
+      name: t("cherry"),
       gradient: "linear-gradient(135deg, #eb3349 0%, #f45c43 100%)",
       preview: "#eb3349",
-      description: "Vibrant red gradient",
+      description: t("vibrant_red_gradient"),
     },
     {
       id: "ocean",
-      name: "Ocean",
+      name: t("ocean"),
       gradient: "linear-gradient(135deg, #667db6 0%, #0082c8 100%)",
       preview: "#667db6",
-      description: "Deep blue waters",
+      description: t("deep_blue_waters"),
     },
     {
       id: "obsidian",
-      name: "Obsidian",
+      name: t("obsidian"),
       gradient: "linear-gradient(135deg, #374151 0%, #6b7280 100%)",
       preview: "#374151",
-      description: "Dark obsidian tones",
+      description: t("dark_obsidian_tones"),
     },
     {
       id: "golden",
-      name: "Golden",
+      name: t("golden"),
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
       preview: "#f093fb",
-      description: "Pink to red gradient",
+      description: t("pink_red_gradient"),
     },
   ];
 
@@ -81,13 +83,13 @@ const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
             alt="Back"
           />
         </button>
-        <h1>Themes</h1>
+        <h1>{t("themes")}</h1>
       </div>
 
       <div className="accessibility-content">
         <div className="theme-intro">
-          <h2>Choose Your Theme</h2>
-          <p>Select a color theme that matches your style and preferences</p>
+          <h2>{t("choose_your_theme")}</h2>
+          <p>{t("select_color_theme_matches_style")}</p>
         </div>
 
         <div className="theme-grid">
@@ -99,7 +101,7 @@ const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
               }`}
               onClick={() => handleThemeChange(themeOption.id)}
               style={{ background: themeOption.gradient }}
-              aria-label={`Select ${themeOption.name} theme`}
+              aria-label={`${t("select")} ${themeOption.name} ${t("theme")}`}
             >
               <div className="theme-button-content">
                 <div className="theme-name">{themeOption.name}</div>
