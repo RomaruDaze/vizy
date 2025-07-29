@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from "../../contexts/LanguageContext";
 import "./ai-form-assistant.styles.css";
 import { aiModel } from "../../firebase/config";
 import { useAuth } from "../../contexts/AuthContext";
 import { getPopupState, setPopupState } from "../../services/popupService";
+import BottomNavigation from "../shared/bottom-navigation";
 import {
   saveConversation,
   updateConversation,
@@ -20,7 +20,6 @@ interface AIFormAssistantProps {
 }
 
 const AIFormAssistant = ({}: AIFormAssistantProps) => {
-  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
@@ -356,10 +355,6 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
     });
   };
 
-  const handleBackToHome = () => {
-    navigate("/");
-  };
-
   const handlePlusClick = () => {
     setShowMediaButtons(!showMediaButtons);
   };
@@ -499,12 +494,6 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       )}
 
       <div className="form-header">
-        <button className="back-button" onClick={handleBackToHome}>
-          <img
-            src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
-            alt="Back"
-          />
-        </button>
         <div className="form-header-title">
           <img
             src="https://img.icons8.com/glyph-neue/30/FFFFFF/bard--v2.png"
@@ -695,6 +684,9 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
             </div>
           )}
         </div>
+      </div>
+      <div className="bottom-section">
+        <BottomNavigation />
       </div>
     </div>
   );

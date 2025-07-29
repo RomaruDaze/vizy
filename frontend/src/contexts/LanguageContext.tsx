@@ -68,7 +68,10 @@ const translations = {
     full_name_desc: "Please enter your full name",
     address_desc: "Please enter your address",
     date_of_birth_desc: "Please enter your date of birth",
+    visa_expiry_desc: "Please enter your visa expiry date",
     documents_desc: "Please select the documents you have",
+    start_new_conversation: "Start new conversation",
+    conversation_history: "Conversation History",
     ask_anything_about_visa: "Ask anything about your visa",
     camera: "Camera",
     image: "Image",
@@ -378,6 +381,9 @@ const translations = {
     address_desc: "Silakan masukkan alamat Anda",
     date_of_birth_desc: "Silakan masukkan tanggal lahir Anda",
     documents_desc: "Silakan pilih dokumen yang Anda miliki",
+    visa_expiry_desc: "Silakan masukkan tanggal kedaluwarsa visa Anda",
+    start_new_conversation: "Mulai percakapan baru",
+    conversation_history: "Riwayat Percakapan",
     ask_anything_about_visa: "Tanyakan apa saja tentang visa Anda",
     camera: "Kamera",
     image: "Gambar",
@@ -422,12 +428,15 @@ const translations = {
     international_student_residency: "Izin Tinggal Pelajar Internasional",
     work_residency: "Izin Tinggal Kerja",
     family_residency: "Izin Tinggal Keluarga",
-    specified_skill_worker_residency: "Izin Tinggal Pekerja Keterampilan Tertentu",
+    specified_skill_worker_residency:
+      "Izin Tinggal Pekerja Keterampilan Tertentu",
     what_do_you_want_to_do: "Apa yang ingin Anda lakukan?",
     extend_current_residency: "Perpanjang izin tinggal saya saat ini",
-    change_to_different_residency_type: "Ubah ke jenis izin tinggal yang berbeda",
+    change_to_different_residency_type:
+      "Ubah ke jenis izin tinggal yang berbeda",
     which_documents_do_you_have: "Dokumen apa yang sudah Anda miliki?",
-    have_you_applied_before: "Apakah Anda pernah mengajukan izin tinggal sebelumnya?",
+    have_you_applied_before:
+      "Apakah Anda pernah mengajukan izin tinggal sebelumnya?",
     yes_successfully: "Ya, berhasil",
     yes_but_rejected: "Ya, tetapi ditolak",
     no_first_time: "Tidak, ini pertama kali saya",
@@ -479,7 +488,8 @@ const translations = {
 
     // Signup Page
     create_account: "Buat Akun Anda",
-    join_vizy_message: "Bergabung dengan Vizy dan mulai perjalanan imigrasi Anda",
+    join_vizy_message:
+      "Bergabung dengan Vizy dan mulai perjalanan imigrasi Anda",
     nickname: "Nama Panggilan",
     enter_nickname: "Masukkan nama panggilan Anda",
     email: "Email",
@@ -622,8 +632,7 @@ const translations = {
     please_fill_all_fields: "Silakan isi semua bidang",
     message_sent_successfully:
       "Pesan berhasil dikirim! Kami akan segera menghubungi Anda kembali.",
-    failed_to_send_message:
-      "Gagal mengirim pesan. Silakan coba lagi.",
+    failed_to_send_message: "Gagal mengirim pesan. Silakan coba lagi.",
     sending: "Mengirim...",
     send_message: "Kirim Pesan",
 
@@ -639,8 +648,7 @@ const translations = {
     invalid_email_format: "Format alamat email tidak valid.",
     too_many_requests: "Terlalu banyak permintaan. Silakan coba lagi nanti.",
     failed_send_reset_email: "Gagal mengirim email reset",
-    failed_delete_account:
-      "Gagal menghapus akun. Silakan coba lagi.",
+    failed_delete_account: "Gagal menghapus akun. Silakan coba lagi.",
     send_password_reset_link_to: "Kami akan mengirimkan link reset password ke",
     send_reset_email: "Kirim Email Reset",
     action_cannot_undone: "Tindakan ini tidak dapat dibatalkan.",
@@ -655,8 +663,7 @@ const translations = {
       "Untuk alasan keamanan, silakan masukkan password Anda untuk mengkonfirmasi penghapusan akun.",
     enter_your_password: "Masukkan password Anda",
     please_enter_password: "Silakan masukkan password Anda",
-    incorrect_password:
-      "Password salah. Silakan coba lagi.",
+    incorrect_password: "Password salah. Silakan coba lagi.",
     authentication_failed: "Autentikasi gagal. Silakan coba lagi.",
     reauthentication_failed: "Re-autentikasi gagal",
     deleting: "Menghapus...",
@@ -701,6 +708,9 @@ const translations = {
     address_desc: "住所を入力してください",
     date_of_birth_desc: "生年月日を入力してください",
     documents_desc: "お持ちの書類を選択してください",
+    visa_expiry_desc: "ビザの有効期限を入力してください",
+    start_new_conversation: "新しい会話を開始",
+    conversation_history: "会話履歴",
     ask_anything_about_visa: "ビザについて何でも聞いてください",
     camera: "カメラ",
     image: "画像",
