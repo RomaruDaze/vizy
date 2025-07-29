@@ -1,14 +1,21 @@
 import { ref, set, get, update } from "firebase/database";
 import { database } from "../firebase/config";
-import type { UserProfile } from "../types/userProfile";
 
-export const saveUserProfile = async (
-  userId: string,
-  profileData: Partial<UserProfile>
-) => {
+export interface UserProfile {
+  deadline?: string;
+  ResidencyType?: string;
+  purpose?: string;
+  purpose_target?: string;
+  documents?: string[];
+  experience?: string;
+  language?: "en" | "ja";
+  [key: string]: any;
+}
+
+export const saveUserProfile = async (userId: string, data: UserProfile) => {
   try {
     const userRef = ref(database, `users/${userId}`);
-    await set(userRef, profileData);
+    await set(userRef, data);
   } catch (error) {
     console.error("Error saving user profile:", error);
     throw error;
@@ -20,19 +27,14 @@ export const getUserProfile = async (
 ): Promise<UserProfile | null> => {
   try {
     const userRef = ref(database, `users/${userId}`);
-    const userSnap = await get(userRef);
+    const snapshot = await get(userRef);
 
-    if (userSnap.exists()) {
-      return userSnap.val() as UserProfile;
-    } else {
-      return null;
+    if (snapshot.exists()) {
+      return snapshot.val() as UserProfile;
     }
+    return null;
   } catch (error) {
     console.error("Error getting user profile:", error);
-    // Return null instead of throwing for permission denied
-    if (error instanceof Error && error.message === "Permission denied") {
-      return null;
-    }
     throw error;
   }
 };
@@ -46,6 +48,21 @@ export const updateUserProfile = async (
     await update(userRef, updates);
   } catch (error) {
     console.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+
+export const updateUserLanguage = async (
+  userId: string,
+  language: "en" | "ja"
+) => {
+  try {
+    const userRef = ref(database, `users/${userId}`);
+    await update(userRef, {
+      language: language,
+    });
+  } catch (error) {
+    console.error("Error updating user language:", error);
     throw error;
   }
 };

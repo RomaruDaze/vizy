@@ -4,6 +4,7 @@ import { useLanguage } from "../../../contexts/LanguageContext";
 import { updateProfile } from "firebase/auth";
 import type { User } from "firebase/auth";
 import "./account.styles.css";
+import { updateUserLanguage } from "../../../services/userProfileService";
 
 interface AccountProps {
   onBack: () => void;
@@ -29,8 +30,17 @@ const Account = ({ onBack }: AccountProps) => {
     setShowLanguagePopup(true);
   };
 
-  const handleLanguageSelect = (selectedLanguage: "en" | "ja") => {
-    setLanguage(selectedLanguage);
+  const handleLanguageChange = async (newLanguage: "en" | "ja") => {
+    setLanguage(newLanguage);
+
+    // Save language change to Firebase
+    if (currentUser) {
+      try {
+        await updateUserLanguage(currentUser.uid, newLanguage);
+      } catch (error) {
+        console.error("Error saving language to Firebase:", error);
+      }
+    }
   };
 
   const handleSaveName = async () => {
@@ -178,7 +188,7 @@ const Account = ({ onBack }: AccountProps) => {
                 className={`language-option ${
                   language === "en" ? "active" : ""
                 }`}
-                onClick={() => handleLanguageSelect("en")}
+                onClick={() => handleLanguageChange("en")}
               >
                 <div className="language-option-content">
                   <span className="language-name">{t("english")}</span>
@@ -191,7 +201,7 @@ const Account = ({ onBack }: AccountProps) => {
                 className={`language-option ${
                   language === "ja" ? "active" : ""
                 }`}
-                onClick={() => handleLanguageSelect("ja")}
+                onClick={() => handleLanguageChange("ja")}
               >
                 <div className="language-option-content">
                   <span className="language-name">{t("japanese")}</span>

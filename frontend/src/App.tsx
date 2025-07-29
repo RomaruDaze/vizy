@@ -19,10 +19,10 @@ import "./colors.css";
 
 function App() {
   return (
-    <LanguageProvider>
-      <ThemeProvider>
-        <Router basename="">
-          <AuthProvider>
+    <ThemeProvider>
+      <Router basename="">
+        <AuthProvider>
+          <LanguageProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
@@ -52,15 +52,17 @@ function App() {
               />
               <Route
                 path="/ai-form-assistant"
-                element={<AIFormAssistant onBack={() => window.history.back()} />}
+                element={
+                  <AIFormAssistant onBack={() => window.history.back()} />
+                }
               />
               {/* Fallback route */}
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
-          </AuthProvider>
-        </Router>
-      </ThemeProvider>
-    </LanguageProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

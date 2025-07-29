@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
+import LanguageButton from "../shared/LanguageButton";
 import "./signupPage.styles.css";
 import { updateProfile } from "firebase/auth";
 
@@ -13,45 +15,46 @@ const SignupPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { signup, loginWithGoogle } = useAuth();
+  const { t } = useLanguage();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     // Validation
     if (!nickname.trim()) {
-      return setError("Nickname is required");
+      return setError(t("nickname_required"));
     }
 
     if (password !== confirmPassword) {
-      return setError("Passwords do not match");
+      return setError(t("passwords_dont_match"));
     }
 
     if (password.length < 6) {
-      return setError("Password must be at least 6 characters long");
+      return setError(t("password_too_short"));
     }
 
     if (!agreeToTerms) {
-      return setError("You must agree to the Terms of Service");
+      return setError(t("must_agree_terms"));
     }
 
     try {
       setError("");
       setLoading(true);
-      
+
       // Create the user account
       const userCredential = await signup(email, password);
-      
+
       // Update the user's display name with the nickname
       if (userCredential.user) {
-        await updateProfile(userCredential.user, { 
-          displayName: nickname.trim() 
+        await updateProfile(userCredential.user, {
+          displayName: nickname.trim(),
         });
       }
 
       // Redirect to home page after successful signup
       window.location.href = "/vizy/";
     } catch (error: any) {
-      setError("Failed to create an account: " + error.message);
+      setError(t("failed_create_account") + ": " + error.message);
     } finally {
       setLoading(false);
     }
@@ -65,7 +68,7 @@ const SignupPage = () => {
       // Redirect to home page after successful signup
       window.location.href = "/vizy/";
     } catch (error: any) {
-      setError("Failed to sign up with Google: " + error.message);
+      setError(t("failed_google_signup") + ": " + error.message);
     } finally {
       setLoading(false);
     }
@@ -75,59 +78,59 @@ const SignupPage = () => {
     <div className="signup-page">
       <div className="signup-container">
         <div className="signup-header">
-          <h1>Create Your Account</h1>
-          <p>Join Vizy and start your immigration journey</p>
+          <h1>{t("create_account")}</h1>
+          <p>{t("join_vizy_message")}</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
-            <label htmlFor="nickname">Nickname</label>
+            <label htmlFor="nickname">{t("nickname")}</label>
             <input
               type="text"
               id="nickname"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               required
-              placeholder="Enter your nickname"
+              placeholder={t("enter_nickname")}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t("email")}</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="Enter your email"
+              placeholder={t("enter_email")}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t("password")}</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="Enter your password"
+              placeholder={t("enter_password")}
               minLength={6}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
+            <label htmlFor="confirmPassword">{t("confirm_password")}</label>
             <input
               type="password"
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              placeholder="Re-enter your password"
+              placeholder={t("re_enter_password")}
               minLength={6}
             />
           </div>
@@ -140,28 +143,28 @@ const SignupPage = () => {
                 onChange={(e) => setAgreeToTerms(e.target.checked)}
               />
               <span className="checkmark"></span>
-              I agree to the{' '}
-              <button 
+              {t("i_agree_to")}{" "}
+              <button
                 type="button"
-                className="terms-link" 
+                className="terms-link"
                 onClick={() => setShowTerms(true)}
               >
-                Terms of Service
+                {t("terms_of_service")}
               </button>
             </label>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="signup-button primary"
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? t("creating_account") : t("create_account")}
           </button>
         </form>
 
         <div className="divider">
-          <span>or</span>
+          <span>{t("or")}</span>
         </div>
 
         <div className="button-container">
@@ -174,15 +177,15 @@ const SignupPage = () => {
               src="https://img.icons8.com/color/480/google-logo.png"
               alt="Google"
             />
-            Continue with Google
+            {t("continue_with_google")}
           </button>
         </div>
 
         <div className="signup-footer">
           <p>
-            Already have an account?{' '}
+            {t("already_have_account")}{" "}
             <a href="/login" className="link-button">
-              Log in
+              {t("log_in")}
             </a>
           </p>
         </div>
@@ -193,54 +196,58 @@ const SignupPage = () => {
         <div className="terms-overlay">
           <div className="terms-modal">
             <div className="terms-header">
-              <h3>Terms of Service</h3>
-              <button 
-                className="close-button" 
+              <h3>{t("terms_of_service")}</h3>
+              <button
+                className="close-button"
                 onClick={() => setShowTerms(false)}
               >
                 ×
               </button>
             </div>
             <div className="terms-content">
-              <h4>Welcome to Vizy</h4>
-              <p>By using our service, you agree to the following terms:</p>
-              
-              <h5>1. Service Description</h5>
-              <p>Vizy is an immigration assistant application designed to help users find immigration offices and photo booths in Japan.</p>
-              
-              <h5>2. User Responsibilities</h5>
-              <p>You are responsible for:</p>
+              <h4>{t("welcome_to_vizy")}</h4>
+              <p>{t("terms_agreement")}</p>
+
+              <h5>1. {t("service_description_title")}</h5>
+              <p>{t("service_description")}</p>
+
+              <h5>2. {t("user_responsibilities_title")}</h5>
+              <p>{t("you_are_responsible_for")}</p>
               <ul>
-                <li>Providing accurate information</li>
-                <li>Maintaining the security of your account</li>
-                <li>Using the service in compliance with local laws</li>
+                <li>{t("providing_accurate_info")}</li>
+                <li>{t("maintaining_account_security")}</li>
+                <li>{t("using_service_compliance")}</li>
               </ul>
-              
-              <h5>3. Privacy</h5>
-              <p>We collect and process your data in accordance with our Privacy Policy. Your personal information is protected and will not be shared with third parties without your consent.</p>
-              
-              <h5>4. Limitation of Liability</h5>
-              <p>Vizy provides information for reference purposes only. We are not responsible for any decisions made based on the information provided through our service.</p>
-              
-              <h5>5. Changes to Terms</h5>
-              <p>We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of any changes.</p>
-              
-              <p><strong>Last updated:</strong> {new Date().toLocaleDateString()}</p>
+
+              <h5>3. {t("privacy")}</h5>
+              <p>{t("privacy_description")}</p>
+
+              <h5>4. {t("limitation_of_liability")}</h5>
+              <p>{t("liability_description")}</p>
+
+              <h5>5. {t("changes_to_terms")}</h5>
+              <p>{t("terms_changes_description")}</p>
+
+              <p>
+                <strong>{t("last_updated")}:</strong>{" "}
+                {new Date().toLocaleDateString()}
+              </p>
             </div>
             <div className="terms-footer">
-              <button 
+              <button
                 className="signup-button primary"
                 onClick={() => setShowTerms(false)}
               >
-                I Understand
+                {t("i_understand")}
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <LanguageButton />
     </div>
   );
 };
 
 export default SignupPage;
- 

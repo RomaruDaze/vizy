@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import LanguageButton from "../shared/LanguageButton";
 import "./loginPage.styles.css";
 
 const LoginPage = () => {
@@ -9,6 +11,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login, loginWithGoogle, currentUser } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   // Redirect if already logged in
@@ -27,7 +30,7 @@ const LoginPage = () => {
       await login(email, password);
       // Navigation will be handled by the useEffect above
     } catch (error: any) {
-      setError("Failed to log in: " + error.message);
+      setError(t("failed_to_login") + ": " + error.message);
     } finally {
       setLoading(false);
     }
@@ -40,7 +43,7 @@ const LoginPage = () => {
       await loginWithGoogle();
       // Navigation will be handled by the useEffect above
     } catch (error: any) {
-      setError("Failed to authenticate with Google: " + error.message);
+      setError(t("failed_google_auth") + ": " + error.message);
     } finally {
       setLoading(false);
     }
@@ -51,8 +54,9 @@ const LoginPage = () => {
     return (
       <div className="login-page">
         <div className="login-container">
-          <div>Redirecting...</div>
+          <div>{t("redirecting")}</div>
         </div>
+        <LanguageButton />
       </div>
     );
   }
@@ -62,34 +66,34 @@ const LoginPage = () => {
       <div className="login-container">
         <div className="login-header">
           <img src="./vizy.svg" alt="Vizy Logo" className="logo" />
-          <h1>Welcome to Vizy</h1>
-          <p>Your immigration assistant</p>
+          <h1>{t("welcome_to_vizy")}</h1>
+          <p>{t("your_immigration_assistant")}</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t("email")}</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="Enter your email"
+              placeholder={t("enter_email")}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t("password")}</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="Enter your password"
+              placeholder={t("enter_password")}
               minLength={6}
             />
           </div>
@@ -99,12 +103,12 @@ const LoginPage = () => {
             className="login-button primary"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? t("logging_in") : t("login")}
           </button>
         </form>
 
         <div className="divider">
-          <span>or</span>
+          <span>{t("or")}</span>
         </div>
 
         <div className="button-container">
@@ -117,19 +121,21 @@ const LoginPage = () => {
               src="https://img.icons8.com/color/480/google-logo.png"
               alt="Google"
             />
-            Continue with Google
+            {t("continue_with_google")}
           </button>
         </div>
 
         <div className="login-footer">
           <p>
-            Don't have an account?{" "}
+            {t("dont_have_account")}{" "}
             <a href="/signup" className="link-button">
-              Sign up
+              {t("sign_up")}
             </a>
           </p>
         </div>
       </div>
+
+      <LanguageButton />
     </div>
   );
 };

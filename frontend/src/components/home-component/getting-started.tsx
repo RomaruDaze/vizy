@@ -22,7 +22,7 @@ interface Question {
 
 const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const { currentUser } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [showConditional, setShowConditional] = useState(false);
@@ -207,10 +207,14 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Only save to Firebase when all questions are completed
+      // Save to Firebase when all questions are completed
       if (currentUser) {
         try {
-          await saveUserProfile(currentUser.uid, answers);
+          // Save answers and current language preference
+          await saveUserProfile(currentUser.uid, {
+            ...answers,
+            language: language, // Save the current language preference
+          });
         } catch (error) {
           console.error("Error saving profile:", error);
         }
