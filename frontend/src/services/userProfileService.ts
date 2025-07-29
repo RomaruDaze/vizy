@@ -8,7 +8,7 @@ export interface UserProfile {
   purpose_target?: string;
   documents?: string[];
   experience?: string;
-  language?: "en" | "ja";
+  language?: "en" | "ja" | "id"; // Add "id" for Indonesian
   [key: string]: any;
 }
 
