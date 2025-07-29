@@ -508,9 +508,9 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         <div className="form-header-title">
           <img
             src="https://img.icons8.com/glyph-neue/30/FFFFFF/bard--v2.png"
-            alt="Vizy AI Assistant"
+            alt="Vizy AI"
           />
-          <h1>{t("vizy_ai_assistant")}</h1>
+          <h1>{t("vizy_ai")}</h1>
         </div>
         <button
           className="history-button"
