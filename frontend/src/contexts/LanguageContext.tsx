@@ -671,7 +671,7 @@ const translations = {
     select_language: "言語を選択",
     home: "ホーム",
     settings: "設定",
-    ai_chat: "AI チャット",
+    ai_chat: "AI Chat",
     maps: "マップ",
     account: "アカウント",
     logout: "サインアウト",
