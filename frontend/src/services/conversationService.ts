@@ -13,6 +13,13 @@ export interface Message {
   text: string;
   sender: "user" | "ai";
   timestamp: Date;
+  image?: string;
+  actionButtons?: Array<{
+    id: string;
+    text: string;
+    route: string;
+    icon: string;
+  }>;
 }
 
 export const saveConversation = async (

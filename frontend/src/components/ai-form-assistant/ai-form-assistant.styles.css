@@ -1082,3 +1082,72 @@
             font-size: 0.9em;
         }
     }
+
+    .action-buttons-container {
+        margin-top: 10px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .action-buttons-container p {
+        margin: 0 0 10px 0;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .action-buttons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .action-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .action-button:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+    }
+
+    .action-button img {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 6px;
+        filter: brightness(0) invert(1);
+    }
+
+    .action-button span {
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .action-buttons-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .action-button {
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .action-button img {
+            width: 20px;
+            height: 20px;
+        }
+    }

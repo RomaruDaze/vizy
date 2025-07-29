@@ -14,12 +14,22 @@ import {
   type Conversation,
   type Message,
 } from "../../services/conversationService";
+import { useNavigate } from "react-router-dom";
 
 interface AIFormAssistantProps {
   onBack: () => void;
 }
 
+// Update the Message interface to store only serializable data
+interface SerializableActionButton {
+  id: string;
+  text: string;
+  route: string; // Store route instead of function
+  icon: string;
+}
+
 const AIFormAssistant = ({}: AIFormAssistantProps) => {
+  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
@@ -38,9 +48,19 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
   const [currentConversationId, setCurrentConversationId] = useState<
     string | null
   >(null);
-  const [showQuickTips, setShowQuickTips] = useState(false);
   const [showMediaButtons, setShowMediaButtons] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Add new state for interactive features
+
+  // Add state to persist action buttons
+  const [persistentActionButtons, setPersistentActionButtons] = useState<
+    SerializableActionButton[]
+  >([]);
+
+  // Add this state to track if we should load the last conversation
+  const [shouldLoadLastConversation, setShouldLoadLastConversation] =
+    useState(true);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -57,6 +77,23 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         try {
           const loadedConversations = await getConversations(currentUser.uid);
           setConversations(loadedConversations);
+
+          // Load the most recent conversation if available and we haven't loaded one yet
+          if (shouldLoadLastConversation && loadedConversations.length > 0) {
+            const lastConversation = loadedConversations[0]; // Most recent conversation
+            setMessages(lastConversation.messages);
+            setCurrentConversationId(lastConversation.id);
+            setShouldLoadLastConversation(false);
+
+            // Restore action buttons from the last AI message
+            const lastAIMessage = lastConversation.messages
+              .filter((msg) => msg.sender === "ai")
+              .pop();
+
+            if (lastAIMessage && lastAIMessage.actionButtons) {
+              setPersistentActionButtons(lastAIMessage.actionButtons);
+            }
+          }
         } catch (error) {
           console.error("Error loading conversations:", error);
         }
@@ -64,7 +101,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     };
 
     loadConversations();
-  }, [currentUser]);
+  }, [currentUser, shouldLoadLastConversation]);
 
   // Check if user has seen the welcome popup
   useEffect(() => {
@@ -80,7 +117,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
           } else {
             // Show quick tips if user has seen welcome but no conversations yet
             if (conversations.length === 0) {
-              setShowQuickTips(true);
+              // setShowQuickTips(true); // This line was removed
             }
           }
         } catch (error) {
@@ -99,89 +136,10 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     if (currentUser?.uid) {
       try {
         await setPopupState(currentUser.uid, "aiFormWelcome", true);
-        // Show quick tips after closing welcome popup
-        setShowQuickTips(true);
       } catch (error) {
         console.error("Error saving popup state:", error);
       }
     }
-  };
-
-  const handleQuickTipClick = (question: string) => {
-    // Don't set inputText, directly send the message
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: question,
-      sender: "user",
-      timestamp: new Date(),
-    };
-
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
-    setShowQuickTips(false);
-    setIsLoading(true);
-
-    // Send the AI response
-    getAIResponse(question)
-      .then((aiResponse) => {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: aiResponse,
-          sender: "ai",
-          timestamp: new Date(),
-        };
-
-        const finalMessages = [...updatedMessages, aiMessage];
-        setMessages(finalMessages);
-
-        // Save conversation to Firebase
-        if (currentUser?.uid) {
-          if (currentConversationId) {
-            updateConversation(
-              currentUser.uid,
-              currentConversationId,
-              finalMessages
-            );
-          } else {
-            saveConversation(currentUser.uid, finalMessages).then(
-              (conversationId) => {
-                setCurrentConversationId(conversationId);
-              }
-            );
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("AI Error:", error);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: "Sorry, I'm having trouble connecting right now. Please try again.",
-          sender: "ai",
-          timestamp: new Date(),
-        };
-        const finalMessages = [...updatedMessages, errorMessage];
-        setMessages(finalMessages);
-
-        // Save conversation even if there's an error
-        if (currentUser?.uid) {
-          if (currentConversationId) {
-            updateConversation(
-              currentUser.uid,
-              currentConversationId,
-              finalMessages
-            );
-          } else {
-            saveConversation(currentUser.uid, finalMessages).then(
-              (conversationId) => {
-                setCurrentConversationId(conversationId);
-              }
-            );
-          }
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
 
   const handleSendMessage = async () => {
@@ -204,25 +162,33 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: aiResponse,
+        text: aiResponse.text,
         sender: "ai",
         timestamp: new Date(),
+        // Only include actionButtons if they exist and are not undefined
+        ...(aiResponse.actions &&
+          aiResponse.actions.length > 0 && {
+            actionButtons: aiResponse.actions,
+          }),
       };
 
       const finalMessages = [...updatedMessages, aiMessage];
       setMessages(finalMessages);
 
+      // Set persistent action buttons
+      if (aiResponse.actions && aiResponse.actions.length > 0) {
+        setPersistentActionButtons(aiResponse.actions);
+      }
+
       // Save conversation to Firebase
       if (currentUser?.uid) {
         if (currentConversationId) {
-          // Update existing conversation
           await updateConversation(
             currentUser.uid,
             currentConversationId,
             finalMessages
           );
         } else {
-          // Create new conversation
           const conversationId = await saveConversation(
             currentUser.uid,
             finalMessages
@@ -266,6 +232,18 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     setMessages(conversation.messages);
     setCurrentConversationId(conversation.id);
     setShowHistoryPopup(false);
+    setShouldLoadLastConversation(false); // Prevent auto-loading after manually loading
+
+    // Restore action buttons from the last AI message in this conversation
+    const lastAIMessage = conversation.messages
+      .filter((msg) => msg.sender === "ai")
+      .pop();
+
+    if (lastAIMessage && lastAIMessage.actionButtons) {
+      setPersistentActionButtons(lastAIMessage.actionButtons);
+    } else {
+      setPersistentActionButtons([]); // Clear if no action buttons
+    }
   };
 
   const startNewConversation = () => {
@@ -279,7 +257,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     ]);
     setCurrentConversationId(null);
     setShowHistoryPopup(false);
-    setShowQuickTips(true);
+    setShouldLoadLastConversation(false); // Prevent auto-loading after starting new conversation
+    setPersistentActionButtons([]); // Clear action buttons for new conversation
   };
 
   const deleteConversationById = async (conversationId: string) => {
@@ -291,9 +270,16 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         );
         setConversations(updatedConversations);
 
-        // If we're deleting the current conversation, start a new one
+        // If we're deleting the current conversation, load the next most recent one
         if (conversationId === currentConversationId) {
-          startNewConversation();
+          if (updatedConversations.length > 0) {
+            const nextConversation = updatedConversations[0];
+            setMessages(nextConversation.messages);
+            setCurrentConversationId(nextConversation.id);
+          } else {
+            // If no conversations left, start a new one
+            startNewConversation();
+          }
         }
       } catch (error) {
         console.error("Error deleting conversation:", error);
@@ -301,10 +287,25 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     }
   };
 
-  const getAIResponse = async (userInput: string): Promise<string> => {
-    try {
-      const systemPrompt = `You are a helpful AI assistant specializing in Japanese visa applications. 
+  const getAIResponse = async (
+    userInput: string
+  ): Promise<{
+    text: string;
+    actions?: SerializableActionButton[];
+  }> => {
+    const maxRetries = 3;
+    let lastError;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const systemPrompt = `You are a helpful AI assistant specializing in Japanese visa applications. 
 You help users fill out visa extension forms by providing clear, accurate guidance.
+
+**Available App Features:**
+- **Locator**: Find nearby immigration offices and visa centers
+- **Document Checklist**: View required documents for your visa type
+- **Visa Status**: Track your application progress
+- **Settings**: Manage your profile and preferences
 
 **Key areas you can help with:**
 - **Full name** (as shown on passport)
@@ -318,21 +319,116 @@ You help users fill out visa extension forms by providing clear, accurate guidan
 - **Visa expiry date**
 - **Reason for extension**
 
+**Interactive Guidance:**
+When users ask about:
+- "Find immigration office" → Guide to Locator
+- "Check documents" → Guide to Document Checklist
+- "Track application" → Guide to Visa Status
+- "Apply for extension" → Guide through the process
+
 Provide helpful, specific guidance using markdown formatting. Be concise but thorough. If the user asks about a specific field, give detailed instructions for that field.
 
 Use **bold** for important terms, \`code\` for specific formats, and bullet points for lists.`;
 
-      const fullPrompt = `${systemPrompt}\n\n**User question:** ${userInput}`;
+        const fullPrompt = `${systemPrompt}\n\n**User question:** ${userInput}`;
 
-      const result = await aiModel.generateContent(fullPrompt);
-      const response = result.response;
-      const text = response.text();
+        const result = await aiModel.generateContent(fullPrompt);
+        const response = result.response;
+        const text = response.text();
 
-      return text;
-    } catch (error) {
-      console.error("Firebase AI Error:", error);
-      throw error;
+        // Analyze user input for app navigation
+        const actions = analyzeUserIntent(userInput, text);
+
+        return {
+          text,
+          actions: actions.length > 0 ? actions : undefined,
+        };
+      } catch (error: any) {
+        lastError = error;
+
+        // If it's a rate limit error, wait before retrying
+        if (
+          error.message?.includes("429") ||
+          error.message?.includes("overloaded")
+        ) {
+          const waitTime = attempt * 2000; // 2s, 4s, 6s
+          console.log(
+            `API overloaded, retrying in ${waitTime}ms (attempt ${attempt}/${maxRetries})`
+          );
+          await new Promise((resolve) => setTimeout(resolve, waitTime));
+          continue;
+        }
+
+        // For other errors, throw immediately
+        throw error;
+      }
     }
+
+    // If all retries failed, return a fallback response
+    console.error("All AI retries failed:", lastError);
+    return {
+      text: "I'm experiencing high traffic right now. Please try again in a few moments, or you can use the quick action buttons below for immediate help.",
+      actions: analyzeUserIntent(userInput, ""), // Still show relevant actions
+    };
+  };
+
+  const analyzeUserIntent = (userInput: string, _aiResponse: string) => {
+    const input = userInput.toLowerCase();
+    const actions: SerializableActionButton[] = [];
+
+    // Only show relevant actions based on user intent
+    if (
+      input.includes("immigration") ||
+      input.includes("office") ||
+      input.includes("where") ||
+      input.includes("location") ||
+      input.includes("submit")
+    ) {
+      actions.push({
+        id: "locator",
+        text: "Find Immigration Office",
+        route: "/locator",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/marker.png",
+      });
+    }
+
+    if (
+      input.includes("document") ||
+      input.includes("checklist") ||
+      input.includes("required") ||
+      input.includes("paperwork") ||
+      input.includes("what do i need")
+    ) {
+      actions.push({
+        id: "documents",
+        text: "View Required Documents",
+        route: "/user-guide",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+      });
+    }
+
+    if (
+      input.includes("apply") ||
+      input.includes("extension") ||
+      input.includes("how to apply")
+    ) {
+      actions.push(
+        {
+          id: "documents",
+          text: "View Required Documents",
+          route: "/user-guide",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+        },
+        {
+          id: "locator",
+          text: "Find Immigration Office",
+          route: "/locator",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/marker.png",
+        }
+      );
+    }
+
+    return actions;
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -376,7 +472,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
     setInputText(e.target.value);
     // Hide quick tips when user starts typing
     if (e.target.value.trim()) {
-      setShowQuickTips(false);
+      // setShowQuickTips(false); // This line was removed
     }
   };
 
@@ -543,71 +639,29 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
             </div>
           ))}
 
-          {/* Quick Tips Message */}
-          {showQuickTips && (
+          {/* Persistent Action Buttons */}
+          {persistentActionButtons.length > 0 && (
             <div className="message ai">
               <div className="message-content">
-                <div className="message-text">
-                  <div className="quick-tips-message">
-                    <p>
-                      <strong>{t("ai_quick_tips")}</strong>
-                    </p>
-                    <div className="quick-tips-grid">
+                <div className="action-buttons-container">
+                  <p>
+                    <strong>Quick Actions:</strong>
+                  </p>
+                  <div className="action-buttons-grid">
+                    {persistentActionButtons.map((button) => (
                       <button
-                        className="quick-tip-button"
-                        onClick={() =>
-                          handleQuickTipClick(t("full_name_question"))
-                        }
+                        key={button.id}
+                        className="action-button"
+                        onClick={() => {
+                          navigate(button.route);
+                        }}
                       >
-                        <div className="quick-tip-icon">👤</div>
-                        <div className="quick-tip-text">
-                          <strong>{t("full_name")}</strong>
-                          <span>{t("full_name_desc")}</span>
-                        </div>
+                        <img src={button.icon} alt={button.text} />
+                        <span>{button.text}</span>
                       </button>
-
-                      <button
-                        className="quick-tip-button"
-                        onClick={() =>
-                          handleQuickTipClick(t("address_format_question"))
-                        }
-                      >
-                        <div className="quick-tip-icon">🏠</div>
-                        <div className="quick-tip-text">
-                          <strong>{t("address")}</strong>
-                          <span>{t("address_desc")}</span>
-                        </div>
-                      </button>
-
-                      <button
-                        className="quick-tip-button"
-                        onClick={() =>
-                          handleQuickTipClick(t("visa_expiry_question"))
-                        }
-                      >
-                        <div className="quick-tip-icon">📅</div>
-                        <div className="quick-tip-text">
-                          <strong>{t("visa_expiry_date")}</strong>
-                          <span>{t("visa_expiry_desc")}</span>
-                        </div>
-                      </button>
-
-                      <button
-                        className="quick-tip-button"
-                        onClick={() =>
-                          handleQuickTipClick(t("documents_question"))
-                        }
-                      >
-                        <div className="quick-tip-icon">📋</div>
-                        <div className="quick-tip-text">
-                          <strong>{t("documents")}</strong>
-                          <span>{t("documents_desc")}</span>
-                        </div>
-                      </button>
-                    </div>
+                    ))}
                   </div>
                 </div>
-                <div className="message-time">{formatTime(new Date())}</div>
               </div>
             </div>
           )}
