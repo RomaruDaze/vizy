@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
 import {
-  saveUserProfile,
   getUserProfile,
-  updateUserLanguage, // Changed from updateUserProfile
+  updateUserProfile, // Changed from updateUserLanguage
 } from "../../services/userProfileService";
 
 interface VisaStatusProps {
@@ -407,7 +406,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
         documentProgress[doc.id] = doc.checked;
       });
 
-      await updateUserLanguage(currentUser.uid, {
+      await updateUserProfile(currentUser.uid, {
         documentProgress,
       });
 
@@ -463,7 +462,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
       setShowReminderPopup(false);
 
       // Save to Firebase
-      await updateUserLanguage(currentUser.uid, {
+      await updateUserProfile(currentUser.uid, {
         reminderDate,
         reminderTime,
         reminderSet: true,
@@ -479,7 +478,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
       setShowReminderPopup(false);
 
       // Save to Firebase
-      await updateUserLanguage(currentUser.uid, {
+      await updateUserProfile(currentUser.uid, {
         reminderDate: "",
         reminderTime: "",
         reminderSet: false,
