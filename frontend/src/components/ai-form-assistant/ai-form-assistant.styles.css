@@ -14,6 +14,11 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
+        height: 12.5%;
+    }
+
+    .back-button {
+        flex: 0.25;
     }
 
     .back-button img {
@@ -23,6 +28,7 @@
 
     .form-header-title {
         display: flex;
+        flex: 1;
         align-items: center;
         gap: 0.5rem;
     }
@@ -37,6 +43,10 @@
     .form-header img {
         width: 30px;
         height: 30px;
+    }
+
+    .history-button {
+        flex: 0.25;
     }
 
     .header-subtitle {

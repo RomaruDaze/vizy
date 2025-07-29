@@ -505,7 +505,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         </button>
         <div className="form-header-title">
           <img
-            src="https://img.icons8.com/glyph-neue/30/FFFFFF/bard--v2.png"
+            src="https://img.icons8.com/glyph-neue/100/FFFFFF/bard--v2.png"
             alt="Vizy AI Assistant"
           />
           <h1>Vizy AI Assistant</h1>
@@ -515,7 +515,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
           onClick={() => setShowHistoryPopup(true)}
         >
           <img
-            src="https://img.icons8.com/material-outlined/50/activity-history.png"
+            src="https://img.icons8.com/material-outlined/100/activity-history.png"
             alt="History"
           />
         </button>
