@@ -54,7 +54,7 @@ export const updateUserProfile = async (
 
 export const updateUserLanguage = async (
   userId: string,
-  language: "en" | "ja"
+  language: "en" | "ja" | "id" // Add "id" to the type
 ) => {
   try {
     const userRef = ref(database, `users/${userId}`);

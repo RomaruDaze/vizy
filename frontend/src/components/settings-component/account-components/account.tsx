@@ -30,7 +30,7 @@ const Account = ({ onBack }: AccountProps) => {
     setShowLanguagePopup(true);
   };
 
-  const handleLanguageChange = async (newLanguage: "en" | "ja") => {
+  const handleLanguageChange = async (newLanguage: "en" | "ja" | "id") => {
     setLanguage(newLanguage);
 
     // Save language change to Firebase
@@ -125,7 +125,7 @@ const Account = ({ onBack }: AccountProps) => {
             className="language-section-content"
             onClick={handleLanguageClick}
           >
-            <p>{language === "en" ? t("english") : t("japanese")}</p>
+            <p>{language === "en" ? t("english") : language === "ja" ? t("japanese") : t("indonesian")}</p>
             <img
               src="https://img.icons8.com/ios-glyphs/100/FFFFFF/sort-right.png"
               alt=">"
@@ -208,6 +208,19 @@ const Account = ({ onBack }: AccountProps) => {
                   <span className="language-native">日本語</span>
                 </div>
                 {language === "ja" && <div className="language-check"></div>}
+              </button>
+
+              <button
+                className={`language-option ${
+                  language === "id" ? "active" : ""
+                }`}
+                onClick={() => handleLanguageChange("id")}
+              >
+                <div className="language-option-content">
+                  <span className="language-name">{t("indonesian")}</span>
+                  <span className="language-native">Indonesia</span>
+                </div>
+                {language === "id" && <div className="language-check"></div>}
               </button>
             </div>
           </div>

@@ -5,7 +5,7 @@ import {
   updateUserLanguage,
 } from "../services/userProfileService";
 
-type Language = "en" | "ja";
+type Language = "en" | "ja" | "id"; // Add Indonesian
 
 interface LanguageContextType {
   language: Language;
@@ -338,7 +338,331 @@ const translations = {
     deleting: "Deleting...",
     confirm_deletion: "Confirm Deletion",
   },
+  id: {
+    language: "Bahasa",
+    english: "English",
+    japanese: "Jepang",
+    indonesian: "Indonesia",
+    select_language: "Pilih Bahasa",
+    home: "Beranda",
+    settings: "Pengaturan",
+    ai_chat: "Chat AI",
+    maps: "Peta",
+    account: "Akun",
+    logout: "Keluar",
+    cancel: "Batal",
+    save: "Simpan",
+    close: "Tutup",
+    loading: "Memuat...",
+    error: "Error",
+    success: "Berhasil",
+    immigration_offices: "Kantor Imigrasi",
+    photo_booths: "Booth Foto",
+    reset_location: "Reset",
+    your_location: "Lokasi Anda",
+    distance: "Jarak",
+    directions: "Petunjuk Arah",
+    call: "Telepon",
+    ai_welcome:
+      "Halo! Saya asisten AI untuk aplikasi visa Anda. Saya dapat membantu Anda mengisi formulir perpanjangan visa langkah demi langkah. Apa yang ingin Anda ketahui?",
+    ai_loading: "Memuat kantor imigrasi...",
+    ai_loading_photo: "Memuat booth foto...",
+    ai_quick_tips:
+      "Berikut beberapa pertanyaan cepat yang bisa Anda tanyakan kepada saya:",
+    full_name: "Nama Lengkap",
+    address: "Alamat",
+    date_of_birth: "Tanggal Lahir",
+    documents: "Dokumen",
+    full_name_desc: "Silakan masukkan nama lengkap Anda",
+    address_desc: "Silakan masukkan alamat Anda",
+    date_of_birth_desc: "Silakan masukkan tanggal lahir Anda",
+    documents_desc: "Silakan pilih dokumen yang Anda miliki",
+    ask_anything_about_visa: "Tanyakan apa saja tentang visa Anda",
+    camera: "Kamera",
+    image: "Gambar",
+    welcome: "Selamat Datang",
+    getting_started_message: "Mari mulai dengan aplikasi visa Anda",
+    get_started: "Mulai",
+    manage_account: "Kelola pengaturan akun Anda",
+    customize_experience: "Sesuaikan pengalaman Anda",
+    get_help_support: "Dapatkan bantuan dan dukungan",
+    privacy_security_settings: "Pengaturan privasi dan keamanan",
+    welcome_ai_assistant: "Selamat datang di Asisten Formulir AI!",
+    what_i_can_help: "✨ Yang bisa saya bantu:",
+    form_guidance: "Panduan Formulir",
+    form_guidance_desc:
+      "Dapatkan bantuan langkah demi langkah dengan formulir perpanjangan visa",
+    field_explanations: "Penjelasan Bidang",
+    field_explanations_desc: "Pahami apa yang diperlukan setiap bidang",
+    how_to_use: "💡 Cara menggunakan:",
+    detailed_explanations:
+      "Saya akan memberikan penjelasan dan contoh yang detail",
+    follow_up_questions: "Jangan ragu untuk mengajukan pertanyaan lanjutan",
+    try_asking_me: "Coba tanyakan saya:",
+    full_name_question: "Bagaimana cara mengisi bidang nama lengkap?",
+    address_format_question:
+      "Format apa yang harus saya gunakan untuk alamat saya?",
+    visa_expiry_question: "Bantu saya dengan bidang tanggal kedaluwarsa visa",
+    lets_start: "Mari mulai!",
+    vizy_ai: "Vizy AI",
+    accessibility: "Aksesibilitas",
+    help_support: "Bantuan & Dukungan",
+    privacy_security: "Privasi & Keamanan",
+    manage_profile_account: "Kelola profil dan pengaturan akun Anda",
+    choose_theme_colors: "Pilih tema dan warna yang Anda sukai",
+    get_help_contact_support: "Dapatkan bantuan dan hubungi dukungan",
+    manage_privacy_security: "Kelola pengaturan privasi dan keamanan",
+    notification_test: "Tes Notifikasi",
+    test_push_notifications: "Tes notifikasi push",
+    welcome_back: "Selamat datang kembali!",
+    whats_your_deadline: "Apa batas waktu Anda?",
+    select_your_deadline: "Pilih batas waktu Anda",
+    whats_your_current_residency_type: "Apa jenis izin tinggal Anda saat ini?",
+    international_student_residency: "Izin Tinggal Pelajar Internasional",
+    work_residency: "Izin Tinggal Kerja",
+    family_residency: "Izin Tinggal Keluarga",
+    specified_skill_worker_residency: "Izin Tinggal Pekerja Keterampilan Tertentu",
+    what_do_you_want_to_do: "Apa yang ingin Anda lakukan?",
+    extend_current_residency: "Perpanjang izin tinggal saya saat ini",
+    change_to_different_residency_type: "Ubah ke jenis izin tinggal yang berbeda",
+    which_documents_do_you_have: "Dokumen apa yang sudah Anda miliki?",
+    have_you_applied_before: "Apakah Anda pernah mengajukan izin tinggal sebelumnya?",
+    yes_successfully: "Ya, berhasil",
+    yes_but_rejected: "Ya, tetapi ditolak",
+    no_first_time: "Tidak, ini pertama kali saya",
+    not_sure: "Saya tidak yakin",
+    of: "dari",
+    back: "Kembali",
+    next: "Selanjutnya",
+    finish: "Selesai",
+    your_residency_deadline: "Batas Waktu Izin Tinggal Anda",
+    no_deadline_set: "Tidak ada batas waktu yang ditetapkan",
+    incomplete_documents: "Dokumen Tidak Lengkap",
+    documents_remaining: "dokumen tersisa",
+    document_checklist: "Daftar Periksa Dokumen",
+    save_changes: "Simpan Perubahan",
+    ai_form: "Formulir AI",
+    set_reminder: "Atur Pengingat",
+    date: "Tanggal",
+    time: "Waktu",
+    clear_reminder: "Hapus Pengingat",
+    available_for_submission: "Tersedia untuk pengajuan",
+    not_available_for_submission: "Tidak tersedia untuk pengajuan",
+    deadline_expired: "Batas waktu telah berakhir",
+
+    // Document Options
+    application_extension_form: "Formulir Perpanjangan Permohonan",
+    passport: "Paspor",
+    residence_card: "Kartu Izin Tinggal",
+    id_photo: "Foto (3x4 cm)",
+    processing_fee: "Biaya Pemrosesan",
+    certificate_of_employment: "Sertifikat Pekerjaan",
+    company_registration_certificate: "Sertifikat Pendaftaran Perusahaan",
+    company_financial_documents: "Dokumen Keuangan Perusahaan",
+    resident_tax_certificate: "Sertifikat Pajak Penduduk",
+    tax_payment_certificate: "Sertifikat Pembayaran Pajak",
+    certificate_of_enrollment: "Sertifikat Pendaftaran",
+    academic_transcript: "Transkrip Akademik",
+    bank_balance_certificate: "Sertifikat Saldo Bank",
+    scholarship_award_certificate: "Sertifikat Beasiswa",
+    certificate_of_remittance: "Sertifikat Transfer",
+    letter_of_guarantee: "Surat Jaminan",
+    marriage_certificate: "Sertifikat Pernikahan",
+    birth_certificate: "Sertifikat Kelahiran",
+    bank_statement: "Laporan Bank",
+    family_register: "Daftar Keluarga",
+    resident_certificate: "Sertifikat Penduduk",
+
+    // Conditional Label
+    select_target_residency_type: "Pilih jenis izin tinggal target Anda:",
+
+    // Signup Page
+    create_account: "Buat Akun Anda",
+    join_vizy_message: "Bergabung dengan Vizy dan mulai perjalanan imigrasi Anda",
+    nickname: "Nama Panggilan",
+    enter_nickname: "Masukkan nama panggilan Anda",
+    email: "Email",
+    enter_email: "Masukkan email Anda",
+    password: "Password",
+    enter_password: "Masukkan password Anda",
+    confirm_password: "Konfirmasi Password",
+    re_enter_password: "Masukkan ulang password Anda",
+    nickname_required: "Nama panggilan diperlukan",
+    passwords_dont_match: "Password tidak cocok",
+    password_too_short: "Password harus minimal 6 karakter",
+    must_agree_terms: "Anda harus menyetujui Ketentuan Layanan",
+    failed_create_account: "Gagal membuat akun",
+    failed_google_signup: "Gagal mendaftar dengan Google",
+    i_agree_to: "Saya setuju dengan",
+    terms_of_service: "Ketentuan Layanan",
+    creating_account: "Membuat Akun...",
+    or: "atau",
+    continue_with_google: "Lanjutkan dengan Google",
+    already_have_account: "Sudah punya akun?",
+    log_in: "Masuk",
+    welcome_to_vizy: "Selamat datang di Vizy",
+    your_immigration_assistant: "Asisten imigrasi Anda",
+    failed_to_login: "Gagal masuk",
+    failed_google_auth: "Gagal autentikasi dengan Google",
+    logging_in: "Sedang masuk...",
+    login: "Masuk",
+    dont_have_account: "Tidak punya akun?",
+    sign_up: "Daftar",
+    redirecting: "Mengalihkan...",
+    terms_agreement:
+      "Dengan menggunakan layanan kami, Anda setuju dengan ketentuan berikut:",
+    service_description_title: "Deskripsi Layanan",
+    service_description:
+      "Vizy adalah aplikasi asisten imigrasi yang dirancang untuk membantu pengguna menemukan kantor imigrasi dan booth foto di Jepang.",
+    user_responsibilities_title: "Tanggung Jawab Pengguna",
+    you_are_responsible_for: "Anda bertanggung jawab untuk:",
+    providing_accurate_info: "Memberikan informasi yang akurat",
+    maintaining_account_security: "Mempertahankan keamanan akun Anda",
+    using_service_compliance: "Menggunakan layanan sesuai dengan hukum lokal",
+    privacy: "Privasi",
+    privacy_description:
+      "Kami mengumpulkan dan memproses data Anda sesuai dengan Kebijakan Privasi kami. Informasi pribadi Anda dilindungi dan tidak akan dibagikan dengan pihak ketiga tanpa persetujuan Anda.",
+    limitation_of_liability: "Pembatasan Tanggung Jawab",
+    liability_description:
+      "Vizy menyediakan informasi hanya untuk tujuan referensi. Kami tidak bertanggung jawab atas keputusan apa pun yang dibuat berdasarkan informasi yang disediakan melalui layanan kami.",
+    changes_to_terms: "Perubahan Ketentuan",
+    terms_changes_description:
+      "Kami berhak untuk memodifikasi ketentuan ini kapan saja. Penggunaan layanan yang berkelanjutan merupakan penerimaan terhadap perubahan apa pun.",
+    last_updated: "Terakhir diperbarui",
+    i_understand: "Saya Mengerti",
+
+    // Settings translations
+    themes: "Tema",
+    choose_your_theme: "Pilih Tema Anda",
+    select_color_theme_matches_style:
+      "Pilih tema warna yang sesuai dengan gaya dan preferensi Anda",
+    default: "Default",
+    sunset: "Matahari Terbenam",
+    forest: "Hutan",
+    midnight: "Tengah Malam",
+    cherry: "Ceri",
+    ocean: "Lautan",
+    obsidian: "Obsidian",
+    golden: "Emas",
+    classic_purple_gradient: "Gradien ungu klasik",
+    warm_orange_yellow: "Oranye hangat ke kuning",
+    fresh_green_gradient: "Gradien hijau segar",
+    dark_blue_tones: "Nada biru gelap",
+    vibrant_red_gradient: "Gradien merah cerah",
+    deep_blue_waters: "Perairan biru dalam",
+    dark_obsidian_tones: "Nada obsidian gelap",
+    pink_red_gradient: "Gradien merah muda ke merah",
+    select: "Pilih",
+    theme: "tema",
+
+    // FAQ translations
+    how_reset_password: "Bagaimana cara mereset password saya?",
+    reset_password_answer:
+      "Pergi ke Pengaturan → Privasi & Keamanan → Reset Password. Masukkan email Anda dan kami akan mengirimkan link reset password.",
+    how_delete_account: "Bagaimana cara menghapus akun saya?",
+    delete_account_answer:
+      "Pergi ke Pengaturan → Privasi & Keamanan → Hapus Akun. Harap diperhatikan bahwa tindakan ini tidak dapat dibatalkan.",
+    how_change_theme: "Bagaimana cara mengubah tema saya?",
+    change_theme_answer:
+      "Pergi ke Pengaturan → Aksesibilitas → Tema. Pilih dari tema warna yang tersedia.",
+    how_find_immigration_offices: "Bagaimana cara menemukan kantor imigrasi?",
+    find_immigration_offices_answer:
+      "Gunakan fitur Locator di navigasi bawah. Ini akan menunjukkan kantor imigrasi terdekat di peta.",
+    how_find_photo_booths: "Bagaimana cara menemukan booth foto?",
+    find_photo_booths_answer:
+      "Gunakan fitur Locator dan beralih ke 'Booth Foto' untuk melihat lokasi booth foto terdekat.",
+    how_contact_support: "Bagaimana cara menghubungi dukungan?",
+    contact_support_answer:
+      "Pergi ke Pengaturan → Bantuan & Dukungan → Hubungi Dukungan. Isi formulir dan kami akan menghubungi Anda kembali.",
+    is_data_secure: "Apakah data saya aman?",
+    data_secure_answer:
+      "Ya, kami menggunakan autentikasi Firebase dan mengikuti praktik keamanan terbaik untuk melindungi informasi Anda.",
+    can_use_offline: "Bisakah saya menggunakan aplikasi offline?",
+    offline_usage_answer:
+      "Beberapa fitur berfungsi offline, tetapi Anda memerlukan internet untuk peta dan data real-time.",
+    how_update_profile: "Bagaimana cara memperbarui profil saya?",
+    update_profile_answer:
+      "Pergi ke Pengaturan → Akun → Edit Profil untuk memperbarui informasi Anda.",
+    incorrect_information:
+      "Bagaimana jika saya menemukan informasi yang salah?",
+    incorrect_information_answer:
+      "Silakan hubungi dukungan dengan detailnya dan kami akan memverifikasi dan memperbarui informasinya.",
+    all_questions: "Semua Pertanyaan",
+    app_features: "Fitur Aplikasi",
+    locator_features: "Fitur Locator",
+    search_faq: "Cari FAQ...",
+    collapse: "Ciutkan",
+    expand: "Perluas",
+    no_faq_items_found:
+      "Tidak ada item FAQ yang ditemukan untuk pencarian Anda.",
+    try_different_keywords:
+      "Coba kata kunci yang berbeda atau jelajahi semua kategori.",
+
+    // Help & Support translations
+    user_guide: "Panduan Pengguna",
+    learn_use_app_effectively:
+      "Pelajari cara menggunakan aplikasi secara efektif",
+    find_answers_frequently_asked:
+      "Temukan jawaban untuk pertanyaan yang sering diajukan",
+    get_touch_support_team: "Hubungi tim dukungan kami",
+    faqs: "FAQ",
+    title: "Judul",
+    brief_description_issue: "Deskripsi singkat masalah Anda",
+    problem_category: "Kategori Masalah",
+    select_category: "Pilih kategori",
+    technical_issue: "Masalah Teknis",
+    account_problem: "Masalah Akun",
+    feature_request: "Permintaan Fitur",
+    bug_report: "Laporan Bug",
+    general_inquiry: "Pertanyaan Umum",
+    other: "Lainnya",
+    message: "Pesan",
+    describe_issue_detail: "Silakan jelaskan masalah Anda secara detail...",
+    please_fill_all_fields: "Silakan isi semua bidang",
+    message_sent_successfully:
+      "Pesan berhasil dikirim! Kami akan segera menghubungi Anda kembali.",
+    failed_to_send_message:
+      "Gagal mengirim pesan. Silakan coba lagi.",
+    sending: "Mengirim...",
+    send_message: "Kirim Pesan",
+
+    // Privacy & Security translations
+    reset_password: "Reset Password",
+    send_password_reset_email_to: "Kirim email reset password ke",
+    delete_account: "Hapus Akun",
+    permanently_delete_account_data: "Hapus akun dan data Anda secara permanen",
+    password_reset_email_sent:
+      "Email reset password telah dikirim! Periksa kotak masuk Anda.",
+    no_account_found_email:
+      "Tidak ada akun yang ditemukan dengan alamat email ini.",
+    invalid_email_format: "Format alamat email tidak valid.",
+    too_many_requests: "Terlalu banyak permintaan. Silakan coba lagi nanti.",
+    failed_send_reset_email: "Gagal mengirim email reset",
+    failed_delete_account:
+      "Gagal menghapus akun. Silakan coba lagi.",
+    send_password_reset_link_to: "Kami akan mengirimkan link reset password ke",
+    send_reset_email: "Kirim Email Reset",
+    action_cannot_undone: "Tindakan ini tidak dapat dibatalkan.",
+    all_your_data_including: "Semua data Anda, termasuk:",
+    profile_information: "Informasi profil",
+    saved_preferences: "Preferensi yang disimpan",
+    account_history: "Riwayat akun",
+    all_app_data: "Semua data aplikasi",
+    will_be_permanently_deleted: "akan dihapus secara permanen.",
+    reauthenticate: "Re-autentikasi",
+    security_reasons_enter_password:
+      "Untuk alasan keamanan, silakan masukkan password Anda untuk mengkonfirmasi penghapusan akun.",
+    enter_your_password: "Masukkan password Anda",
+    please_enter_password: "Silakan masukkan password Anda",
+    incorrect_password:
+      "Password salah. Silakan coba lagi.",
+    authentication_failed: "Autentikasi gagal. Silakan coba lagi.",
+    reauthentication_failed: "Re-autentikasi gagal",
+    deleting: "Menghapus...",
+    confirm_deletion: "Konfirmasi Penghapusan",
+  },
   ja: {
+    // Basic translations
     language: "言語",
     english: "English",
     japanese: "日本語",
@@ -662,7 +986,12 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem("vizy-language") as Language;
-    if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ja")) {
+    if (
+      savedLanguage &&
+      (savedLanguage === "en" ||
+        savedLanguage === "ja" ||
+        savedLanguage === "id")
+    ) {
       setLanguageState(savedLanguage);
     }
   }, []);
