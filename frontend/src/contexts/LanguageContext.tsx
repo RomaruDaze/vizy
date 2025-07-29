@@ -35,6 +35,7 @@ const translations = {
     language: "Language",
     english: "English",
     japanese: "Japanese",
+    indonesian: "Indonesian",
     select_language: "Select Language",
     home: "Home",
     settings: "Settings",
@@ -665,6 +666,7 @@ const translations = {
     // Basic translations
     language: "言語",
     english: "English",
+    indonesian: "Indonesia",
     japanese: "日本語",
     select_language: "言語を選択",
     home: "ホーム",
