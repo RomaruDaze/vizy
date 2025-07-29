@@ -34,9 +34,6 @@ const UserGuide = () => {
             targetType = profile.purpose_target;
           }
 
-          console.log("Profile:", profile);
-          console.log("Target type:", targetType);
-
           if (targetType) {
             setTargetVisaType(targetType);
             const userDocuments = generateDocuments(targetType);
@@ -94,8 +91,6 @@ const UserGuide = () => {
       </div>
 
       <div className="user-guide-content">
-        <h2>Required Documents for {targetVisaType}</h2>
-
         <div className="documents-section">
           {Object.entries(groupedDocuments).map(([category, docs]) => (
             <div key={category} className="document-category">
