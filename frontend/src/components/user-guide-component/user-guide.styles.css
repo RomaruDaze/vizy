@@ -1,0 +1,269 @@
+.user-guide-content {
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-y: auto;
+  height: calc(100vh - 120px);
+  /* Adjust for header height */
+}
+
+.user-guide-content h2 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.user-guide-content h3 {
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.user-guide-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.user-guide-content ul,
+.user-guide-content ol {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.user-guide-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.user-guide-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.visa-types-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.visa-type-card {
+  background: var(--master-gradient);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.visa-type-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.visa-type-icon {
+  flex-shrink: 0;
+}
+
+.visa-type-icon img {
+  width: 48px;
+  height: 48px;
+  filter: brightness(0) invert(1);
+}
+
+.visa-type-content {
+  flex: 1;
+}
+
+.visa-type-content h3 {
+  color: white;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.visa-type-content p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.visa-requirements {
+  margin-top: 0.5rem;
+}
+
+.visa-requirements h4 {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 0.25rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.visa-requirements ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.visa-requirements li {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  margin-bottom: 0.125rem;
+}
+
+.visa-type-arrow {
+  flex-shrink: 0;
+}
+
+.visa-type-arrow img {
+  width: 20px;
+  height: 20px;
+  transform: rotate(180deg);
+  filter: brightness(0) invert(1);
+}
+
+.visa-type-selector {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--master-gradient);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.visa-type-selector label {
+  display: block;
+  color: white;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.visa-type-selector select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+.visa-type-selector select:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.documents-section {
+  margin: 3rem 1rem;
+}
+
+.document-category {
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.category-title {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.document-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.document-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.document-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.document-icon {
+  flex-shrink: 0;
+}
+
+.document-icon img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(1);
+}
+
+.document-content {
+  flex: 1;
+}
+
+.document-content h4 {
+  color: white;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+
+}
+
+.document-content p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+.document-status {
+  flex-shrink: 0;
+}
+
+.required-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .user-guide-content {
+    height: calc(100vh - 100px);
+    padding: 0.5rem;
+  }
+
+  .document-card {
+    padding: 1rem;
+  }
+
+  .document-icon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .document-content h4 {
+    font-size: 0.9rem;
+  }
+
+  .document-content p {
+    font-size: 0.8rem;
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useLanguage } from "../../../contexts/LanguageContext";
@@ -10,6 +11,7 @@ interface HelpProps {
 }
 
 const Help = ({ onBack }: HelpProps) => {
+  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { t } = useLanguage();
   const [showContactPopup, setShowContactPopup] = useState(false);
@@ -27,7 +29,7 @@ const Help = ({ onBack }: HelpProps) => {
   };
 
   const handleUserGuide = () => {
-    // TODO: Implement User Guide functionality
+    navigate("/user-guide");
   };
 
   const handleContactSupport = () => {

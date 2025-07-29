@@ -949,6 +949,7 @@
 .documents-popup-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 1rem;
 }
@@ -959,6 +960,19 @@
   margin: 0;
   font-size: 1.3rem;
   font-weight: 600;
+}
+
+.documents-help-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.documents-help-button img {
+  width: 40px;
+  height: 40px;
 }
 
 .close-button {
@@ -1197,6 +1211,8 @@
 .save-button-documents:active {
   transform: translateY(0);
 }
+
+
 
 /* Responsive Design */
 @media (max-width: 480px) {

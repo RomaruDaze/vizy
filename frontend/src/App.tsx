@@ -14,6 +14,7 @@ import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import AIFormAssistant from "./components/ai-form-assistant/AIFormAssistant";
+import UserGuide from "./components/user-guide-component/user-guide";
 import "./App.css";
 import "./colors.css";
 
@@ -54,6 +55,14 @@ function App() {
                 path="/ai-form-assistant"
                 element={
                   <AIFormAssistant onBack={() => window.history.back()} />
+                }
+              />
+              <Route
+                path="/user-guide"
+                element={
+                  <ProtectedRoute>
+                    <UserGuide />
+                  </ProtectedRoute>
                 }
               />
               {/* Fallback route */}
