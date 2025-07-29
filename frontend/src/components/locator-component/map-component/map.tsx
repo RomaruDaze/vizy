@@ -135,6 +135,8 @@ const calculateDistance = (
 interface MapProps {
   locationType: string;
   onViewChange?: (isAtUserLocation: boolean) => void;
+  onMarkersLoaded?: () => void;
+  isLoading?: boolean;
 }
 
 interface MapRef {
@@ -142,17 +144,20 @@ interface MapRef {
 }
 
 const Map = forwardRef<MapRef, MapProps>(
-  ({ locationType, onViewChange }, ref) => {
+  ({ locationType, onViewChange, onMarkersLoaded }, ref) => {
     const [userPosition, setUserPosition] = useState<[number, number] | null>(
       null
     );
     const [nearbyLocations, setNearbyLocations] = useState<Location[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isMapLoading, setIsMapLoading] = useState(true);
     const [loadingText, setLoadingText] = useState("Getting your location...");
     const [selectedLocation, setSelectedLocation] = useState<Location | null>(
       null
     );
     const [showDetailPopup, setShowDetailPopup] = useState(false);
+
+    // Track when location type changes
+    const [prevLocationType, setPrevLocationType] = useState(locationType);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -177,7 +182,12 @@ const Map = forwardRef<MapRef, MapProps>(
                 );
 
                 setNearbyLocations(nearby);
-                setIsLoading(false);
+                setIsMapLoading(false);
+
+                // Notify parent component that markers are loaded
+                if (onMarkersLoaded) {
+                  onMarkersLoaded();
+                }
               },
               (error) => {
                 console.error("Geolocation error:", error);
@@ -191,7 +201,7 @@ const Map = forwardRef<MapRef, MapProps>(
           }
         } catch (error) {
           console.error("Error fetching data:", error);
-          setIsLoading(false);
+          setIsMapLoading(false);
         }
       };
 
@@ -204,15 +214,63 @@ const Map = forwardRef<MapRef, MapProps>(
             dataSource = await getPhotoBooths();
           }
           setNearbyLocations(dataSource);
-          setIsLoading(false);
+          setIsMapLoading(false);
+
+          // Notify parent component that markers are loaded
+          if (onMarkersLoaded) {
+            onMarkersLoaded();
+          }
         } catch (error) {
           console.error("Error fetching fallback data:", error);
-          setIsLoading(false);
+          setIsMapLoading(false);
         }
       };
 
       fetchData();
-    }, [locationType]);
+    }, [locationType, onMarkersLoaded]);
+
+    // Handle location type changes
+    useEffect(() => {
+      if (prevLocationType !== locationType) {
+        setPrevLocationType(locationType);
+
+        // If we're switching location types and have user position, fetch new data
+        if (userPosition && !isMapLoading) {
+          const fetchNewData = async () => {
+            try {
+              const nearby = await getLocationsNearby(
+                locationType === "immigration"
+                  ? "immigration-offices"
+                  : "photo-booths",
+                userPosition[0],
+                userPosition[1],
+                20
+              );
+
+              setNearbyLocations(nearby);
+
+              // Notify parent component that markers are loaded
+              if (onMarkersLoaded) {
+                onMarkersLoaded();
+              }
+            } catch (error) {
+              console.error("Error fetching new location data:", error);
+              if (onMarkersLoaded) {
+                onMarkersLoaded();
+              }
+            }
+          };
+
+          fetchNewData();
+        }
+      }
+    }, [
+      locationType,
+      prevLocationType,
+      userPosition,
+      isMapLoading,
+      onMarkersLoaded,
+    ]);
 
     const handleLocationClick = (location: Location) => {
       setSelectedLocation(location);
@@ -255,7 +313,7 @@ const Map = forwardRef<MapRef, MapProps>(
     }, [ref]);
 
     // Don't render map until we have the user position
-    if (isLoading) {
+    if (isMapLoading) {
       return (
         <div className="map-loading-container">
           <div className="map-loading-content">
@@ -340,7 +398,8 @@ const Map = forwardRef<MapRef, MapProps>(
                 <div>
                   <strong>Your Location</strong>
                   <p>
-                    Found {nearbyLocations.length} {locationTypeName} within 20km
+                    Found {nearbyLocations.length} {locationTypeName} within
+                    20km
                   </p>
                 </div>
               </Popup>

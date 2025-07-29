@@ -16,11 +16,6 @@ const Locator = () => {
     setIsLoading(true);
     setLoadingText("Loading immigration offices...");
     setSelectedOption("immigration");
-
-    // Simulate loading time for better UX
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
   };
 
   const handlePhotoBooths = async () => {
@@ -29,11 +24,6 @@ const Locator = () => {
     setIsLoading(true);
     setLoadingText("Loading photo booths...");
     setSelectedOption("photobooth");
-
-    // Simulate loading time for better UX
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
   };
 
   const handleResetLocation = () => {
@@ -44,6 +34,11 @@ const Locator = () => {
 
   const handleViewChange = (isAtUserLocation: boolean) => {
     setIsAtUserLocation(isAtUserLocation);
+  };
+
+  // Callback to handle when markers are loaded
+  const handleMarkersLoaded = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -62,6 +57,8 @@ const Locator = () => {
             locationType={selectedOption}
             ref={mapRef}
             onViewChange={handleViewChange}
+            onMarkersLoaded={handleMarkersLoaded}
+            isLoading={isLoading}
           />
         </div>
 
