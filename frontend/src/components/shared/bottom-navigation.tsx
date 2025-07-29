@@ -27,22 +27,6 @@ const BottomNavigation = () => {
         </div>
         <span>{t("home")}</span>
       </button>
-      <button
-        className={`nav-button ai-button ${
-          location.pathname === "/ai-form-assistant" ? "active" : ""
-        }`}
-        onClick={() => {
-          navigate("/ai-form-assistant");
-        }}
-      >
-        <div className="nav-icon">
-          <img
-            src="https://img.icons8.com/glyph-neue/64/FFFFFF/bard--v2.png"
-            alt="chat"
-          />
-        </div>
-        <span>{t("ai_chat")}</span>
-      </button>
 
       <button
         className={`nav-button locator-button ${
@@ -61,6 +45,23 @@ const BottomNavigation = () => {
         <span>{t("maps")}</span>
       </button>
 
+      <button
+        className={`nav-button ai-button ${
+          location.pathname === "/ai-form-assistant" ? "active" : ""
+        }`}
+        onClick={() => {
+          navigate("/ai-form-assistant");
+        }}
+      >
+        <div className="nav-icon">
+          <img
+            src="https://img.icons8.com/glyph-neue/64/FFFFFF/bard--v2.png"
+            alt="chat"
+          />
+        </div>
+        <span>{t("ai_chat")}</span>
+      </button>
+ 
       <button
         className={`nav-button settings-button ${
           location.pathname === "/settings" ? "active" : ""
