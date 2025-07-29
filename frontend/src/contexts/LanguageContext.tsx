@@ -142,6 +142,7 @@ const translations = {
     available_for_submission: "Available for submission",
     not_available_for_submission: "Not available for submission",
     deadline_expired: "Deadline has expired",
+    documents_question: "Which documents do i need to apply for a visa extension?",
 
     // Document Options
     application_extension_form: "Application Extension Form",
@@ -461,6 +462,7 @@ const translations = {
     available_for_submission: "Tersedia untuk pengajuan",
     not_available_for_submission: "Tidak tersedia untuk pengajuan",
     deadline_expired: "Batas waktu telah berakhir",
+    documents_question: "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
 
     // Document Options
     application_extension_form: "Formulir Perpanjangan Permohonan",
@@ -550,13 +552,13 @@ const translations = {
     select_color_theme_matches_style:
       "Pilih tema warna yang sesuai dengan gaya dan preferensi Anda",
     default: "Default",
-    sunset: "Matahari Terbenam",
+    sunset: "Sunset",
     forest: "Hutan",
-    midnight: "Tengah Malam",
-    cherry: "Ceri",
-    ocean: "Lautan",
+    midnight: "Midnight",
+    cherry: "Cherry",
+    ocean: "Ocean",
     obsidian: "Obsidian",
-    golden: "Emas",
+    golden: "Gold",
     classic_purple_gradient: "Gradien ungu klasik",
     warm_orange_yellow: "Oranye hangat ke kuning",
     fresh_green_gradient: "Gradien hijau segar",
@@ -783,6 +785,7 @@ const translations = {
     available_for_submission: "提出可能",
     not_available_for_submission: "提出不可",
     deadline_expired: "期限が切れています",
+    documents_question: "ビザ延長の申請に必要な書類は何ですか？",
 
     // Document Options
     application_extension_form: "在留期間更新許可申請書",
@@ -870,14 +873,14 @@ const translations = {
     choose_your_theme: "テーマを選択",
     select_color_theme_matches_style:
       "あなたのスタイルと好みに合ったカラーテーマを選択してください",
-    default: "デフォルト",
-    sunset: "サンセット",
-    forest: "フォレスト",
-    midnight: "ミッドナイト",
-    cherry: "チェリー",
-    ocean: "オーシャン",
-    obsidian: "オブシディアン",
-    golden: "ゴールデン",
+    default: "Default",
+    sunset: "Sunset",
+    forest: "Forest",
+    midnight: "Midnight",
+    cherry: "Cherry",
+    ocean: "Ocean",
+    obsidian: "Obsidian",
+    golden: "Gold",
     classic_purple_gradient: "クラシックな紫のグラデーション",
     warm_orange_yellow: "暖かいオレンジから黄色",
     fresh_green_gradient: "新鮮な緑のグラデーション",
