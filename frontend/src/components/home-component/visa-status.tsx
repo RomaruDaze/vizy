@@ -5,7 +5,6 @@ import {
   updateUserProfile,
   getUserProfile,
 } from "../../services/userProfileService";
-import { useNavigate } from "react-router-dom";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
@@ -29,7 +28,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
   const [reminderDate, setReminderDate] = useState("");
   const [reminderSet, setReminderSet] = useState(false);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
-  const navigate = useNavigate();
 
   // Document descriptions
   const documentDescriptions: Record<string, string> = {
@@ -499,10 +497,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     setShowReminderPopup(false);
   };
 
-  const handleAIFormClick = () => {
-    navigate("/ai-form-assistant");
-  };
-
   // Group documents by category
   const groupedDocuments = documents.reduce((groups, doc) => {
     const category = doc.category || "General";
@@ -515,12 +509,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
 
   // Function to format date based on language
   const formatDate = (date: Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
     if (language === "ja") {
       return date.toLocaleDateString("ja-JP", {
         year: "numeric",
@@ -553,12 +541,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
         >
           <div className="deadline-date">
             {answers.deadline
-              ? new Date(answers.deadline).toLocaleDateString("en-US", {
-                  weekday: "short",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+              ? formatDate(new Date(answers.deadline))
               : t("no_deadline_set")}
           </div>
           <div className="deadline-status">
