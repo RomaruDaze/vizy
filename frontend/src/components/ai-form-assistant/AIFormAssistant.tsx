@@ -371,6 +371,15 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
     setShowMediaButtons(false);
   };
 
+  // Add this function to handle input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+    // Hide quick tips when user starts typing
+    if (e.target.value.trim()) {
+      setShowQuickTips(false);
+    }
+  };
+
   return (
     <div className="ai-form-container">
       {/* Welcome Popup */}
@@ -635,7 +644,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
               <div className="input-area">
                 <input
                   value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder={t("ask_anything_about_visa")}
                   className="message-input"
