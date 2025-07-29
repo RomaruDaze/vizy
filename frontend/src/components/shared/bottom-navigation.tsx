@@ -10,6 +10,24 @@ const BottomNavigation = () => {
   return (
     <div className="bottom-navigation">
       <button
+        className={`nav-button home-button ${
+          location.pathname === "/" || location.pathname === "/vizy"
+            ? "active"
+            : ""
+        }`}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <div className="nav-icon">
+          <img
+            src="https://img.icons8.com/ios-filled/100/FFFFFF/home.png"
+            alt="home"
+          />
+        </div>
+        <span>{t("home")}</span>
+      </button>
+      <button
         className={`nav-button ai-button ${
           location.pathname === "/ai-form-assistant" ? "active" : ""
         }`}
@@ -41,25 +59,6 @@ const BottomNavigation = () => {
           />
         </div>
         <span>{t("maps")}</span>
-      </button>
-
-      <button
-        className={`nav-button home-button ${
-          location.pathname === "/" || location.pathname === "/vizy"
-            ? "active"
-            : ""
-        }`}
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        <div className="nav-icon">
-          <img
-            src="https://img.icons8.com/ios-filled/100/FFFFFF/home.png"
-            alt="home"
-          />
-        </div>
-        <span>{t("home")}</span>
       </button>
 
       <button
