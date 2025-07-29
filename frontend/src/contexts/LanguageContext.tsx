@@ -665,8 +665,8 @@ const translations = {
   ja: {
     // Basic translations
     language: "言語",
-    english: "English",
-    indonesian: "Indonesia",
+    english: "英語",
+    indonesian: "インドネシア語",
     japanese: "日本語",
     select_language: "言語を選択",
     home: "ホーム",
