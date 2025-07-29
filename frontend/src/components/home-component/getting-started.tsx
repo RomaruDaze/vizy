@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   saveUserProfile,
   getUserProfile,
@@ -21,6 +22,7 @@ interface Question {
 
 const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [showConditional, setShowConditional] = useState(false);
@@ -48,58 +50,58 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   // Document options based on visa type
   const getDocumentOptions = (visaType: string) => {
     const commonDocuments = [
-      "Application Extension Form",
-      "Passport",
-      "Residence Card",
-      "ID Photo (3x4 cm)",
-      "Processing Fee",
+      t("application_extension_form"),
+      t("passport"),
+      t("residence_card"),
+      t("id_photo"),
+      t("processing_fee"),
     ];
 
     const workDocuments = [
-      "Certificate of Employment",
-      "Company Registration Certificate",
-      "Company's Financial Documents",
-      "Resident Tax Certificate",
-      "Tax Payment Certificate",
+      t("certificate_of_employment"),
+      t("company_registration_certificate"),
+      t("company_financial_documents"),
+      t("resident_tax_certificate"),
+      t("tax_payment_certificate"),
     ];
 
     const studentDocuments = [
-      "Certificate of Enrollment",
-      "Academic Transcript",
-      "Bank Balance Certificate",
-      "Scholarship Award Certificate",
-      "Certificate of Remittance",
-      "Letter of Guarantee",
+      t("certificate_of_enrollment"),
+      t("academic_transcript"),
+      t("bank_balance_certificate"),
+      t("scholarship_award_certificate"),
+      t("certificate_of_remittance"),
+      t("letter_of_guarantee"),
     ];
 
     const familyDocuments = [
-      "Marriage Certificate",
-      "Birth Certificate",
-      "Bank Statement",
-      "Letter of Guarantee",
-      "Family Register",
-      "Resident Certificate",
-      "Certificate of Employment",
-      "Resident Tax Certificate",
-      "Tax Payment Certificate",
+      t("marriage_certificate"),
+      t("birth_certificate"),
+      t("bank_statement"),
+      t("letter_of_guarantee"),
+      t("family_register"),
+      t("resident_certificate"),
+      t("certificate_of_employment"),
+      t("resident_tax_certificate"),
+      t("tax_payment_certificate"),
     ];
 
     const specifiedSkillDocuments = [
-      "Certificate of Employment",
-      "Company Registration Certificate",
-      "Company's Financial Documents",
-      "Resident Tax Certificate",
-      "Tax Payment Certificate",
+      t("certificate_of_employment"),
+      t("company_registration_certificate"),
+      t("company_financial_documents"),
+      t("resident_tax_certificate"),
+      t("tax_payment_certificate"),
     ];
 
     switch (visaType) {
-      case "Work Residency":
+      case t("work_residency"):
         return [...commonDocuments, ...workDocuments];
-      case "International Student Residency":
+      case t("international_student_residency"):
         return [...commonDocuments, ...studentDocuments];
-      case "Family Residency":
+      case t("family_residency"):
         return [...commonDocuments, ...familyDocuments];
-      case "Specified Skill Worker Residency":
+      case t("specified_skill_worker_residency"):
         return [...commonDocuments, ...specifiedSkillDocuments];
       default:
         return commonDocuments;
@@ -109,60 +111,60 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const questions: Question[] = [
     {
       id: "deadline",
-      question: "What's your deadline?",
+      question: t("whats_your_deadline"),
       type: "date",
-      placeholder: "Select your deadline",
+      placeholder: t("select_your_deadline"),
     },
     {
       id: "ResidencyType",
-      question: "What's your current Residency type?",
+      question: t("whats_your_current_residency_type"),
       type: "select",
       options: [
-        "International Student Residency",
-        "Work Residency",
-        "Family Residency",
-        "Specified Skill Worker Residency",
+        t("international_student_residency"),
+        t("work_residency"),
+        t("family_residency"),
+        t("specified_skill_worker_residency"),
       ],
     },
     {
       id: "purpose",
-      question: "What do you want to do?",
+      question: t("what_do_you_want_to_do"),
       type: "conditionalSelect",
       options: [
-        "Extend my current Residency",
-        "Change to a different Residency type",
+        t("extend_current_residency"),
+        t("change_to_different_residency_type"),
       ],
       conditionalOptions: [
-        "International Student Residency",
-        "Work Residency",
-        "Family Residency",
-        "Specified Skill Worker Residency",
+        t("international_student_residency"),
+        t("work_residency"),
+        t("family_residency"),
+        t("specified_skill_worker_residency"),
       ],
     },
     {
       id: "documents",
-      question: "Which documents do you already have?",
+      question: t("which_documents_do_you_have"),
       type: "multiSelect",
       options: [], // This will be dynamically populated
     },
     {
       id: "experience",
-      question: "Have you applied for a Residency before?",
+      question: t("have_you_applied_before"),
       type: "select",
       options: [
-        "Yes, successfully",
-        "Yes, but was rejected",
-        "No, this is my first time",
-        "I'm not sure",
+        t("yes_successfully"),
+        t("yes_but_rejected"),
+        t("no_first_time"),
+        t("not_sure"),
       ],
     },
   ];
 
   // Get the target visa type for document filtering
   const getTargetVisaType = () => {
-    if (answers.purpose === "Extend my current Residency") {
+    if (answers.purpose === t("extend_current_residency")) {
       return answers.ResidencyType;
-    } else if (answers.purpose === "Change to a different Residency type") {
+    } else if (answers.purpose === t("change_to_different_residency_type")) {
       return answers.purpose_target;
     }
     return null;
@@ -181,19 +183,19 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
     };
     setAnswers(newAnswers);
 
-    // Auto-save to Firebase after each answer
-    if (currentUser) {
-      try {
-        await saveUserProfile(currentUser.uid, newAnswers);
-      } catch (error) {
-        console.error("Error auto-saving:", error);
-      }
-    }
+    // Remove auto-save to Firebase - only save when complete
+    // if (currentUser) {
+    //   try {
+    //     await saveUserProfile(currentUser.uid, newAnswers);
+    //   } catch (error) {
+    //     console.error("Error auto-saving:", error);
+    //   }
+    // }
 
     // Show conditional dropdown for purpose question
     if (
       questionId === "purpose" &&
-      answer === "Change to a different Residency type"
+      answer === t("change_to_different_residency_type")
     ) {
       setShowConditional(true);
     } else if (questionId === "purpose") {
@@ -205,7 +207,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Save to Firebase before completing
+      // Only save to Firebase when all questions are completed
       if (currentUser) {
         try {
           await saveUserProfile(currentUser.uid, answers);
@@ -235,7 +237,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
   const canProceed = (() => {
     if (
       currentQuestion.type === "conditionalSelect" &&
-      answers[currentQuestion.id] === "Change to a different Residency type"
+      answers[currentQuestion.id] === t("change_to_different_residency_type")
     ) {
       return (
         answers[currentQuestion.id] && answers[`${currentQuestion.id}_target`]
@@ -343,10 +345,10 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
 
             {showConditional &&
               answers[currentQuestion.id] ===
-                "Change to a different Residency type" && (
+                t("change_to_different_residency_type") && (
                 <div className="conditional-options">
                   <label className="conditional-label">
-                    Select your target Residency type:
+                    {t("select_target_residency_type")}
                   </label>
                   <div className="options-container">
                     {availableTargetOptions?.map((option) => (
@@ -397,7 +399,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
             />
           </div>
           <span className="progress-text">
-            {currentStep + 1} of {questions.length}
+            {currentStep + 1} {t("of")} {questions.length}
           </span>
         </div>
 
@@ -415,7 +417,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
                 src="https://img.icons8.com/sf-black-filled/100/999999/back.png"
                 alt="Back"
               />
-              Back
+              {t("back")}
             </button>
           )}
 
@@ -424,7 +426,7 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
             onClick={handleNext}
             disabled={!canProceed}
           >
-            {isLastStep ? "Finish" : "Next"}
+            {isLastStep ? t("finish") : t("next")}
             <img
               src="https://img.icons8.com/sf-black-filled/100/999999/forward.png"
               alt="Next"

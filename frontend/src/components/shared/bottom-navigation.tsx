@@ -1,9 +1,11 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "./bottom-navigation.styles.css";
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
 
   return (
     <div className="bottom-navigation">
@@ -21,7 +23,7 @@ const BottomNavigation = () => {
             alt="chat"
           />
         </div>
-        <span>AI Chat</span>
+        <span>{t("ai_chat")}</span>
       </button>
 
       <button
@@ -38,7 +40,7 @@ const BottomNavigation = () => {
             alt="Pin Icon"
           />
         </div>
-        <span>Maps</span>
+        <span>{t("maps")}</span>
       </button>
 
       <button
@@ -57,14 +59,16 @@ const BottomNavigation = () => {
             alt="home"
           />
         </div>
-        <span>Home</span>
+        <span>{t("home")}</span>
       </button>
 
       <button
         className={`nav-button settings-button ${
           location.pathname === "/settings" ? "active" : ""
         }`}
-        onClick={() => navigate("/settings")}
+        onClick={() => {
+          navigate("/settings");
+        }}
       >
         <div className="nav-icon">
           <img
@@ -72,7 +76,7 @@ const BottomNavigation = () => {
             alt="settings"
           />
         </div>
-        <span>Settings</span>
+        <span>{t("settings")}</span>
       </button>
     </div>
   );

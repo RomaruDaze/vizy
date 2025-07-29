@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "./ai-form-assistant.styles.css";
 import { aiModel } from "../../firebase/config";
 import { useAuth } from "../../contexts/AuthContext";
@@ -21,10 +22,11 @@ interface AIFormAssistantProps {
 const AIFormAssistant = ({}: AIFormAssistantProps) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello! I'm your AI visa application assistant. I can help you fill out your visa extension form step by step. What would you like to know?",
+      text: t("ai_welcome"),
       sender: "ai",
       timestamp: new Date(),
     },
@@ -271,7 +273,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     setMessages([
       {
         id: "1",
-        text: "Hello! I'm your AI visa application assistant. I can help you fill out your visa extension form step by step. What would you like to know?",
+        text: t("ai_welcome"),
         sender: "ai",
         timestamp: new Date(),
       },
@@ -381,43 +383,43 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         <div className="welcome-popup-overlay">
           <div className="welcome-popup-content">
             <div className="welcome-popup-header">
-              <h2>Welcome to AI Form Assistant!</h2>
+              <h2>{t("welcome_ai_assistant")}</h2>
             </div>
 
             <div className="welcome-popup-body">
               <div className="feature-section">
-                <h3>✨ What I can help you with:</h3>
+                <h3>{t("what_i_can_help")}</h3>
                 <ul>
                   <li>
-                    <strong>Form Guidance:</strong> Get step-by-step help with
-                    visa extension forms
+                    <strong>{t("form_guidance")}:</strong>{" "}
+                    {t("form_guidance_desc")}
                   </li>
                   <li>
-                    <strong>Field Explanations:</strong> Understand what each
-                    field requires
+                    <strong>{t("field_explanations")}:</strong>{" "}
+                    {t("field_explanations_desc")}
                   </li>
                 </ul>
               </div>
 
               <div className="feature-section">
-                <h3>💡 How to use:</h3>
+                <h3>{t("how_to_use")}</h3>
                 <ul>
-                  <li>I'll provide detailed explanations and examples</li>
-                  <li>Feel free to ask follow-up questions</li>
+                  <li>{t("detailed_explanations")}</li>
+                  <li>{t("follow_up_questions")}</li>
                 </ul>
               </div>
 
               <div className="example-section">
-                <h3>Try asking me:</h3>
+                <h3>{t("try_asking_me")}</h3>
                 <div className="example-questions">
                   <button className="example-question">
-                    "How do I fill out the full name field?"
+                    {t("full_name_question")}
                   </button>
                   <button className="example-question">
-                    "What format should I use for my address?"
+                    {t("address_format_question")}
                   </button>
                   <button className="example-question">
-                    "Help me with the visa expiry date field"
+                    {t("visa_expiry_question")}
                   </button>
                 </div>
               </div>
@@ -428,7 +430,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                 className="got-it-button"
                 onClick={handleCloseWelcomePopup}
               >
-                Let's start !
+                {t("lets_start")}
               </button>
             </div>
           </div>
@@ -440,7 +442,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         <div className="welcome-popup-overlay">
           <div className="welcome-popup-content">
             <div className="welcome-popup-header">
-              <h2>Conversation History</h2>
+              <h2>{t("conversation_history")}</h2>
             </div>
 
             <div className="welcome-popup-body">
@@ -448,7 +450,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                 className="new-conversation-button"
                 onClick={startNewConversation}
               >
-                + Start New Conversation
+                {t("start_new_conversation")}
               </button>
 
               <div className="conversations-list">
@@ -489,7 +491,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                 className="got-it-button"
                 onClick={() => setShowHistoryPopup(false)}
               >
-                Close
+                {t("close")}
               </button>
             </div>
           </div>
@@ -505,17 +507,17 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         </button>
         <div className="form-header-title">
           <img
-            src="https://img.icons8.com/glyph-neue/100/FFFFFF/bard--v2.png"
+            src="https://img.icons8.com/glyph-neue/30/FFFFFF/bard--v2.png"
             alt="Vizy AI Assistant"
           />
-          <h1>Vizy AI Assistant</h1>
+          <h1>{t("vizy_ai_assistant")}</h1>
         </div>
         <button
           className="history-button"
           onClick={() => setShowHistoryPopup(true)}
         >
           <img
-            src="https://img.icons8.com/material-outlined/100/activity-history.png"
+            src="https://img.icons8.com/material-outlined/50/activity-history.png"
             alt="History"
           />
         </button>
@@ -550,68 +552,58 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                 <div className="message-text">
                   <div className="quick-tips-message">
                     <p>
-                      <strong>
-                        Here are some quick questions you can ask me:
-                      </strong>
+                      <strong>{t("ai_quick_tips")}</strong>
                     </p>
                     <div className="quick-tips-grid">
                       <button
                         className="quick-tip-button"
                         onClick={() =>
-                          handleQuickTipClick(
-                            "How do I fill out the full name field on the visa form?"
-                          )
+                          handleQuickTipClick(t("full_name_question"))
                         }
                       >
                         <div className="quick-tip-icon">👤</div>
                         <div className="quick-tip-text">
-                          <strong>Full Name</strong>
-                          <span>How to fill out the name field</span>
+                          <strong>{t("full_name")}</strong>
+                          <span>{t("full_name_desc")}</span>
                         </div>
                       </button>
 
                       <button
                         className="quick-tip-button"
                         onClick={() =>
-                          handleQuickTipClick(
-                            "What format should I use for my address in Japan?"
-                          )
+                          handleQuickTipClick(t("address_format_question"))
                         }
                       >
                         <div className="quick-tip-icon">🏠</div>
                         <div className="quick-tip-text">
-                          <strong>Address</strong>
-                          <span>Japanese address format guide</span>
+                          <strong>{t("address")}</strong>
+                          <span>{t("address_desc")}</span>
                         </div>
                       </button>
 
                       <button
                         className="quick-tip-button"
                         onClick={() =>
-                          handleQuickTipClick(
-                            "How do I write the date of birth in the correct format?"
-                          )
+                          handleQuickTipClick(t("visa_expiry_question"))
                         }
                       >
                         <div className="quick-tip-icon">📅</div>
                         <div className="quick-tip-text">
-                          <strong>Date of Birth</strong>
-                          <span>Correct date format</span>
+                          <strong>{t("visa_expiry_date")}</strong>
+                          <span>{t("visa_expiry_desc")}</span>
                         </div>
                       </button>
 
                       <button
                         className="quick-tip-button"
                         onClick={() =>
-                          handleQuickTipClick(
-                            "What documents do I need for visa extension?"
-                          )
+                          handleQuickTipClick(t("documents_question"))
                         }
                       >
                         <div className="quick-tip-icon">📋</div>
                         <div className="quick-tip-text">
-                          <strong>Documents</strong>
-                          <span>Required documents list</span>
+                          <strong>{t("documents")}</strong>
+                          <span>{t("documents_desc")}</span>
                         </div>
                       </button>
                     </div>
@@ -656,7 +648,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Feel free to ask me anything about visa ..."
+                  placeholder={t("ask_anything_about_visa")}
                   className="message-input"
                   disabled={isLoading}
                 />
@@ -682,7 +674,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                   src="https://img.icons8.com/ios-glyphs/100/FFFFFF/camera.png"
                   alt="Camera"
                 />
-                <span>Camera</span>
+                <span>{t("camera")}</span>
               </button>
               <button
                 className="media-button image-button"
@@ -692,7 +684,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                   src="https://img.icons8.com/ios-glyphs/100/FFFFFF/image.png"
                   alt="Image"
                 />
-                <span>Image</span>
+                <span>{t("image")}</span>
               </button>
               <button className="close-media-button" onClick={handlePlusClick}>
                 <img

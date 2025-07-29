@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import Home from "./components/home-component/home";
 import Locator from "./components/locator-component/locator";
@@ -18,46 +19,48 @@ import "./colors.css";
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router basename="">
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/locator"
-              element={
-                <ProtectedRoute>
-                  <Locator />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/ai-form-assistant"
-              element={<AIFormAssistant onBack={() => window.history.back()} />}
-            />
-            {/* Fallback route */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-        </AuthProvider>
-      </Router>
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <Router basename="">
+          <AuthProvider>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/locator"
+                element={
+                  <ProtectedRoute>
+                    <Locator />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/ai-form-assistant"
+                element={<AIFormAssistant onBack={() => window.history.back()} />}
+              />
+              {/* Fallback route */}
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </AuthProvider>
+        </Router>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

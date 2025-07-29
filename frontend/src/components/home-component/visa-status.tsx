@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   updateUserProfile,
   getUserProfile,
@@ -21,6 +22,7 @@ interface DocumentItem {
 
 const VisaStatus = ({ answers }: VisaStatusProps) => {
   const { currentUser } = useAuth();
+  const { t, language } = useLanguage();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);
   const [reminderTime, setReminderTime] = useState("");
@@ -421,16 +423,16 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     threeMonthsFromNow.setMonth(today.getMonth() + 3);
 
     if (deadlineDate < today) {
-      return { status: "expired", message: "Deadline has expired" };
+      return { status: "expired", message: t("deadline_expired") };
     } else if (deadlineDate <= threeMonthsFromNow) {
       return {
         status: "available",
-        message: "Available for submission",
+        message: t("available_for_submission"),
       };
     } else {
       return {
         status: "not-available",
-        message: "Not available for submission",
+        message: t("not_available_for_submission"),
       };
     }
   };
@@ -490,7 +492,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     if (reminderSet) {
       return `Reminder set for ${reminderDate} at ${reminderTime}`;
     }
-    return "Set Reminder";
+    return t("set_reminder");
   };
 
   const handleCloseReminderPopup = () => {
@@ -511,6 +513,29 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
     return groups;
   }, {} as Record<string, DocumentItem[]>);
 
+  // Function to format date based on language
+  const formatDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
+    if (language === "ja") {
+      return date.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } else {
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+  };
+
   return (
     <div className="visa-status-container">
       {/* Top Card - Deadline */}
@@ -520,7 +545,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
             src="https://img.icons8.com/ios-filled/100/FFFFFF/overtime.png"
             alt="Deadline"
           />
-          <h2>Your Residency Deadline</h2>
+          <h2>{t("your_residency_deadline")}</h2>
         </div>
 
         <div
@@ -534,10 +559,10 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                   month: "long",
                   day: "numeric",
                 })
-              : "No deadline set"}
+              : t("no_deadline_set")}
           </div>
           <div className="deadline-status">
-            <p>{deadlineStatus?.message || "No deadline set"}</p>
+            <p>{deadlineStatus?.message || t("no_deadline_set")}</p>
             {deadlineStatus && (
               <img
                 src={getStatusIcon(deadlineStatus.status)}
@@ -572,8 +597,10 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
             />
           </div>
           <div className="documents-text">
-            <h3>Incomplete Documents</h3>
-            <p>{getIncompleteCount()} documents remaining</p>
+            <h3>{t("incomplete_documents")}</h3>
+            <p>
+              {getIncompleteCount()} {t("documents_remaining")}
+            </p>
           </div>
           <div className="documents-arrow">→</div>
         </div>
@@ -599,7 +626,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                   alt="Back"
                 />
               </button>
-              <h3>Document Checklist</h3>
+              <h3>{t("document_checklist")}</h3>
             </div>
 
             <div className="documents-list">
@@ -628,10 +655,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                 className="save-button-documents"
                 onClick={handleSaveDocuments}
               >
-                Save Changes
-              </button>
-              <button className="ai-form-button" onClick={handleAIFormClick}>
-                AI Form
+                {t("save_changes")}
               </button>
             </div>
           </div>
@@ -658,11 +682,11 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                   alt="Back"
                 />
               </button>
-              <h3>Set Reminder</h3>
+              <h3>{t("set_reminder")}</h3>
             </div>
             <div className="reminder-form">
               <div className="form-group">
-                <label>Date</label>
+                <label>{t("date")}</label>
                 <input
                   type="date"
                   value={reminderDate}
@@ -670,7 +694,7 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
                 />
               </div>
               <div className="form-group">
-                <label>Time</label>
+                <label>{t("time")}</label>
                 <input
                   type="time"
                   value={reminderTime}
@@ -679,14 +703,14 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
               </div>
               <div className="reminder-actions">
                 <button className="clear-button" onClick={handleClearReminder}>
-                  Clear Reminder
+                  {t("clear_reminder")}
                 </button>
                 <button
                   className="set-button"
                   onClick={handleSetReminder}
                   disabled={!reminderDate || !reminderTime}
                 >
-                  Set Reminder
+                  {t("set_reminder")}
                 </button>
               </div>
             </div>

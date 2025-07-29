@@ -440,3 +440,112 @@
         padding: 1rem 1.25rem;
     }
 }
+
+
+.language-section {
+    margin: 1rem 0;
+}
+
+.language-section-content {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    text-align: left;
+}
+
+.language-section-content:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.language-section-content p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.language-section-content img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* Language Popup Styles */
+.language-popup {
+    max-width: 400px;
+}
+
+.language-option {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.language-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.language-option.active {
+    background: rgba(102, 126, 234, 0.3);
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.language-option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.language-name {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.language-native {
+    font-size: 0.9rem;
+}
+
+.language-check {
+    background-color: #3FDD51;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .language-section-content {
+        padding: 0.75rem;
+    }
+
+    .language-option {
+        padding: 0.75rem;
+    }
+
+    .language-name {
+        font-size: 0.95rem;
+    }
+
+    .language-native {
+        font-size: 0.85rem;
+    }
+}

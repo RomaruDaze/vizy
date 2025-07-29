@@ -1,4 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface UserProfileProps {
   onAccountClick?: () => void;
@@ -6,6 +7,7 @@ interface UserProfileProps {
 
 const UserProfile = ({ onAccountClick }: UserProfileProps) => {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
 
   // Get the user's display name or first letter of email as fallback
   const getUserDisplayName = () => {
@@ -48,7 +50,7 @@ const UserProfile = ({ onAccountClick }: UserProfileProps) => {
       </div>
       <div className="user-info">
         <h2 className="user-name">{getUserDisplayName()}</h2>
-        <p className="user-status">Welcome back!</p>
+        <p className="user-status">{t("welcome_back")}</p>
       </div>
     </div>
   );

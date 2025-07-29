@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useLanguage } from "../../../contexts/LanguageContext";
 import { updateProfile } from "firebase/auth";
 import type { User } from "firebase/auth";
 import "./account.styles.css";
@@ -10,8 +11,10 @@ interface AccountProps {
 
 const Account = ({ onBack }: AccountProps) => {
   const { currentUser, logout } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const [showPopup, setShowPopup] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const [showLanguagePopup, setShowLanguagePopup] = useState(false);
   const [newName, setNewName] = useState(currentUser?.displayName || "");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,6 +23,14 @@ const Account = ({ onBack }: AccountProps) => {
     setShowPopup(true);
     setNewName(currentUser?.displayName || "");
     setMessage("");
+  };
+
+  const handleLanguageClick = () => {
+    setShowLanguagePopup(true);
+  };
+
+  const handleLanguageSelect = (selectedLanguage: "en" | "ja") => {
+    setLanguage(selectedLanguage);
   };
 
   const handleSaveName = async () => {
@@ -64,7 +75,7 @@ const Account = ({ onBack }: AccountProps) => {
   };
 
   return (
-    <div className="settings-container-page ">
+    <div className="settings-container-page">
       <div className="settings-header">
         <button className="back-button" onClick={onBack}>
           <img
@@ -72,7 +83,7 @@ const Account = ({ onBack }: AccountProps) => {
             alt="Back"
           />
         </button>
-        <h1>Account</h1>
+        <h1>{t("account")}</h1>
       </div>
 
       <div className="profile-section">
@@ -96,7 +107,20 @@ const Account = ({ onBack }: AccountProps) => {
 
         <div className="profile-info">
           <h2 className="user-name">{currentUser?.displayName || "User"}</h2>
-          <p className="user-email">{currentUser?.email || "No email"}</p>
+        </div>
+
+        {/* Language Section */}
+        <div className="language-section">
+          <button
+            className="language-section-content"
+            onClick={handleLanguageClick}
+          >
+            <p>{language === "en" ? t("english") : t("japanese")}</p>
+            <img
+              src="https://img.icons8.com/ios-glyphs/100/FFFFFF/sort-right.png"
+              alt=">"
+            />
+          </button>
         </div>
       </div>
 
@@ -114,7 +138,7 @@ const Account = ({ onBack }: AccountProps) => {
             />
           </div>
           <div className="logout-content">
-            <span className="logout-text">Sign Out</span>
+            <span className="logout-text">{t("logout")}</span>
             <span className="logout-subtitle">Logout from your account</span>
           </div>
           <div className="logout-arrow">
@@ -125,6 +149,60 @@ const Account = ({ onBack }: AccountProps) => {
           </div>
         </button>
       </div>
+
+      {/* Language Selection Popup */}
+      {showLanguagePopup && (
+        <div
+          className="popup-overlay"
+          onClick={() => setShowLanguagePopup(false)}
+        >
+          <div
+            className="popup-content language-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="popup-header">
+              <button
+                className="close-button"
+                onClick={() => setShowLanguagePopup(false)}
+              >
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/back.png"
+                  alt="Close"
+                />
+              </button>
+              <h3>{t("select_language")}</h3>
+            </div>
+
+            <div className="popup-body">
+              <button
+                className={`language-option ${
+                  language === "en" ? "active" : ""
+                }`}
+                onClick={() => handleLanguageSelect("en")}
+              >
+                <div className="language-option-content">
+                  <span className="language-name">{t("english")}</span>
+                  <span className="language-native">English</span>
+                </div>
+                {language === "en" && <div className="language-check"></div>}
+              </button>
+
+              <button
+                className={`language-option ${
+                  language === "ja" ? "active" : ""
+                }`}
+                onClick={() => handleLanguageSelect("ja")}
+              >
+                <div className="language-option-content">
+                  <span className="language-name">{t("japanese")}</span>
+                  <span className="language-native">日本語</span>
+                </div>
+                {language === "ja" && <div className="language-check"></div>}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Edit Profile Popup */}
       {showPopup && (

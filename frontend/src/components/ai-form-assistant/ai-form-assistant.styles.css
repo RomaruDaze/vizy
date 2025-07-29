@@ -28,7 +28,7 @@
 
     .form-header-title {
         display: flex;
-        flex: 1;
+        flex: 1.5;
         align-items: center;
         gap: 0.5rem;
     }

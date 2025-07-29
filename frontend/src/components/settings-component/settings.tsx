@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import Account from "./account-components/account";
 import Help from "./help-components/help";
 import PrivacySecurity from "./privacy-components/privacy-security";
@@ -9,6 +10,7 @@ import "./settings.styles.css";
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const handleSectionClick = (section: string) => {
     setActiveSection(section);
@@ -45,7 +47,7 @@ const Settings = () => {
           src="https://img.icons8.com/ios-filled/50/FFFFFF/settings.png"
           alt="Settings"
         />
-        <h1>Settings</h1>
+        <h1>{t("settings")}</h1>
       </div>
 
       <div className="middle-section">
@@ -61,8 +63,8 @@ const Settings = () => {
               />
             </div>
             <div className="card-content">
-              <h3>Account</h3>
-              <p>Manage your profile and account settings</p>
+              <h3>{t("account")}</h3>
+              <p>{t("manage_profile_account")}</p>
             </div>
             <div className="card-arrow">
               <img
@@ -83,8 +85,8 @@ const Settings = () => {
               />
             </div>
             <div className="card-content">
-              <h3>Accessibility</h3>
-              <p>Choose your preferred theme and colors</p>
+              <h3>{t("accessibility")}</h3>
+              <p>{t("choose_theme_colors")}</p>
             </div>
             <div className="card-arrow">
               <img
@@ -105,8 +107,8 @@ const Settings = () => {
               />
             </div>
             <div className="card-content">
-              <h3>Help & Support</h3>
-              <p>Get help and contact support</p>
+              <h3>{t("help_support")}</h3>
+              <p>{t("get_help_contact_support")}</p>
             </div>
             <div className="card-arrow">
               <img
@@ -127,8 +129,8 @@ const Settings = () => {
               />
             </div>
             <div className="card-content">
-              <h3>Privacy & Security</h3>
-              <p>Manage your privacy and security settings</p>
+              <h3>{t("privacy_security")}</h3>
+              <p>{t("manage_privacy_security")}</p>
             </div>
             <div className="card-arrow">
               <img
@@ -141,7 +143,7 @@ const Settings = () => {
           <button
             className="settings-card"
             onClick={() => handleSectionClick("notification-test")}
-            style={{ opacity:0 }}
+            style={{ opacity: 0 }}
           >
             <div className="card-icon">
               <img
@@ -150,8 +152,8 @@ const Settings = () => {
               />
             </div>
             <div className="card-content">
-              <h3>Notification Test</h3>
-              <p>Test push notifications</p>
+              <h3>{t("notification_test")}</h3>
+              <p>{t("test_push_notifications")}</p>
             </div>
             <div className="card-arrow">
               <img

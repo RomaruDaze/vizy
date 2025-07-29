@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "./home.styles.css";
 import UserProfile from "./user-profile";
 import Account from "../settings-component/account-components/account";
@@ -10,6 +11,7 @@ import { getUserProfile } from "../../services/userProfileService";
 
 const Home = () => {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [showAccount, setShowAccount] = useState(false);
   const [showGettingStarted, setShowGettingStarted] = useState(false);
   const [userAnswers, setUserAnswers] = useState<Record<string, any> | null>(
@@ -82,16 +84,13 @@ const Home = () => {
         ) : (
           <div className="getting-started-card">
             <div className="getting-started-content">
-              <h2>Welcome to Vizy</h2>
-              <p>
-                Let's get you started on your visa journey. We'll ask a few
-                questions to personalize your experience.
-              </p>
+              <h2>{t("welcome")}</h2>
+              <p>{t("getting_started_message")}</p>
               <button
                 className="getting-started-button"
                 onClick={handleGettingStartedClick}
               >
-                Get Started
+                {t("get_started")}
               </button>
             </div>
           </div>

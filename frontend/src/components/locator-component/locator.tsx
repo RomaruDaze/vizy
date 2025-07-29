@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "./locator.styles.css";
 import BottomNavigation from "../shared/bottom-navigation";
 import Map from "./map-component/map";
 
 const Locator = () => {
+  const { t } = useLanguage();
   const [selectedOption, setSelectedOption] = useState<string>("immigration");
   const [isAtUserLocation, setIsAtUserLocation] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +16,7 @@ const Locator = () => {
     if (selectedOption === "immigration") return; // Already selected
 
     setIsLoading(true);
-    setLoadingText("Loading immigration offices...");
+    setLoadingText(t("ai_loading"));
     setSelectedOption("immigration");
   };
 
@@ -22,7 +24,7 @@ const Locator = () => {
     if (selectedOption === "photobooth") return; // Already selected
 
     setIsLoading(true);
-    setLoadingText("Loading photo booths...");
+    setLoadingText(t("ai_loading_photo"));
     setSelectedOption("photobooth");
   };
 
@@ -48,7 +50,7 @@ const Locator = () => {
           src="https://img.icons8.com/ios-filled/50/FFFFFF/map.png"
           alt="Logo"
         />
-        <h1>Map</h1>
+        <h1>{t("maps")}</h1>
       </div>
 
       <div className="middle-section">
@@ -98,7 +100,7 @@ const Locator = () => {
               src="https://img.icons8.com/ios-filled/50/FFFFFF/center-direction.png"
               alt="Reset Location"
             />
-            <span>Reset</span>
+            <span>{t("reset_location")}</span>
           </button>
         )}
 
@@ -118,7 +120,7 @@ const Locator = () => {
                 />
               </div>
               <div className="option-info">
-                <h2>Immigration Offices</h2>
+                <h2>{t("immigration_offices")}</h2>
               </div>
             </button>
 
@@ -136,7 +138,7 @@ const Locator = () => {
                 />
               </div>
               <div className="option-info">
-                <h2>Photo Booths</h2>
+                <h2>{t("photo_booths")}</h2>
               </div>
             </button>
           </div>
