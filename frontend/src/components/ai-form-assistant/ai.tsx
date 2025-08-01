@@ -424,7 +424,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
     ) {
       const reminderButton: SerializableActionButton = {
         id: "reminder",
-        text: "Check Visa Status & Set Reminders",
+        text: "Set Reminders",
         route: "/home",
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
         action: "reminder" as const,
