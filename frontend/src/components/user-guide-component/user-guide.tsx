@@ -91,6 +91,13 @@ const UserGuide = () => {
       </div>
 
       <div className="user-guide-content">
+        {/* Add visa type display */}
+        {targetVisaType && (
+          <div className="visa-type-display">
+            <h2>Required Documents for: {targetVisaType}</h2>
+          </div>
+        )}
+
         <div className="documents-section">
           {Object.entries(groupedDocuments).map(([category, docs]) => (
             <div key={category} className="document-category">
