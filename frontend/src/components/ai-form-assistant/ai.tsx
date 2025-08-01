@@ -42,14 +42,6 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
   const [showMediaButtons, setShowMediaButtons] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Add new state for interactive features
-
-  // Add state to persist action buttons
-  const [persistentActionButtons, setPersistentActionButtons] = useState<
-    SerializableActionButton[]
-  >([]);
-
-  // Add this state to track if we should load the last conversation
   const [shouldLoadLastConversation, setShouldLoadLastConversation] =
     useState(true);
 
@@ -76,14 +68,14 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
             setCurrentConversationId(lastConversation.id);
             setShouldLoadLastConversation(false);
 
-            // Restore action buttons from the last AI message
-            const lastAIMessage = lastConversation.messages
-              .filter((msg) => msg.sender === "ai")
-              .pop();
+            // Remove the persistent action buttons restoration logic
+            // const lastAIMessage = lastConversation.messages
+            //   .filter((msg) => msg.sender === "ai")
+            //   .pop();
 
-            if (lastAIMessage && lastAIMessage.actionButtons) {
-              setPersistentActionButtons(lastAIMessage.actionButtons);
-            }
+            // if (lastAIMessage && lastAIMessage.actionButtons) {
+            //   setPersistentActionButtons(lastAIMessage.actionButtons);
+            // }
           }
         } catch (error) {
           console.error("Error loading conversations:", error);
