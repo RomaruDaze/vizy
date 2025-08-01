@@ -13,9 +13,15 @@ import {
 
 interface VisaStatusProps {
   answers: Record<string, any>;
+  openReminderOnMount?: boolean; // Add this prop
+  onReminderOpened?: () => void; // Add callback prop
 }
 
-const VisaStatus = ({ answers }: VisaStatusProps) => {
+const VisaStatus = ({
+  answers,
+  openReminderOnMount = false,
+  onReminderOpened,
+}: VisaStatusProps) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { t, language } = useLanguage();
@@ -25,6 +31,17 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
   const [reminderDate, setReminderDate] = useState("");
   const [reminderSet, setReminderSet] = useState(false);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
+
+  // Add effect to open reminder popup on mount if requested
+  useEffect(() => {
+    if (openReminderOnMount) {
+      setShowReminderPopup(true);
+      // Call the callback to notify parent that reminder was opened
+      if (onReminderOpened) {
+        onReminderOpened();
+      }
+    }
+  }, [openReminderOnMount, onReminderOpened]);
 
   // Load saved data from Firebase
   useEffect(() => {

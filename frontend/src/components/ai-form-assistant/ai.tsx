@@ -158,10 +158,6 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
       const finalMessages = [...updatedMessages, aiMessage];
       setMessages(finalMessages);
 
-      // Remove the persistent action buttons logic - they should only appear with the specific message
-      // setPersistentActionButtons(aiResponse.actions);
-
-      // Save conversation to Firebase
       if (currentUser?.uid) {
         if (currentConversationId) {
           await updateConversation(
@@ -213,18 +209,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     setMessages(conversation.messages);
     setCurrentConversationId(conversation.id);
     setShowHistoryPopup(false);
-    setShouldLoadLastConversation(false); // Prevent auto-loading after manually loading
-
-    // Remove the persistent action buttons restoration logic
-    // const lastAIMessage = conversation.messages
-    //   .filter((msg) => msg.sender === "ai")
-    //   .pop();
-
-    // if (lastAIMessage && lastAIMessage.actionButtons) {
-    //   setPersistentActionButtons(lastAIMessage.actionButtons);
-    // } else {
-    //   setPersistentActionButtons([]); // Clear if no action buttons
-    // }
+    setShouldLoadLastConversation(false);
   };
 
   const startNewConversation = () => {
@@ -238,9 +223,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     ]);
     setCurrentConversationId(null);
     setShowHistoryPopup(false);
-    setShouldLoadLastConversation(false); // Prevent auto-loading after starting new conversation
-    // Remove the persistent action buttons clearing
-    // setPersistentActionButtons([]); // Clear action buttons for new conversation
+    setShouldLoadLastConversation(false);
   };
 
   const deleteConversationById = async (conversationId: string) => {
@@ -251,15 +234,12 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
           (conv) => conv.id !== conversationId
         );
         setConversations(updatedConversations);
-
-        // If we're deleting the current conversation, load the next most recent one
         if (conversationId === currentConversationId) {
           if (updatedConversations.length > 0) {
             const nextConversation = updatedConversations[0];
             setMessages(nextConversation.messages);
             setCurrentConversationId(nextConversation.id);
           } else {
-            // If no conversations left, start a new one
             startNewConversation();
           }
         }
@@ -405,12 +385,19 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       });
     }
 
+    // Add document checklist detection
     if (
       input.includes("document") ||
       input.includes("checklist") ||
       input.includes("required") ||
       input.includes("paperwork") ||
-      input.includes("what do i need")
+      input.includes("what do i need") ||
+      input.includes("documents") ||
+      input.includes("check list") ||
+      input.includes("required documents") ||
+      input.includes("document list") ||
+      input.includes("what documents") ||
+      input.includes("which documents")
     ) {
       actions.push({
         id: "documents",
@@ -418,6 +405,31 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         route: "/user-guide",
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
       });
+    }
+
+    // Add reminder detection
+    if (
+      input.includes("reminder") ||
+      input.includes("remind") ||
+      input.includes("deadline") ||
+      input.includes("due date") ||
+      input.includes("expiry") ||
+      input.includes("expiration") ||
+      input.includes("track") ||
+      input.includes("status") ||
+      input.includes("progress") ||
+      input.includes("check status") ||
+      input.includes("application status") ||
+      input.includes("visa status")
+    ) {
+      const reminderButton: SerializableActionButton = {
+        id: "reminder",
+        text: "Check Visa Status & Set Reminders",
+        route: "/home",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
+        action: "reminder" as const,
+      };
+      actions.push(reminderButton);
     }
 
     if (
@@ -470,13 +482,11 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
 
   const handleCameraClick = () => {
     // TODO: Implement camera functionality
-    console.log("Camera clicked");
     setShowMediaButtons(false);
   };
 
   const handleImageClick = () => {
     // TODO: Implement image upload functionality
-    console.log("Image upload clicked");
     setShowMediaButtons(false);
   };
 

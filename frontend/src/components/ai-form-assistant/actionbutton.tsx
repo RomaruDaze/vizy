@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./actionbutton.styles.css";
 
 export interface SerializableActionButton {
   id: string;
   text: string;
   route: string;
   icon: string;
+  action?: "reminder" | "default";
 }
 
 interface ActionButtonsProps {
@@ -26,6 +26,18 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     return null;
   }
 
+  const handleButtonClick = (button: SerializableActionButton) => {
+    if (button.action === "reminder") {
+      // Set a flag in localStorage
+      localStorage.setItem("openReminder", "true");
+      // Navigate to home
+      navigate("/home");
+    } else {
+      // Default navigation
+      navigate(button.route);
+    }
+  };
+
   return (
     <div className={`action-buttons-container ${className}`}>
       <p>
@@ -36,9 +48,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           <button
             key={button.id}
             className="action-button"
-            onClick={() => {
-              navigate(button.route);
-            }}
+            onClick={() => handleButtonClick(button)}
           >
             <img src={button.icon} alt={button.text} />
             <span>{button.text}</span>

@@ -17,6 +17,18 @@ const Home = () => {
   const [userAnswers, setUserAnswers] = useState<Record<string, any> | null>(
     null
   );
+  const [shouldOpenReminder, setShouldOpenReminder] = useState(false);
+
+  // Check if we should open the reminder popup
+  useEffect(() => {
+    const openReminder = localStorage.getItem("openReminder");
+
+    if (openReminder === "true") {
+      setShouldOpenReminder(true);
+      // Clear the localStorage flag
+      localStorage.removeItem("openReminder");
+    }
+  }, []);
 
   // Load user profile on component mount
   useEffect(() => {
@@ -57,6 +69,11 @@ const Home = () => {
     setShowGettingStarted(false);
   };
 
+  // Reset the reminder flag after passing it to VisaStatus
+  const handleReminderOpened = () => {
+    setShouldOpenReminder(false);
+  };
+
   if (showAccount) {
     return <Account onBack={handleBackFromAccount} />;
   }
@@ -80,7 +97,11 @@ const Home = () => {
       {/* Middle section - Getting Started or Visa Status (85%) */}
       <div className="middle-section">
         {userAnswers ? (
-          <VisaStatus answers={userAnswers} />
+          <VisaStatus
+            answers={userAnswers}
+            openReminderOnMount={shouldOpenReminder}
+            onReminderOpened={handleReminderOpened}
+          />
         ) : (
           <div className="getting-started-card">
             <div className="getting-started-content">
