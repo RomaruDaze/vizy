@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from "../../contexts/LanguageContext";
-import "./ai-form-assistant.styles.css";
+import "./ai.styles.css";
 import { aiModel } from "../../firebase/config";
 import { useAuth } from "../../contexts/AuthContext";
 import { getPopupState, setPopupState } from "../../services/popupService";
@@ -14,22 +14,13 @@ import {
   type Conversation,
   type Message,
 } from "../../services/conversationService";
-import { useNavigate } from "react-router-dom";
+import ActionButtons, { type SerializableActionButton } from "./actionbutton";
 
 interface AIFormAssistantProps {
   onBack: () => void;
 }
 
-// Update the Message interface to store only serializable data
-interface SerializableActionButton {
-  id: string;
-  text: string;
-  route: string; // Store route instead of function
-  icon: string;
-}
-
 const AIFormAssistant = ({}: AIFormAssistantProps) => {
-  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
@@ -175,10 +166,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
       const finalMessages = [...updatedMessages, aiMessage];
       setMessages(finalMessages);
 
-      // Set persistent action buttons
-      if (aiResponse.actions && aiResponse.actions.length > 0) {
-        setPersistentActionButtons(aiResponse.actions);
-      }
+      // Remove the persistent action buttons logic - they should only appear with the specific message
+      // setPersistentActionButtons(aiResponse.actions);
 
       // Save conversation to Firebase
       if (currentUser?.uid) {
@@ -234,16 +223,16 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     setShowHistoryPopup(false);
     setShouldLoadLastConversation(false); // Prevent auto-loading after manually loading
 
-    // Restore action buttons from the last AI message in this conversation
-    const lastAIMessage = conversation.messages
-      .filter((msg) => msg.sender === "ai")
-      .pop();
+    // Remove the persistent action buttons restoration logic
+    // const lastAIMessage = conversation.messages
+    //   .filter((msg) => msg.sender === "ai")
+    //   .pop();
 
-    if (lastAIMessage && lastAIMessage.actionButtons) {
-      setPersistentActionButtons(lastAIMessage.actionButtons);
-    } else {
-      setPersistentActionButtons([]); // Clear if no action buttons
-    }
+    // if (lastAIMessage && lastAIMessage.actionButtons) {
+    //   setPersistentActionButtons(lastAIMessage.actionButtons);
+    // } else {
+    //   setPersistentActionButtons([]); // Clear if no action buttons
+    // }
   };
 
   const startNewConversation = () => {
@@ -258,7 +247,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     setCurrentConversationId(null);
     setShowHistoryPopup(false);
     setShouldLoadLastConversation(false); // Prevent auto-loading after starting new conversation
-    setPersistentActionButtons([]); // Clear action buttons for new conversation
+    // Remove the persistent action buttons clearing
+    // setPersistentActionButtons([]); // Clear action buttons for new conversation
   };
 
   const deleteConversationById = async (conversationId: string) => {
@@ -302,7 +292,7 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
 You help users fill out visa extension forms by providing clear, accurate guidance.
 
 **Available App Features:**
-- **Locator**: Find nearby immigration offices and visa centers
+- **Locator**: Find nearby immigration offices and photo booths for visa photos
 - **Document Checklist**: View required documents for your visa type
 - **Visa Status**: Track your application progress
 - **Settings**: Manage your profile and preferences
@@ -321,10 +311,19 @@ You help users fill out visa extension forms by providing clear, accurate guidan
 
 **Interactive Guidance:**
 When users ask about:
-- "Find immigration office" → Guide to Locator
+- "Find immigration office" → Guide to Locator (immigration offices)
+- "Find photo booth" or "passport photo" → Guide to Locator (photo booths)
 - "Check documents" → Guide to Document Checklist
 - "Track application" → Guide to Visa Status
 - "Apply for extension" → Guide through the process
+
+**Important Guidelines:**
+- ALWAYS recommend using the app's built-in features first
+- For photo-related queries, guide users to the Locator feature to find photo booths
+- For location queries, guide users to the Locator feature
+- For document queries, guide users to the Document Checklist
+- Do NOT recommend external services like Google Maps, Yahoo Maps, or other apps
+- Focus on the app's capabilities and how they can help the user
 
 Provide helpful, specific guidance using markdown formatting. Be concise but thorough. If the user asks about a specific field, give detailed instructions for that field.
 
@@ -388,7 +387,29 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         id: "locator",
         text: "Find Immigration Office",
         route: "/locator",
-        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/marker.png",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/map-marker.png",
+      });
+    }
+
+    // Add photo booth detection
+    if (
+      input.includes("photo") ||
+      input.includes("photobooth") ||
+      input.includes("photo booth") ||
+      input.includes("passport photo") ||
+      input.includes("photo studio") ||
+      input.includes("photo machine") ||
+      input.includes("photo booth") ||
+      input.includes("take photo") ||
+      input.includes("get photo") ||
+      input.includes("photo for visa") ||
+      input.includes("visa photo")
+    ) {
+      actions.push({
+        id: "photobooth",
+        text: "Find Photo Booths",
+        route: "/locator?type=photobooth",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/camera.png",
       });
     }
 
@@ -423,7 +444,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
           id: "locator",
           text: "Find Immigration Office",
           route: "/locator",
-          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/marker.png",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/map-marker.png",
         }
       );
     }
@@ -635,36 +656,16 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
                 <div className="message-time">
                   {formatTime(message.timestamp)}
                 </div>
+
+                {/* Show action buttons only with the specific AI message that has them */}
+                {message.sender === "ai" &&
+                  message.actionButtons &&
+                  message.actionButtons.length > 0 && (
+                    <ActionButtons buttons={message.actionButtons} />
+                  )}
               </div>
             </div>
           ))}
-
-          {/* Persistent Action Buttons */}
-          {persistentActionButtons.length > 0 && (
-            <div className="message ai">
-              <div className="message-content">
-                <div className="action-buttons-container">
-                  <p>
-                    <strong>Quick Actions:</strong>
-                  </p>
-                  <div className="action-buttons-grid">
-                    {persistentActionButtons.map((button) => (
-                      <button
-                        key={button.id}
-                        className="action-button"
-                        onClick={() => {
-                          navigate(button.route);
-                        }}
-                      >
-                        <img src={button.icon} alt={button.text} />
-                        <span>{button.text}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {isLoading && (
             <div className="message ai">

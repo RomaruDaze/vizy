@@ -48,9 +48,6 @@ const VisaStatus = ({ answers }: VisaStatusProps) => {
               targetVisaType = profile.purpose_target;
             }
 
-            console.log("Profile:", profile);
-            console.log("Target visa type:", targetVisaType);
-
             if (targetVisaType) {
               // Generate documents based on target visa type
               const generatedDocuments = generateDocuments(targetVisaType);

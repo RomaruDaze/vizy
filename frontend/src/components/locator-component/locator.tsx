@@ -1,16 +1,28 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useSearchParams } from "react-router-dom";
 import "./locator.styles.css";
 import BottomNavigation from "../shared/bottom-navigation";
 import Map from "./map-component/map";
 
 const Locator = () => {
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [selectedOption, setSelectedOption] = useState<string>("immigration");
   const [isAtUserLocation, setIsAtUserLocation] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const mapRef = useRef<{ resetToUserLocation: () => void }>(null);
+
+  // Check URL parameter on component mount
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    if (typeParam === "photobooth") {
+      setSelectedOption("photobooth");
+    } else {
+      setSelectedOption("immigration");
+    }
+  }, [searchParams]);
 
   const handleImmigrationOffices = async () => {
     if (selectedOption === "immigration") return; // Already selected

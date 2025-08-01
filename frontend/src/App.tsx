@@ -13,7 +13,7 @@ import Locator from "./components/locator-component/locator";
 import Settings from "./components/settings-component/settings";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
-import AIFormAssistant from "./components/ai-form-assistant/AIFormAssistant";
+import AIFormAssistant from "./components/ai-form-assistant/ai";
 import UserGuide from "./components/user-guide-component/user-guide";
 import "./App.css";
 import "./colors.css";
