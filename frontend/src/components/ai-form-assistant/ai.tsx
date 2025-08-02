@@ -265,8 +265,10 @@ You help users fill out visa extension forms by providing clear, accurate guidan
 
 **Available App Features:**
 - **Locator**: Find nearby immigration offices and photo booths for visa photos
-- **Document Checklist**: View required documents for your visa type
-- **Visa Status**: Track your application progress
+- **Document Checklist**: Track your document preparation progress
+- **User Guide**: Learn about required documents and form instructions
+- **Visa Status & Reminders**: Track your application progress and set reminders for important dates
+- **AI Chat**: Get help with filling out forms and answering questions
 - **Settings**: Manage your profile and preferences
 
 **Key areas you can help with:**
@@ -281,19 +283,45 @@ You help users fill out visa extension forms by providing clear, accurate guidan
 - **Visa expiry date**
 - **Reason for extension**
 
-**Interactive Guidance:**
-When users ask about:
-- "Find immigration office" → Guide to Locator (immigration offices)
-- "Find photo booth" or "passport photo" → Guide to Locator (photo booths)
-- "Check documents" → Guide to Document Checklist
-- "Track application" → Guide to Visa Status
-- "Apply for extension" → Guide through the process
+**Contextual Guidance:**
+When users ask about specific situations, provide comprehensive suggestions:
+
+**Deadline-related queries** (e.g., "my deadline is near", "deadline approaching"):
+- Suggest setting reminders for the deadline
+- Recommend checking document checklist to track progress
+- Guide to user guide for document requirements
+- Mention AI chat for form assistance
+
+**Document-related queries** (e.g., "what documents do I need", "document checklist"):
+- Guide to user guide for detailed document explanations
+- Suggest document checklist for progress tracking
+- Recommend AI chat for specific questions
+
+**Application process queries** (e.g., "how to apply", "application process"):
+- Guide to user guide for step-by-step instructions
+- Suggest document checklist for progress tracking
+- Recommend AI chat for form assistance
+- Guide to locator for finding immigration offices
+
+**Photo-related queries** (e.g., "need passport photo", "photo booth"):
+- Guide to locator for finding photo booths
+- Suggest AI chat for photo requirements
+
+**Location queries** (e.g., "where to submit", "immigration office"):
+- Guide to locator for finding immigration offices
+- Suggest AI chat for submission process
+
+**Form assistance queries** (e.g., "help with form", "how to fill"):
+- Recommend AI chat for step-by-step guidance
+- Guide to user guide for document requirements
+- Suggest document checklist for tracking progress
 
 **Important Guidelines:**
 - ALWAYS recommend using the app's built-in features first
-- For photo-related queries, guide users to the Locator feature to find photo booths
-- For location queries, guide users to the Locator feature
-- For document queries, guide users to the Document Checklist
+- Provide multiple relevant suggestions based on the user's situation
+- For deadline-related issues, suggest reminders, checklist, and user guide
+- For document queries, distinguish between learning (user guide) and tracking (checklist)
+- For application process, suggest comprehensive workflow
 - Do NOT recommend external services like Google Maps, Yahoo Maps, or other apps
 - Focus on the app's capabilities and how they can help the user
 
@@ -347,13 +375,148 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
     const input = userInput.toLowerCase();
     const actions: SerializableActionButton[] = [];
 
-    // Only show relevant actions based on user intent
+    // Deadline-related queries - suggest multiple actions
     if (
+      input.includes("deadline") ||
+      input.includes("due date") ||
+      input.includes("expiry") ||
+      input.includes("expiration") ||
+      input.includes("near") ||
+      input.includes("approaching") ||
+      input.includes("urgent") ||
+      input.includes("time") ||
+      input.includes("soon")
+    ) {
+      // Suggest reminder, document checklist, and user guide
+      actions.push(
+        {
+          id: "reminder",
+          text: "Set Reminders",
+          route: "/home",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
+          action: "reminder" as const,
+        },
+        {
+          id: "document-checklist",
+          text: "Document Checklist",
+          route: "/home",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
+          action: "document-checklist" as const,
+        },
+        {
+          id: "documents",
+          text: "View Required Documents",
+          route: "/user-guide",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+        }
+      );
+    }
+
+    // Application process queries - suggest comprehensive workflow
+    else if (
+      input.includes("apply") ||
+      input.includes("extension") ||
+      input.includes("how to apply") ||
+      input.includes("application process") ||
+      input.includes("submission") ||
+      input.includes("submit")
+    ) {
+      actions.push(
+        {
+          id: "documents",
+          text: "View Required Documents",
+          route: "/user-guide",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+        },
+        {
+          id: "document-checklist",
+          text: "Document Checklist",
+          route: "/home",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
+          action: "document-checklist" as const,
+        },
+        {
+          id: "locator",
+          text: "Find Immigration Office",
+          route: "/locator",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/map-marker.png",
+        }
+      );
+    }
+
+    // Document checklist queries (progress tracking)
+    else if (
+      input.includes("checklist") ||
+      input.includes("check list") ||
+      input.includes("document progress") ||
+      input.includes("track documents") ||
+      input.includes("document status") ||
+      input.includes("progress") ||
+      input.includes("completed documents") ||
+      input.includes("document checklist") ||
+      input.includes("mark documents") ||
+      input.includes("check off documents")
+    ) {
+      actions.push({
+        id: "document-checklist",
+        text: "Document Checklist",
+        route: "/home",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
+        action: "document-checklist" as const,
+      });
+    }
+
+    // User guide queries (learning about documents)
+    else if (
+      input.includes("document") ||
+      input.includes("required") ||
+      input.includes("paperwork") ||
+      input.includes("what do i need") ||
+      input.includes("documents") ||
+      input.includes("required documents") ||
+      input.includes("document list") ||
+      input.includes("what documents") ||
+      input.includes("which documents") ||
+      input.includes("how to fill") ||
+      input.includes("form help") ||
+      input.includes("document explanation") ||
+      input.includes("what is required") ||
+      input.includes("document guide")
+    ) {
+      actions.push({
+        id: "documents",
+        text: "View Required Documents",
+        route: "/user-guide",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+      });
+    }
+
+    // Reminder queries
+    else if (
+      input.includes("reminder") ||
+      input.includes("remind") ||
+      input.includes("track") ||
+      input.includes("status") ||
+      input.includes("check status") ||
+      input.includes("application status") ||
+      input.includes("visa status")
+    ) {
+      const reminderButton: SerializableActionButton = {
+        id: "reminder",
+        text: "Set Reminders",
+        route: "/home",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
+        action: "reminder" as const,
+      };
+      actions.push(reminderButton);
+    }
+
+    // Location queries
+    else if (
       input.includes("immigration") ||
       input.includes("office") ||
       input.includes("where") ||
-      input.includes("location") ||
-      input.includes("submit")
+      input.includes("location")
     ) {
       actions.push({
         id: "locator",
@@ -363,8 +526,8 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       });
     }
 
-    // Add photo booth detection
-    if (
+    // Photo booth queries
+    else if (
       input.includes("photo") ||
       input.includes("photobooth") ||
       input.includes("photo booth") ||
@@ -383,74 +546,6 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         route: "/locator?type=photobooth",
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/camera.png",
       });
-    }
-
-    // Add document checklist detection
-    if (
-      input.includes("document") ||
-      input.includes("checklist") ||
-      input.includes("required") ||
-      input.includes("paperwork") ||
-      input.includes("what do i need") ||
-      input.includes("documents") ||
-      input.includes("check list") ||
-      input.includes("required documents") ||
-      input.includes("document list") ||
-      input.includes("what documents") ||
-      input.includes("which documents")
-    ) {
-      actions.push({
-        id: "documents",
-        text: "View Required Documents",
-        route: "/user-guide",
-        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
-      });
-    }
-
-    // Add reminder detection
-    if (
-      input.includes("reminder") ||
-      input.includes("remind") ||
-      input.includes("deadline") ||
-      input.includes("due date") ||
-      input.includes("expiry") ||
-      input.includes("expiration") ||
-      input.includes("track") ||
-      input.includes("status") ||
-      input.includes("progress") ||
-      input.includes("check status") ||
-      input.includes("application status") ||
-      input.includes("visa status")
-    ) {
-      const reminderButton: SerializableActionButton = {
-        id: "reminder",
-        text: "Set Reminders",
-        route: "/home",
-        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
-        action: "reminder" as const,
-      };
-      actions.push(reminderButton);
-    }
-
-    if (
-      input.includes("apply") ||
-      input.includes("extension") ||
-      input.includes("how to apply")
-    ) {
-      actions.push(
-        {
-          id: "documents",
-          text: "View Required Documents",
-          route: "/user-guide",
-          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
-        },
-        {
-          id: "locator",
-          text: "Find Immigration Office",
-          route: "/locator",
-          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/map-marker.png",
-        }
-      );
     }
 
     return actions;

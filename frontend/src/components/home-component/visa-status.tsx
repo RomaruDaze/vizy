@@ -15,12 +15,16 @@ interface VisaStatusProps {
   answers: Record<string, any>;
   openReminderOnMount?: boolean; // Add this prop
   onReminderOpened?: () => void; // Add callback prop
+  openDocumentChecklistOnMount?: boolean;
+  onDocumentChecklistOpened?: () => void;
 }
 
 const VisaStatus = ({
   answers,
   openReminderOnMount = false,
   onReminderOpened,
+  openDocumentChecklistOnMount = false,
+  onDocumentChecklistOpened,
 }: VisaStatusProps) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
@@ -42,6 +46,17 @@ const VisaStatus = ({
       }
     }
   }, [openReminderOnMount, onReminderOpened]);
+
+  // Add effect to open document checklist popup on mount if requested
+  useEffect(() => {
+    if (openDocumentChecklistOnMount) {
+      setShowDocumentsPopup(true);
+      // Call the callback to notify parent that document checklist was opened
+      if (onDocumentChecklistOpened) {
+        onDocumentChecklistOpened();
+      }
+    }
+  }, [openDocumentChecklistOnMount, onDocumentChecklistOpened]);
 
   // Load saved data from Firebase
   useEffect(() => {

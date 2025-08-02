@@ -6,7 +6,7 @@ export interface SerializableActionButton {
   text: string;
   route: string;
   icon: string;
-  action?: "reminder" | "default";
+  action?: "reminder" | "document-checklist" | "default";
 }
 
 interface ActionButtonsProps {
@@ -30,6 +30,11 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     if (button.action === "reminder") {
       // Set a flag in localStorage
       localStorage.setItem("openReminder", "true");
+      // Navigate to home
+      navigate("/home");
+    } else if (button.action === "document-checklist") {
+      // Set a flag in localStorage for document checklist
+      localStorage.setItem("openDocumentChecklist", "true");
       // Navigate to home
       navigate("/home");
     } else {

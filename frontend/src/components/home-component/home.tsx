@@ -18,6 +18,8 @@ const Home = () => {
     null
   );
   const [shouldOpenReminder, setShouldOpenReminder] = useState(false);
+  const [shouldOpenDocumentChecklist, setShouldOpenDocumentChecklist] =
+    useState(false);
 
   // Check if we should open the reminder popup
   useEffect(() => {
@@ -27,6 +29,17 @@ const Home = () => {
       setShouldOpenReminder(true);
       // Clear the localStorage flag
       localStorage.removeItem("openReminder");
+    }
+  }, []);
+
+  // Check if we should open the document checklist popup
+  useEffect(() => {
+    const openDocumentChecklist = localStorage.getItem("openDocumentChecklist");
+
+    if (openDocumentChecklist === "true") {
+      setShouldOpenDocumentChecklist(true);
+      // Clear the localStorage flag
+      localStorage.removeItem("openDocumentChecklist");
     }
   }, []);
 
@@ -74,6 +87,11 @@ const Home = () => {
     setShouldOpenReminder(false);
   };
 
+  // Reset the document checklist flag after passing it to VisaStatus
+  const handleDocumentChecklistOpened = () => {
+    setShouldOpenDocumentChecklist(false);
+  };
+
   if (showAccount) {
     return <Account onBack={handleBackFromAccount} />;
   }
@@ -101,6 +119,8 @@ const Home = () => {
             answers={userAnswers}
             openReminderOnMount={shouldOpenReminder}
             onReminderOpened={handleReminderOpened}
+            openDocumentChecklistOnMount={shouldOpenDocumentChecklist}
+            onDocumentChecklistOpened={handleDocumentChecklistOpened}
           />
         ) : (
           <div className="getting-started-card">
