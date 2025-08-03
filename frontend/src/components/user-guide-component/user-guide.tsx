@@ -12,8 +12,6 @@ const UserGuide = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
-  const [targetVisaType, setTargetVisaType] = useState("Work Visa");
-  console.log(targetVisaType);
 
   const onBack = () => {
     navigate(-1);
@@ -36,7 +34,6 @@ const UserGuide = () => {
           }
 
           if (targetType) {
-            setTargetVisaType(targetType);
             const userDocuments = generateDocuments(targetType);
             setDocuments(userDocuments);
           } else {
