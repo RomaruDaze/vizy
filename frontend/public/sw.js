@@ -49,67 +49,50 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 const CACHE_NAME = 'vizy-app-v1';
-const urlsToCache = [
-    '/',
-    '/index.html'
-];
-
-// Files to cache with specific MIME types
-const filesToCache = [
-    { url: '/', type: 'text/html' },
-    { url: '/index.html', type: 'text/html' }
-];
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                // Only cache HTML files for now
-                return cache.addAll(['/', '/index.html']);
-            })
-    );
+    console.log('Service Worker installing...');
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    console.log('Service Worker activating...');
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
-    // Only handle GET requests
-    if (event.request.method !== 'GET') {
+    // Don't intercept module requests or assets
+    if (event.request.destination === 'script' ||
+        event.request.destination === 'style' ||
+        event.request.destination === 'image' ||
+        event.request.destination === 'font' ||
+        event.request.url.includes('.js') ||
+        event.request.url.includes('.css') ||
+        event.request.url.includes('.svg') ||
+        event.request.url.includes('.png') ||
+        event.request.url.includes('.jpg') ||
+        event.request.url.includes('.ico')) {
         return;
     }
 
-    // Don't cache API calls or external resources
-    if (event.request.url.includes('api.') ||
-        event.request.url.includes('googleapis.com') ||
-        event.request.url.includes('gstatic.com')) {
-        return;
-    }
-
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Return cached version or fetch from network
-                return response || fetch(event.request);
-            })
-            .catch(() => {
-                // If both cache and network fail, return a fallback
-                if (event.request.destination === 'document') {
-                    return caches.match('/index.html');
-                }
-                return new Response('Network error', { status: 408 });
-            })
-    );
-});
-
-// Clean up old caches
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        return caches.delete(cacheName);
+    // Only handle navigation requests (HTML pages)
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    // Cache the response for offline use
+                    if (response.status === 200) {
+                        const responseClone = response.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseClone);
+                        });
                     }
+                    return response;
                 })
-            );
-        })
-    );
+                .catch(() => {
+                    // Return cached version if network fails
+                    return caches.match('/index.html');
+                })
+        );
+    }
 });
