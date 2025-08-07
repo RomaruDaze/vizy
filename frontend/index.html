@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,12 +13,13 @@
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="/passport.svg" />
     
-    <!-- iOS Meta Tags -->
+    <!-- iOS Meta Tags - Updated -->
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Vizy" />
+    <meta name="apple-mobile-web-app-title" content="VIZY" />
     
-    <title>Vizy App</title>
+    <title>VIZY App</title>
   </head>
   <body>
     <div id="root"></div>
@@ -28,13 +29,15 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-              console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-              console.log('SW registration failed: ', registrationError);
-            });
+          navigator.serviceWorker.register('/sw.js', {
+            scope: '/'
+          })
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
         });
       }
     </script>

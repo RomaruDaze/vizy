@@ -46,6 +46,11 @@
     height: 1.5em;
 }
 
+.button__text {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
 .button:hover {
     border-color: #f4f5f2;
     box-shadow: 0 0.7em 1.5em -0.5em hsla(249, 62%, 51%, 0.745);
