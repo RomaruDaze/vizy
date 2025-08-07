@@ -67,15 +67,6 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
             setMessages(lastConversation.messages);
             setCurrentConversationId(lastConversation.id);
             setShouldLoadLastConversation(false);
-
-            // Remove the persistent action buttons restoration logic
-            // const lastAIMessage = lastConversation.messages
-            //   .filter((msg) => msg.sender === "ai")
-            //   .pop();
-
-            // if (lastAIMessage && lastAIMessage.actionButtons) {
-            //   setPersistentActionButtons(lastAIMessage.actionButtons);
-            // }
           }
         } catch (error) {
           console.error("Error loading conversations:", error);
