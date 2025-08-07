@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./installprompt.styles.css";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -38,25 +39,27 @@ export const InstallPrompt: React.FC = () => {
   if (!showInstallButton) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        backgroundColor: "#007bff",
-        color: "white",
-        padding: "12px 24px",
-        borderRadius: "25px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-        zIndex: 1000,
-        cursor: "pointer",
-        fontSize: "14px",
-        fontWeight: "500",
-      }}
-      onClick={handleInstallClick}
-    >
-      📱 Install VIZY App
+    <div className="install-prompt">
+      <button className="button" onClick={handleInstallClick}>
+        <span className="button__text">Install VIZY</span>
+        <svg
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          viewBox="0 0 24 24"
+          height="40"
+          width="40"
+          className="button__icon"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill="none" d="M0 0h24v24H0z" stroke="none"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+          <path d="M7 11l5 5l5 -5"></path>
+          <path d="M12 4l0 12"></path>
+        </svg>
+      </button>
     </div>
   );
 };
