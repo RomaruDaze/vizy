@@ -54,16 +54,32 @@ const urlsToCache = [
     '/index.html'
 ];
 
+// Files to cache with specific MIME types
+const filesToCache = [
+    { url: '/', type: 'text/html' },
+    { url: '/index.html', type: 'text/html' }
+];
+
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(urlsToCache))
+            .then(cache => {
+                // Only cache HTML files for now
+                return cache.addAll(['/', '/index.html']);
+            })
     );
 });
 
 self.addEventListener('fetch', event => {
     // Only handle GET requests
     if (event.request.method !== 'GET') {
+        return;
+    }
+
+    // Don't cache API calls or external resources
+    if (event.request.url.includes('api.') ||
+        event.request.url.includes('googleapis.com') ||
+        event.request.url.includes('gstatic.com')) {
         return;
     }
 
@@ -78,6 +94,7 @@ self.addEventListener('fetch', event => {
                 if (event.request.destination === 'document') {
                     return caches.match('/index.html');
                 }
+                return new Response('Network error', { status: 408 });
             })
     );
 });
