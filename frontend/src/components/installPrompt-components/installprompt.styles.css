@@ -39,6 +39,7 @@
     background: linear-gradient(90deg,
             rgba(77, 54, 208, 1) 0%,
             rgba(132, 116, 254, 1) 100%);
+    z-index: 100;
 }
 
 .button__icon {
