@@ -15,6 +15,7 @@ import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import AIFormAssistant from "./components/ai-form-assistant/ai";
 import UserGuide from "./components/user-guide-component/user-guide";
+import { InstallPrompt } from "./components/InstallPrompt";
 import "./App.css";
 import "./colors.css";
 
@@ -68,6 +69,7 @@ function App() {
               {/* Fallback route */}
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
+            <InstallPrompt />
           </LanguageProvider>
         </AuthProvider>
       </Router>
