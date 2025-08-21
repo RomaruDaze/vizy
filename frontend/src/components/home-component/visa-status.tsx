@@ -4,17 +4,24 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
 import {
   getUserProfile,
-  updateUserProfile, // Changed from updateUserLanguage
+  updateUserProfile,
 } from "../../services/userProfileService";
 import {
   generateDocuments,
   type DocumentItem,
 } from "../../services/documentService";
+import {
+  getUserReminders,
+  createReminder,
+  deleteReminder,
+  toggleReminderComplete,
+} from "../../services/reminderService";
+import type { Reminder } from "../../types/userProfile";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
-  openReminderOnMount?: boolean; // Add this prop
-  onReminderOpened?: () => void; // Add callback prop
+  openReminderOnMount?: boolean;
+  onReminderOpened?: () => void;
   openDocumentChecklistOnMount?: boolean;
   onDocumentChecklistOpened?: () => void;
 }
@@ -31,45 +38,38 @@ const VisaStatus = ({
   const { t, language } = useLanguage();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);
-  const [reminderTime, setReminderTime] = useState("");
-  const [reminderDate, setReminderDate] = useState("");
-  const [reminderSet, setReminderSet] = useState(false);
+  const [reminders, setReminders] = useState<Reminder[]>([]);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [newReminder, setNewReminder] = useState({
+    title: "",
+    date: "",
+    time: "",
+  });
 
-  // Add effect to open reminder popup on mount if requested
   useEffect(() => {
     if (openReminderOnMount) {
       setShowReminderPopup(true);
-      // Call the callback to notify parent that reminder was opened
       if (onReminderOpened) {
         onReminderOpened();
       }
     }
   }, [openReminderOnMount, onReminderOpened]);
 
-  // Add effect to open document checklist popup on mount if requested
   useEffect(() => {
     if (openDocumentChecklistOnMount) {
       setShowDocumentsPopup(true);
-      // Call the callback to notify parent that document checklist was opened
       if (onDocumentChecklistOpened) {
         onDocumentChecklistOpened();
       }
     }
   }, [openDocumentChecklistOnMount, onDocumentChecklistOpened]);
 
-  // Load saved data from Firebase
   useEffect(() => {
     const loadSavedData = async () => {
       if (currentUser) {
         try {
           const profile = await getUserProfile(currentUser.uid);
           if (profile) {
-            setReminderDate(profile.reminderDate || "");
-            setReminderTime(profile.reminderTime || "");
-            setReminderSet(profile.reminderSet || false);
-
-            // Determine target visa type based on purpose
             let targetVisaType = null;
 
             if (profile.purpose === "Extend current residency") {
@@ -81,21 +81,101 @@ const VisaStatus = ({
             }
 
             if (targetVisaType) {
-              // Generate documents based on target visa type
               const generatedDocuments = generateDocuments(targetVisaType);
 
-              // Load document progress
-              if (profile.documentProgress) {
+              // Check if we need to sync documents with documentProgress
+              if (
+                profile.documents &&
+                profile.documents.length > 0 &&
+                (!profile.documentProgress ||
+                  Object.keys(profile.documentProgress).length === 0)
+              ) {
+                // Create documentProgress based on the documents array
+                const documentProgress: { [key: string]: boolean } = {};
+
+                generatedDocuments.forEach((doc) => {
+                  // Check if this document exists in the user's documents array
+                  const isSelected = profile.documents!.some((selectedDoc) => {
+                    // Create a mapping for common document name variations
+                    const documentMapping: { [key: string]: string[] } = {
+                      application: [
+                        "application extension form",
+                        "application form",
+                        "extension form",
+                      ],
+                      passport: ["passport"],
+                      residenceCard: ["residence card", "residency card"],
+                      idPhoto: [
+                        "id photo",
+                        "photo",
+                        "id photo (3x4 cm)",
+                        "3x4 cm photo",
+                      ],
+                      processingFee: [
+                        "processing fee",
+                        "fee",
+                        "application fee",
+                      ],
+                      certificateOfEmployment: [
+                        "certificate of employment",
+                        "employment certificate",
+                      ],
+                      companyFinancial: [
+                        "company financial",
+                        "financial documents",
+                      ],
+                      companyRegistration: [
+                        "company registration",
+                        "registration",
+                      ],
+                      residentTax: ["resident tax", "tax"],
+                      taxPayment: ["tax payment", "tax receipt"],
+                    };
+
+                    const docName = doc.name.toLowerCase();
+                    const selectedDocName = selectedDoc.toLowerCase();
+
+                    // Check if this document has a mapping
+                    if (documentMapping[doc.id]) {
+                      return documentMapping[doc.id].some(
+                        (mappedName) =>
+                          selectedDocName.includes(mappedName) ||
+                          mappedName.includes(selectedDocName)
+                      );
+                    }
+
+                    // Fallback to direct matching
+                    return (
+                      docName.includes(selectedDocName) ||
+                      selectedDocName.includes(docName)
+                    );
+                  });
+
+                  documentProgress[doc.id] = isSelected;
+                });
+
+                // Save the documentProgress to Firebase
+                await updateUserProfile(currentUser.uid, {
+                  documentProgress,
+                });
+
+                // Update local state with the synced data
+                const updatedDocuments = generatedDocuments.map((doc) => ({
+                  ...doc,
+                  checked: documentProgress[doc.id] || false,
+                }));
+                setDocuments(updatedDocuments);
+              } else if (profile.documentProgress) {
+                // Use existing documentProgress
                 const updatedDocuments = generatedDocuments.map((doc) => ({
                   ...doc,
                   checked: profile.documentProgress![doc.id] || false,
                 }));
                 setDocuments(updatedDocuments);
               } else {
+                // No documents or progress, set all as unchecked
                 setDocuments(generatedDocuments);
               }
-            } else {
-              console.error("No target visa type found in profile");
             }
           }
         } catch (error) {
@@ -107,7 +187,21 @@ const VisaStatus = ({
     loadSavedData();
   }, [currentUser]);
 
-  // Update documents when visa type changes
+  useEffect(() => {
+    const loadReminders = async () => {
+      if (currentUser) {
+        try {
+          const userReminders = await getUserReminders(currentUser.uid);
+          setReminders(userReminders);
+        } catch (error) {
+          console.error("Error loading reminders:", error);
+        }
+      }
+    };
+
+    loadReminders();
+  }, [currentUser]);
+
   useEffect(() => {
     if (answers.purpose) {
       let targetVisaType = "Work Visa";
@@ -200,52 +294,69 @@ const VisaStatus = ({
     setShowReminderPopup(true);
   };
 
-  const handleSetReminder = async () => {
-    if (reminderDate && reminderTime && currentUser) {
-      setReminderSet(true);
-      setShowReminderPopup(false);
-
-      // Save to Firebase
-      await updateUserProfile(currentUser.uid, {
-        reminderDate,
-        reminderTime,
-        reminderSet: true,
-      });
-    }
-  };
-
-  const handleClearReminder = async () => {
-    if (currentUser) {
-      setReminderSet(false);
-      setReminderDate("");
-      setReminderTime("");
-      setShowReminderPopup(false);
-
-      // Save to Firebase
-      await updateUserProfile(currentUser.uid, {
-        reminderDate: "",
-        reminderTime: "",
-        reminderSet: false,
-      });
-    }
-  };
-
-  const getReminderButtonText = () => {
-    if (reminderSet) {
-      return `Reminder set for ${reminderDate} at ${reminderTime}`;
-    }
-    return t("set_reminder");
-  };
-
   const handleCloseReminderPopup = () => {
     setShowReminderPopup(false);
+    setNewReminder({ title: "", date: "", time: "" });
+  };
+
+  const handleCreateReminder = async () => {
+    if (
+      newReminder.title &&
+      newReminder.date &&
+      newReminder.time &&
+      currentUser
+    ) {
+      try {
+        await createReminder(currentUser.uid, {
+          ...newReminder,
+          description: "", // Set empty description
+          completed: false,
+        });
+
+        const userReminders = await getUserReminders(currentUser.uid);
+        setReminders(userReminders);
+        setNewReminder({ title: "", date: "", time: "" });
+      } catch (error) {
+        console.error("Error creating reminder:", error);
+      }
+    }
+  };
+
+  const handleToggleReminder = async (
+    reminderId: string,
+    completed: boolean
+  ) => {
+    if (currentUser) {
+      try {
+        await toggleReminderComplete(currentUser.uid, reminderId, completed);
+        setReminders((prev) =>
+          prev.map((reminder) =>
+            reminder.id === reminderId ? { ...reminder, completed } : reminder
+          )
+        );
+      } catch (error) {
+        console.error("Error updating reminder:", error);
+      }
+    }
+  };
+
+  const handleDeleteReminder = async (reminderId: string) => {
+    if (currentUser) {
+      try {
+        await deleteReminder(currentUser.uid, reminderId);
+        setReminders((prev) =>
+          prev.filter((reminder) => reminder.id !== reminderId)
+        );
+      } catch (error) {
+        console.error("Error deleting reminder:", error);
+      }
+    }
   };
 
   const handleHelpClick = () => {
     navigate("/user-guide");
   };
 
-  // Group documents by category
   const groupedDocuments = documents.reduce((groups, doc) => {
     const category = doc.category || "General";
     if (!groups[category]) {
@@ -255,7 +366,6 @@ const VisaStatus = ({
     return groups;
   }, {} as Record<string, DocumentItem[]>);
 
-  // Function to format date based on language
   const formatDate = (date: Date) => {
     if (language === "ja") {
       return date.toLocaleDateString("ja-JP", {
@@ -274,7 +384,6 @@ const VisaStatus = ({
 
   return (
     <div className="visa-status-container">
-      {/* Top Card - Deadline */}
       <div className="deadline-card">
         <div className="deadline-header">
           <img
@@ -304,21 +413,17 @@ const VisaStatus = ({
           </div>
         </div>
         <div className="deadline-reminder">
-          <button
-            className={`reminder-button ${reminderSet ? "reminder-set" : ""}`}
-            onClick={handleReminderClick}
-          >
+          <button className="reminder-button" onClick={handleReminderClick}>
             <img
               src="https://img.icons8.com/ios-filled/100/FFFFFF/bell.png"
               alt="Reminder"
               className="reminder-icon"
             />
-            {getReminderButtonText()}
+            {t("view_reminders")}
           </button>
         </div>
       </div>
 
-      {/* Bottom Card - Incomplete Documents */}
       <div className="documents-card" onClick={handleDocumentsClick}>
         <div className="documents-content">
           <div className="documents-icon">
@@ -337,7 +442,6 @@ const VisaStatus = ({
         </div>
       </div>
 
-      {/* Documents Popup */}
       {showDocumentsPopup && (
         <div
           className="documents-popup-overlay"
@@ -402,7 +506,6 @@ const VisaStatus = ({
         </div>
       )}
 
-      {/* Reminder Popup */}
       {showReminderPopup && (
         <div
           className="reminder-popup-overlay"
@@ -422,35 +525,114 @@ const VisaStatus = ({
                   alt="Back"
                 />
               </button>
-              <h3>{t("set_reminder")}</h3>
+              <h3>{t("reminders")}</h3>
             </div>
-            <div className="reminder-form">
-              <div className="form-group">
-                <label>{t("date")}</label>
-                <input
-                  type="date"
-                  value={reminderDate}
-                  onChange={(e) => setReminderDate(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>{t("time")}</label>
-                <input
-                  type="time"
-                  value={reminderTime}
-                  onChange={(e) => setReminderTime(e.target.value)}
-                />
-              </div>
-              <div className="reminder-actions">
-                <button className="clear-button" onClick={handleClearReminder}>
-                  {t("clear_reminder")}
-                </button>
+
+            <div className="reminder-content">
+              {reminders.length === 0 ? (
+                <div className="no-reminders">
+                  <p>{t("no_reminders_set")}</p>
+                </div>
+              ) : (
+                <div className="reminders-list">
+                  {reminders.map((reminder) => (
+                    <div
+                      key={reminder.id}
+                      className={`reminder-item ${
+                        reminder.completed ? "completed" : ""
+                      }`}
+                    >
+                      <div className="reminder-header">
+                        <label className="reminder-checkbox">
+                          <input
+                            type="checkbox"
+                            checked={reminder.completed}
+                            onChange={(e) =>
+                              handleToggleReminder(
+                                reminder.id,
+                                e.target.checked
+                              )
+                            }
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                        <div className="reminder-info">
+                          <h4 className={reminder.completed ? "completed" : ""}>
+                            {reminder.title}
+                          </h4>
+                          <p className={reminder.completed ? "completed" : ""}>
+                            {reminder.description}
+                          </p>
+                          <span className="reminder-date">
+                            {reminder.date} at {reminder.time}
+                          </span>
+                        </div>
+                        <button
+                          className="delete-reminder-btn"
+                          onClick={() => handleDeleteReminder(reminder.id)}
+                        >
+                          <img
+                            src="https://img.icons8.com/ios-glyphs/100/FFFFFF/delete.png"
+                            alt="Delete"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="add-reminder-form">
+                <h4>{t("add_new_reminder")}</h4>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder={t("reminder_title")}
+                    value={newReminder.title}
+                    onChange={(e) =>
+                      setNewReminder((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <input
+                      className="reminder-date-input"
+                      type="date"
+                      value={newReminder.date}
+                      onChange={(e) =>
+                        setNewReminder((prev) => ({
+                          ...prev,
+                          date: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      className="reminder-time-input"
+                      type="time"
+                      value={newReminder.time}
+                      onChange={(e) =>
+                        setNewReminder((prev) => ({
+                          ...prev,
+                          time: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
                 <button
-                  className="set-button"
-                  onClick={handleSetReminder}
-                  disabled={!reminderDate || !reminderTime}
+                  className="add-reminder-btn"
+                  onClick={handleCreateReminder}
+                  disabled={
+                    !newReminder.title || !newReminder.date || !newReminder.time
+                  }
                 >
-                  {t("set_reminder")}
+                  {t("add_reminder")}
                 </button>
               </div>
             </div>

@@ -13,11 +13,11 @@ const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
 
   const themes = [
     {
-      id: "default",
-      name: t("default"),
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      preview: "#667eea",
-      description: t("classic_purple_gradient"),
+      id: "ocean",
+      name: t("ocean"),
+      gradient: "linear-gradient(135deg, #667db6 0%, #0082c8 100%)",
+      preview: "#667db6",
+      description: t("deep_blue_waters"),
     },
     {
       id: "sunset",
@@ -48,11 +48,11 @@ const Accessibility: React.FC<AccessibilityProps> = ({ onBack }) => {
       description: t("vibrant_red_gradient"),
     },
     {
-      id: "ocean",
-      name: t("ocean"),
-      gradient: "linear-gradient(135deg, #667db6 0%, #0082c8 100%)",
-      preview: "#667db6",
-      description: t("deep_blue_waters"),
+      id: "purple",
+      name: t("purple"),
+      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      preview: "#667eea",
+      description: t("classic_purple_gradient"),
     },
     {
       id: "obsidian",

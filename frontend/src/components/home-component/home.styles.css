@@ -13,7 +13,7 @@
   flex-direction: column;
 }
 
-/* Getting Started*/
+/* Getting Started */
 .getting-started-card {
   border-radius: 24px;
   margin: 1rem;
@@ -186,7 +186,6 @@
   font-weight: 600;
 }
 
-
 /* Getting Started Container */
 .getting-started-question-container {
   min-height: 100vh;
@@ -195,6 +194,12 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.getting-started-question-container::-webkit-scrollbar {
+  display: none;
 }
 
 .getting-started-question-content {
@@ -332,7 +337,6 @@
   transform: translateY(-2px);
 }
 
-/* Custom calendar icon */
 .question-input[type="date"]::before {
   position: absolute;
   right: 1rem;
@@ -347,7 +351,6 @@
   opacity: 1;
 }
 
-/* Remove default calendar icon */
 .question-input[type="date"]::-webkit-calendar-picker-indicator {
   background: transparent;
   color: transparent;
@@ -381,12 +384,10 @@
   font-weight: 500;
 }
 
-/* Placeholder styling */
 .question-input[type="date"]:not([value])::-webkit-datetime-edit {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Focus ring for accessibility */
 .question-input[type="date"]:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
@@ -411,13 +412,12 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   color: white;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
   backdrop-filter: blur(10px);
-  font-size: 1.2rem;
 }
 
 .option-button:hover {
@@ -557,17 +557,6 @@
 .next-button img {
   filter: none;
 }
-
-/* Hide scrollbars for the getting started container */
-.getting-started-question-container {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.getting-started-question-container::-webkit-scrollbar {
-  display: none;
-}
-
 
 .multi-select-container {
   width: 100%;
@@ -829,19 +818,12 @@
 }
 
 /* Reminder Button */
-.deadline-reminder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
 .reminder-button {
-  background: rgba(244, 67, 54);
+  background: transparent;
+  border: 2px solid white;
   width: 100%;
   border-radius: 12px;
+  margin-top: 1.5rem;
   padding: 1rem 1.5rem;
   color: white;
   font-size: 0.95rem;
@@ -853,45 +835,19 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
   position: relative;
   overflow: hidden;
-  border: none;
-}
-
-.reminder-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease;
 }
 
 .reminder-button:hover {
-  background: rgba(244, 67, 54, 0.4);
+  background: rgba(102, 126, 234, 1);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.3);
-}
-
-.reminder-button:hover::before {
-  left: 100%;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
 }
 
 .reminder-button:active {
   transform: translateY(0);
-}
-
-.reminder-button.reminder-set {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
-}
-
-.reminder-button.reminder-set:hover {
-  background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
 }
 
 .reminder-icon {
@@ -899,10 +855,6 @@
   height: 18px;
   filter: brightness(0) invert(1);
   opacity: 0.8;
-}
-
-.reminder-button.reminder-set .reminder-icon {
-  opacity: 1;
 }
 
 /* Popup Overlays */
@@ -995,16 +947,12 @@
 }
 
 /* Form Elements */
-.reminder-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
 .form-group label {
@@ -1013,58 +961,190 @@
   font-size: 0.95rem;
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  color: rgb(0, 0, 0);
+  color: black;
   font-size: 1rem;
   outline: none;
   transition: all 0.2s ease;
 }
 
-.reminder-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(0, 0, 0, 0.6);
 }
 
-.clear-button,
-.set-button {
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(102, 126, 234, 0.8);
+  background: white;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Reminder Content Styles */
+.reminder-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.no-reminders {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.reminders-list {
+  margin-bottom: 2rem;
+}
+
+.reminder-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reminder-item.completed {
+  opacity: 0.6;
+}
+
+.reminder-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.reminder-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.reminder-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.reminder-checkbox input[type="checkbox"]:checked+.checkmark {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.reminder-checkbox input[type="checkbox"]:checked+.checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.reminder-info {
   flex: 1;
+}
+
+.reminder-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.reminder-info h4.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.reminder-info p {
+  margin: 0 0 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.reminder-info p.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.reminder-date {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.delete-reminder-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.delete-reminder-btn:hover {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.delete-reminder-btn img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+
+/* Add Reminder Form */
+.add-reminder-form {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 1.5rem;
+}
+
+.add-reminder-form h4 {
+  color: white;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.add-reminder-btn {
+  background: rgba(102, 126, 234, 0.9);
+  color: white;
+  border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: none;
-  font-size: 0.95rem;
+  width: 100%;
 }
 
-.clear-button {
-  background: #f44336;
-  color: white;
-  border: 1px solid rgba(244, 67, 54, 0.3);
-}
-
-.clear-button:hover {
-  background: rgba(244, 67, 54, 0.3);
-  color: #f44336;
-}
-
-.set-button {
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  font-weight: 600;
-}
-
-.set-button:hover:not(:disabled) {
-  background: white;
+.add-reminder-btn:hover:not(:disabled) {
+  background: rgba(102, 126, 234, 1);
   transform: translateY(-1px);
 }
 
-.set-button:disabled {
+.add-reminder-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -1127,15 +1207,6 @@
   display: none;
 }
 
-.checkmark {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
-  position: relative;
-  transition: all 0.2s ease;
-}
-
 .document-checkbox input[type="checkbox"]:checked+.checkmark {
   background: #4caf50;
   border-color: #4caf50;
@@ -1156,33 +1227,6 @@
   color: white;
   font-size: 1rem;
   font-weight: 500;
-}
-
-/* Document Help Button */
-.document-help-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  margin-left: 8px;
-}
-
-.document-help-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.1);
-}
-
-.document-help-button img {
-  width: 32px;
-  height: 32px;
-  filter: brightness(0) invert(1);
 }
 
 /* Save Button */
@@ -1211,8 +1255,6 @@
 .save-button-documents:active {
   transform: translateY(0);
 }
-
-
 
 /* Responsive Design */
 @media (max-width: 480px) {

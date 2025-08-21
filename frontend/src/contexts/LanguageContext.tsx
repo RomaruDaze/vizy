@@ -142,7 +142,8 @@ const translations = {
     available_for_submission: "Available for submission",
     not_available_for_submission: "Not available for submission",
     deadline_expired: "Deadline has expired",
-    documents_question: "Which documents do i need to apply for a visa extension?",
+    documents_question:
+      "Which documents do i need to apply for a visa extension?",
 
     // Document Options
     application_extension_form: "Application Extension Form",
@@ -343,6 +344,15 @@ const translations = {
     reauthentication_failed: "Re-authentication failed",
     deleting: "Deleting...",
     confirm_deletion: "Confirm Deletion",
+
+    // Reminder translations
+    view_reminders: "View Reminders",
+    reminders: "Reminders",
+    no_reminders_set: "No reminders set",
+    add_new_reminder: "Add New Reminder",
+    reminder_title: "Reminder title",
+    reminder_description: "Description (optional)",
+    add_reminder: "Add Reminder",
   },
   id: {
     language: "Bahasa",
@@ -462,7 +472,8 @@ const translations = {
     available_for_submission: "Tersedia untuk pengajuan",
     not_available_for_submission: "Tidak tersedia untuk pengajuan",
     deadline_expired: "Batas waktu telah berakhir",
-    documents_question: "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
+    documents_question:
+      "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
 
     // Document Options
     application_extension_form: "Formulir Perpanjangan Permohonan",

@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type ThemeMode =
-  | "default"
+  | "ocean"
   | "sunset"
   | "forest"
   | "midnight"
   | "cherry"
-  | "ocean"
+  | "purple"
   | "obsidian"
   | "golden";
 
@@ -30,15 +30,10 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeMode>("default");
+  const [theme, setTheme] = useState<ThemeMode>("ocean");
 
   // Theme gradients mapping with primary colors
   const themeConfig = {
-    default: {
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      primary: "#667eea",
-      hover: "linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)",
-    },
     sunset: {
       gradient: "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)",
       primary: "#ff6b6b",
@@ -73,6 +68,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
       primary: "#f093fb",
       hover: "linear-gradient(135deg, #e082ea 0%, #e4465c 100%)",
+    },
+    purple: {
+      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      primary: "#667eea",
+      hover: "linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)",
     },
   };
 

@@ -12,3 +12,13 @@ export interface UserProfile {
     [key: string]: boolean;
   };
 }
+
+export interface Reminder {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  completed: boolean;
+  createdAt: string;
+}
