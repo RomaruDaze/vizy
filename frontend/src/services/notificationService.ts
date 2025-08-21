@@ -15,6 +15,13 @@ export interface ReminderNotification {
 // Store active reminder notifications
 const activeNotifications = new Map<string, ReminderNotification>();
 
+// Check if device is mobile
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+
 export const requestNotificationPermission = async (): Promise<boolean> => {
   if (!("Notification" in window)) {
     console.log("This browser does not support notifications");
@@ -70,46 +77,135 @@ export const showNotification = (data: NotificationData): void => {
   }
 };
 
-// Alternative notification method for mobile
+// Mobile-optimized notification with multiple fallbacks
 export const showMobileNotification = (data: NotificationData): void => {
-  // Try to show native notification first
+  console.log("Showing mobile notification:", data);
+
+  // Try native notification first
   if ("Notification" in window && Notification.permission === "granted") {
-    showNotification(data);
-    return;
+    try {
+      showNotification(data);
+      return;
+    } catch (error) {
+      console.log("Native notification failed, trying fallbacks");
+    }
   }
 
-  // Fallback: Show in-app notification or alert
-  console.log("Showing fallback notification:", data);
+  // Fallback 1: In-app notification banner
+  showInAppNotification(data);
 
-  // Create a visible in-app notification
+  // Fallback 2: Audio alert (if supported)
+  playNotificationSound();
+
+  // Fallback 3: Page title flash
+  flashPageTitle(data.title);
+
+  // Fallback 4: Console log for debugging
+  console.log("🔔 MOBILE NOTIFICATION:", data.title, "-", data.body);
+};
+
+const showInAppNotification = (data: NotificationData): void => {
+  // Remove any existing notifications
+  const existingNotifications = document.querySelectorAll(
+    ".mobile-notification"
+  );
+  existingNotifications.forEach((n) => n.remove());
+
   const notificationElement = document.createElement("div");
+  notificationElement.className = "mobile-notification";
   notificationElement.style.cssText = `
     position: fixed;
     top: 20px;
+    left: 20px;
     right: 20px;
-    background: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     z-index: 10000;
-    max-width: 300px;
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    animation: slideDown 0.3s ease;
+    border: 2px solid rgba(255,255,255,0.2);
   `;
 
   notificationElement.innerHTML = `
-    <div style="font-weight: bold; margin-bottom: 5px;">${data.title}</div>
-    <div>${data.body}</div>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <div style="font-size: 24px;">🔔</div>
+      <div style="flex: 1;">
+        <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">${data.title}</div>
+        <div style="font-size: 14px; opacity: 0.9;">${data.body}</div>
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 5px;">×</button>
+    </div>
   `;
+
+  // Add CSS animation
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
 
   document.body.appendChild(notificationElement);
 
-  // Auto-remove after 5 seconds
+  // Auto-remove after 8 seconds
   setTimeout(() => {
     if (notificationElement.parentNode) {
       notificationElement.parentNode.removeChild(notificationElement);
     }
-  }, 5000);
+  }, 8000);
+};
+
+const playNotificationSound = (): void => {
+  try {
+    // Create a simple notification sound
+    const audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.3
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+  } catch (error) {
+    console.log("Audio notification not supported");
+  }
+};
+
+const flashPageTitle = (title: string): void => {
+  const originalTitle = document.title;
+  let flashCount = 0;
+  const maxFlashes = 5;
+
+  const flash = () => {
+    if (flashCount >= maxFlashes) {
+      document.title = originalTitle;
+      return;
+    }
+
+    document.title = flashCount % 2 === 0 ? `🔔 ${title}` : originalTitle;
+    flashCount++;
+
+    setTimeout(flash, 500);
+  };
+
+  flash();
 };
 
 const calculateNextNotificationTime = (
@@ -176,16 +272,16 @@ export const scheduleReminderNotification = (reminder: {
       const timeoutId = setTimeout(() => {
         console.log("Showing notification for reminder:", reminder.title);
 
-        // Try to show notification with fallback
-        try {
-          showNotification({
+        // Use mobile-optimized notification for mobile devices
+        if (isMobile()) {
+          showMobileNotification({
             title: "Reminder: " + reminder.title,
             body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
             tag: `reminder-${reminder.id}`,
           });
-        } catch (error) {
-          console.log("Native notification failed, showing fallback");
-          showMobileNotification({
+        } else {
+          // Use native notification for desktop
+          showNotification({
             title: "Reminder: " + reminder.title,
             body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
             tag: `reminder-${reminder.id}`,
@@ -249,11 +345,19 @@ export const testNotification = async (): Promise<boolean> => {
   try {
     const permission = await requestNotificationPermission();
     if (permission) {
-      showNotification({
-        title: "Test Notification",
-        body: "This is a test notification to verify everything works!",
-        tag: "test",
-      });
+      if (isMobile()) {
+        showMobileNotification({
+          title: "Test Notification",
+          body: "This is a test notification to verify everything works!",
+          tag: "test",
+        });
+      } else {
+        showNotification({
+          title: "Test Notification",
+          body: "This is a test notification to verify everything works!",
+          tag: "test",
+        });
+      }
       return true;
     }
     return false;
