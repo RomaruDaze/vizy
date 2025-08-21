@@ -17,6 +17,7 @@ import {
   toggleReminderComplete,
 } from "../../services/reminderService";
 import type { Reminder } from "../../types/userProfile";
+import { requestNotificationPermission } from "../../services/notificationService";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
@@ -292,6 +293,8 @@ const VisaStatus = ({
 
   const handleReminderClick = () => {
     setShowReminderPopup(true);
+    // Request notification permission when popup opens
+    requestNotificationPermission();
   };
 
   const handleCloseReminderPopup = () => {

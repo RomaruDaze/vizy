@@ -5,7 +5,6 @@ import Help from "./help-components/help";
 import PrivacySecurity from "./privacy-components/privacy-security";
 import Accessibility from "./accessibility-components/accessibility";
 import BottomNavigation from "../shared/bottom-navigation";
-import NotificationTest from "../notification-components/NotificationTest";
 import "./settings.styles.css";
 
 const Settings = () => {
@@ -34,10 +33,6 @@ const Settings = () => {
 
   if (activeSection === "privacy") {
     return <PrivacySecurity onBack={handleBack} />;
-  }
-
-  if (activeSection === "notification-test") {
-    return <NotificationTest />;
   }
 
   return (
@@ -129,28 +124,6 @@ const Settings = () => {
               <div className="card-content">
                 <h3>{t("privacy_security")}</h3>
                 <p>{t("manage_privacy_security")}</p>
-              </div>
-              <div className="card-arrow">
-                <img
-                  src="https://img.icons8.com/ios-filled/50/999999/chevron-right.png"
-                  alt=">"
-                />
-              </div>
-            </button>
-            <button
-              className="settings-card"
-              onClick={() => handleSectionClick("notification-test")}
-              style={{ opacity: 0 }}
-            >
-              <div className="card-icon">
-                <img
-                  src="https://img.icons8.com/ios-filled/50/667eea/notification.png"
-                  alt="Notifications"
-                />
-              </div>
-              <div className="card-content">
-                <h3>{t("notification_test")}</h3>
-                <p>{t("test_push_notifications")}</p>
               </div>
               <div className="card-arrow">
                 <img

@@ -1,5 +1,10 @@
 import { ref, set, get, update, push, remove } from "firebase/database";
 import { database } from "../firebase/config";
+import { 
+  scheduleReminderNotification, 
+  cancelReminderNotification,
+  getNextNotificationTime 
+} from "./notificationService";
 
 export interface Reminder {
   id: string;
@@ -25,6 +30,10 @@ export const createReminder = async (
     };
 
     await set(newReminderRef, newReminder);
+    
+    // Schedule smart notification for the new reminder
+    scheduleReminderNotification(newReminder);
+    
     return newReminder;
   } catch (error) {
     console.error("Error creating reminder:", error);
@@ -39,11 +48,20 @@ export const getUserReminders = async (userId: string): Promise<Reminder[]> => {
 
     if (snapshot.exists()) {
       const reminders = snapshot.val() as Record<string, Reminder>;
-      return Object.values(reminders).sort(
+      const reminderList = Object.values(reminders).sort(
         (a, b) =>
           new Date(a.date + " " + a.time).getTime() -
           new Date(b.date + " " + b.time).getTime()
       );
+      
+      // Schedule notifications for all active reminders
+      reminderList.forEach(reminder => {
+        if (!reminder.completed) {
+          scheduleReminderNotification(reminder);
+        }
+      });
+      
+      return reminderList;
     }
     return [];
   } catch (error) {
@@ -63,6 +81,11 @@ export const updateReminder = async (
       `users/${userId}/reminders/${reminderId}`
     );
     await update(reminderRef, updates);
+    
+    // If reminder is being completed, cancel its notification
+    if (updates.completed) {
+      cancelReminderNotification(reminderId);
+    }
   } catch (error) {
     console.error("Error updating reminder:", error);
     throw error;
@@ -76,6 +99,9 @@ export const deleteReminder = async (userId: string, reminderId: string) => {
       `users/${userId}/reminders/${reminderId}`
     );
     await remove(reminderRef);
+    
+    // Cancel the notification for the deleted reminder
+    cancelReminderNotification(reminderId);
   } catch (error) {
     console.error("Error deleting reminder:", error);
     throw error;
@@ -93,8 +119,18 @@ export const toggleReminderComplete = async (
       `users/${userId}/reminders/${reminderId}`
     );
     await update(reminderRef, { completed });
+    
+    // Cancel notification if reminder is completed
+    if (completed) {
+      cancelReminderNotification(reminderId);
+    }
   } catch (error) {
     console.error("Error toggling reminder completion:", error);
     throw error;
   }
+};
+
+// Helper function to get next notification time for display
+export const getReminderNextNotification = (reminderId: string): Date | null => {
+  return getNextNotificationTime(reminderId);
 };
