@@ -24,7 +24,6 @@ const isMobile = () => {
 
 export const requestNotificationPermission = async (): Promise<boolean> => {
   if (!("Notification" in window)) {
-    console.log("This browser does not support notifications");
     return false;
   }
 
@@ -33,7 +32,6 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
   }
 
   if (Notification.permission === "denied") {
-    console.log("Notification permission denied");
     return false;
   }
 
@@ -43,7 +41,6 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
 
 export const showNotification = (data: NotificationData): void => {
   if (!("Notification" in window) || Notification.permission !== "granted") {
-    console.log("Cannot show notification - permission not granted");
     return;
   }
 
@@ -70,8 +67,6 @@ export const showNotification = (data: NotificationData): void => {
     setTimeout(() => {
       notification.close();
     }, 15000);
-
-    console.log("Notification shown successfully:", data.title);
   } catch (error) {
     console.error("Error showing notification:", error);
   }
@@ -79,15 +74,13 @@ export const showNotification = (data: NotificationData): void => {
 
 // Mobile-optimized notification with multiple fallbacks
 export const showMobileNotification = (data: NotificationData): void => {
-  console.log("Showing mobile notification:", data);
-
   // Try native notification first
   if ("Notification" in window && Notification.permission === "granted") {
     try {
       showNotification(data);
       return;
     } catch (error) {
-      console.log("Native notification failed, trying fallbacks");
+      // Native notification failed, continue to fallbacks
     }
   }
 
@@ -99,9 +92,6 @@ export const showMobileNotification = (data: NotificationData): void => {
 
   // Fallback 3: Page title flash
   flashPageTitle(data.title);
-
-  // Fallback 4: Console log for debugging
-  console.log("🔔 MOBILE NOTIFICATION:", data.title, "-", data.body);
 };
 
 const showInAppNotification = (data: NotificationData): void => {
@@ -184,7 +174,7 @@ const playNotificationSound = (): void => {
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + 0.3);
   } catch (error) {
-    console.log("Audio notification not supported");
+    // Audio notification not supported
   }
 };
 
@@ -232,24 +222,76 @@ const calculateNextNotificationTime = (
   return nextTime;
 };
 
+// Store reminders in localStorage for mobile persistence
+const storeReminderInStorage = (reminder: any) => {
+  try {
+    const storedReminders = JSON.parse(
+      localStorage.getItem("vizy-reminders") || "[]"
+    );
+    storedReminders.push({
+      ...reminder,
+      scheduledTime: new Date(`${reminder.date}T${reminder.time}`).getTime(),
+    });
+    localStorage.setItem("vizy-reminders", JSON.stringify(storedReminders));
+  } catch (error) {
+    // Error storing reminder
+  }
+};
+
+// Check for due reminders when app becomes visible
+const checkStoredReminders = () => {
+  try {
+    const storedReminders = JSON.parse(
+      localStorage.getItem("vizy-reminders") || "[]"
+    );
+    const now = Date.now();
+    const dueReminders = storedReminders.filter(
+      (r: any) => r.scheduledTime <= now
+    );
+
+    dueReminders.forEach((reminder: any) => {
+      showMobileNotification({
+        title: "Reminder: " + reminder.title,
+        body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
+        tag: `reminder-${reminder.id}`,
+      });
+    });
+
+    // Remove due reminders
+    const remainingReminders = storedReminders.filter(
+      (r: any) => r.scheduledTime > now
+    );
+    localStorage.setItem("vizy-reminders", JSON.stringify(remainingReminders));
+  } catch (error) {
+    // Error checking stored reminders
+  }
+};
+
+// Listen for app visibility changes
+if (typeof document !== "undefined") {
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      checkStoredReminders();
+    }
+  });
+}
+
 export const scheduleReminderNotification = (reminder: {
   id: string;
   title: string;
   date: string;
   time: string;
 }): void => {
-  console.log("Scheduling notification for reminder:", reminder);
-
   const reminderDate = new Date(`${reminder.date}T${reminder.time}`);
   const now = new Date();
 
-  console.log("Reminder date:", reminderDate);
-  console.log("Current time:", now);
+  // For mobile, store in localStorage as backup
+  if (isMobile()) {
+    storeReminderInStorage(reminder);
+  }
 
   // If reminder is in the past, start from now
   const startTime = reminderDate <= now ? now : reminderDate;
-
-  console.log("Start time for notifications:", startTime);
 
   // Initial interval: 30 minutes
   let interval = 30;
@@ -257,21 +299,11 @@ export const scheduleReminderNotification = (reminder: {
   // First notification should be at the exact reminder time (or now if past)
   let nextNotificationTime = startTime;
 
-  console.log("First notification will be at:", nextNotificationTime);
-
   const scheduleNextNotification = () => {
     const timeUntilNext = nextNotificationTime.getTime() - Date.now();
 
-    console.log(
-      `Scheduling next notification in ${timeUntilNext}ms (${Math.round(
-        timeUntilNext / 1000 / 60
-      )} minutes)`
-    );
-
     if (timeUntilNext > 0) {
       const timeoutId = setTimeout(() => {
-        console.log("Showing notification for reminder:", reminder.title);
-
         // Use mobile-optimized notification for mobile devices
         if (isMobile()) {
           showMobileNotification({
@@ -295,8 +327,6 @@ export const scheduleReminderNotification = (reminder: {
           interval
         );
 
-        console.log("Next notification scheduled for:", nextNotificationTime);
-
         // Continue scheduling
         scheduleNextNotification();
       }, timeUntilNext);
@@ -308,13 +338,6 @@ export const scheduleReminderNotification = (reminder: {
         nextNotificationTime,
         interval,
       });
-
-      console.log(
-        "Notification scheduled successfully for reminder:",
-        reminder.id
-      );
-    } else {
-      console.log("Notification time has passed, not scheduling");
     }
   };
 
@@ -327,7 +350,19 @@ export const cancelReminderNotification = (reminderId: string): void => {
   if (notification) {
     clearTimeout(notification.timeoutId);
     activeNotifications.delete(reminderId);
-    console.log(`Reminder notification cancelled for: ${reminderId}`);
+  }
+
+  // Also remove from localStorage
+  try {
+    const storedReminders = JSON.parse(
+      localStorage.getItem("vizy-reminders") || "[]"
+    );
+    const remainingReminders = storedReminders.filter(
+      (r: any) => r.id !== reminderId
+    );
+    localStorage.setItem("vizy-reminders", JSON.stringify(remainingReminders));
+  } catch (error) {
+    // Error removing reminder from storage
   }
 };
 
@@ -338,31 +373,4 @@ export const getActiveNotificationCount = (): number => {
 export const getNextNotificationTime = (reminderId: string): Date | null => {
   const notification = activeNotifications.get(reminderId);
   return notification ? notification.nextNotificationTime : null;
-};
-
-// Test function to check if notifications work
-export const testNotification = async (): Promise<boolean> => {
-  try {
-    const permission = await requestNotificationPermission();
-    if (permission) {
-      if (isMobile()) {
-        showMobileNotification({
-          title: "Test Notification",
-          body: "This is a test notification to verify everything works!",
-          tag: "test",
-        });
-      } else {
-        showNotification({
-          title: "Test Notification",
-          body: "This is a test notification to verify everything works!",
-          tag: "test",
-        });
-      }
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error("Test notification failed:", error);
-    return false;
-  }
 };
