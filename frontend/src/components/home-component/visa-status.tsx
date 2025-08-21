@@ -17,7 +17,10 @@ import {
   toggleReminderComplete,
 } from "../../services/reminderService";
 import type { Reminder } from "../../types/userProfile";
-import { requestNotificationPermission } from "../../services/notificationService";
+import {
+  requestNotificationPermission,
+  testNotification,
+} from "../../services/notificationService";
 
 interface VisaStatusProps {
   answers: Record<string, any>;
@@ -543,6 +546,25 @@ const VisaStatus = ({
                 />
               </button>
               <h3>{t("reminders")}</h3>
+              <button
+                className="test-notification-btn"
+                onClick={async () => {
+                  const success = await testNotification();
+                  if (success) {
+                    alert("Test notification sent! Check if you received it.");
+                  } else {
+                    alert(
+                      "Test notification failed. Please check notification permissions."
+                    );
+                  }
+                }}
+                title="Test notifications"
+              >
+                <img
+                  src="https://img.icons8.com/ios-glyphs/100/FFFFFF/test-tube.png"
+                  alt="Test"
+                />
+              </button>
             </div>
 
             <div className="reminder-content">

@@ -36,26 +36,81 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
 
 export const showNotification = (data: NotificationData): void => {
   if (!("Notification" in window) || Notification.permission !== "granted") {
+    console.log("Cannot show notification - permission not granted");
     return;
   }
 
-  const notification = new Notification(data.title, {
-    body: data.body,
-    icon: data.icon || "/vizy.svg",
-    tag: data.tag,
-    requireInteraction: true,
-    silent: false,
-  });
+  try {
+    const notification = new Notification(data.title, {
+      body: data.body,
+      icon: data.icon || "/vizy.svg",
+      tag: data.tag,
+      requireInteraction: true,
+      silent: false,
+      badge: "/vizy.svg",
+      vibrate: [200, 100, 200], // Vibration pattern for mobile
+    });
 
-  notification.onclick = () => {
-    window.focus();
-    notification.close();
-  };
+    notification.onclick = () => {
+      window.focus();
+      notification.close();
+    };
 
-  // Auto-close after 10 seconds
+    notification.onerror = (error) => {
+      console.error("Notification error:", error);
+    };
+
+    // Auto-close after 15 seconds on mobile
+    setTimeout(() => {
+      notification.close();
+    }, 15000);
+
+    console.log("Notification shown successfully:", data.title);
+  } catch (error) {
+    console.error("Error showing notification:", error);
+  }
+};
+
+// Alternative notification method for mobile
+export const showMobileNotification = (data: NotificationData): void => {
+  // Try to show native notification first
+  if ("Notification" in window && Notification.permission === "granted") {
+    showNotification(data);
+    return;
+  }
+
+  // Fallback: Show in-app notification or alert
+  console.log("Showing fallback notification:", data);
+
+  // Create a visible in-app notification
+  const notificationElement = document.createElement("div");
+  notificationElement.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #667eea;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 10000;
+    max-width: 300px;
+    font-family: Arial, sans-serif;
+  `;
+
+  notificationElement.innerHTML = `
+    <div style="font-weight: bold; margin-bottom: 5px;">${data.title}</div>
+    <div>${data.body}</div>
+  `;
+
+  document.body.appendChild(notificationElement);
+
+  // Auto-remove after 5 seconds
   setTimeout(() => {
-    notification.close();
-  }, 10000);
+    if (notificationElement.parentNode) {
+      notificationElement.parentNode.removeChild(notificationElement);
+    }
+  }, 5000);
 };
 
 const calculateNextNotificationTime = (
@@ -122,12 +177,21 @@ export const scheduleReminderNotification = (reminder: {
       const timeoutId = setTimeout(() => {
         console.log("Showing notification for reminder:", reminder.title);
 
-        // Show notification
-        showNotification({
-          title: "Reminder: " + reminder.title,
-          body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
-          tag: `reminder-${reminder.id}`,
-        });
+        // Try to show notification with fallback
+        try {
+          showNotification({
+            title: "Reminder: " + reminder.title,
+            body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
+            tag: `reminder-${reminder.id}`,
+          });
+        } catch (error) {
+          console.log("Native notification failed, showing fallback");
+          showMobileNotification({
+            title: "Reminder: " + reminder.title,
+            body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
+            tag: `reminder-${reminder.id}`,
+          });
+        }
 
         // Schedule next notification with increased interval
         interval = Math.min(interval * 1.5, 120); // Max 2 hours
@@ -179,4 +243,23 @@ export const getActiveNotificationCount = (): number => {
 export const getNextNotificationTime = (reminderId: string): Date | null => {
   const notification = activeNotifications.get(reminderId);
   return notification ? notification.nextNotificationTime : null;
+};
+
+// Test function to check if notifications work
+export const testNotification = async (): Promise<boolean> => {
+  try {
+    const permission = await requestNotificationPermission();
+    if (permission) {
+      showNotification({
+        title: "Test Notification",
+        body: "This is a test notification to verify everything works!",
+        tag: "test",
+      });
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Test notification failed:", error);
+    return false;
+  }
 };
