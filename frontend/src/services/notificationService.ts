@@ -48,7 +48,6 @@ export const showNotification = (data: NotificationData): void => {
       requireInteraction: true,
       silent: false,
       badge: "/vizy.svg",
-      vibrate: [200, 100, 200], // Vibration pattern for mobile
     });
 
     notification.onclick = () => {
