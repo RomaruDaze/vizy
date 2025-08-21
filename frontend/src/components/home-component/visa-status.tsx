@@ -310,6 +310,14 @@ const VisaStatus = ({
       currentUser
     ) {
       try {
+        // Ensure notification permission is granted before creating reminder
+        const permissionGranted = await requestNotificationPermission();
+
+        if (!permissionGranted) {
+          alert("Please enable notifications to receive reminder alerts!");
+          return;
+        }
+
         await createReminder(currentUser.uid, {
           ...newReminder,
           description: "", // Set empty description
@@ -319,8 +327,14 @@ const VisaStatus = ({
         const userReminders = await getUserReminders(currentUser.uid);
         setReminders(userReminders);
         setNewReminder({ title: "", date: "", time: "" });
+
+        // Show confirmation
+        alert(
+          "Reminder created successfully! You'll receive notifications when it's due."
+        );
       } catch (error) {
         console.error("Error creating reminder:", error);
+        alert("Error creating reminder. Please try again.");
       }
     }
   };

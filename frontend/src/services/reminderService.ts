@@ -21,6 +21,8 @@ export const createReminder = async (
   reminder: Omit<Reminder, "id" | "createdAt">
 ) => {
   try {
+    console.log("Creating reminder:", reminder);
+    
     const remindersRef = ref(database, `users/${userId}/reminders`);
     const newReminderRef = push(remindersRef);
     const newReminder = {
@@ -29,11 +31,14 @@ export const createReminder = async (
       createdAt: new Date().toISOString(),
     };
 
+    console.log("Saving reminder to Firebase:", newReminder);
     await set(newReminderRef, newReminder);
     
+    console.log("Reminder saved, now scheduling notification...");
     // Schedule smart notification for the new reminder
     scheduleReminderNotification(newReminder);
     
+    console.log("Notification scheduled successfully");
     return newReminder;
   } catch (error) {
     console.error("Error creating reminder:", error);

@@ -88,21 +88,40 @@ export const scheduleReminderNotification = (reminder: {
   date: string;
   time: string;
 }): void => {
+  console.log("Scheduling notification for reminder:", reminder);
+
   const reminderDate = new Date(`${reminder.date}T${reminder.time}`);
   const now = new Date();
+
+  console.log("Reminder date:", reminderDate);
+  console.log("Current time:", now);
 
   // If reminder is in the past, start from now
   const startTime = reminderDate <= now ? now : reminderDate;
 
+  console.log("Start time for notifications:", startTime);
+
   // Initial interval: 30 minutes
   let interval = 30;
-  let nextNotificationTime = calculateNextNotificationTime(startTime, interval);
+
+  // First notification should be at the exact reminder time (or now if past)
+  let nextNotificationTime = startTime;
+
+  console.log("First notification will be at:", nextNotificationTime);
 
   const scheduleNextNotification = () => {
     const timeUntilNext = nextNotificationTime.getTime() - Date.now();
 
+    console.log(
+      `Scheduling next notification in ${timeUntilNext}ms (${Math.round(
+        timeUntilNext / 1000 / 60
+      )} minutes)`
+    );
+
     if (timeUntilNext > 0) {
       const timeoutId = setTimeout(() => {
+        console.log("Showing notification for reminder:", reminder.title);
+
         // Show notification
         showNotification({
           title: "Reminder: " + reminder.title,
@@ -117,6 +136,8 @@ export const scheduleReminderNotification = (reminder: {
           interval
         );
 
+        console.log("Next notification scheduled for:", nextNotificationTime);
+
         // Continue scheduling
         scheduleNextNotification();
       }, timeUntilNext);
@@ -128,6 +149,13 @@ export const scheduleReminderNotification = (reminder: {
         nextNotificationTime,
         interval,
       });
+
+      console.log(
+        "Notification scheduled successfully for reminder:",
+        reminder.id
+      );
+    } else {
+      console.log("Notification time has passed, not scheduling");
     }
   };
 
