@@ -14,7 +14,7 @@ const UserGuide = () => {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
 
   const onBack = () => {
-    navigate(-1);
+    navigate("/settings");
   };
 
   const loadUserData = async () => {
@@ -73,7 +73,102 @@ const UserGuide = () => {
   }, {} as Record<string, DocumentItem[]>);
 
   const handleDocumentClick = (document: DocumentItem) => {
-    console.log("Clicked document:", document.name);
+    // Navigate to specific document page based on document name
+    const documentName = document.name.toLowerCase();
+
+    if (documentName.includes("passport")) {
+      navigate("/passport-document");
+    } else if (
+      documentName.includes("application") ||
+      documentName.includes("extension")
+    ) {
+      navigate("/application-document");
+    } else if (
+      documentName.includes("residence") ||
+      documentName.includes("card")
+    ) {
+      navigate("/residence-card-document");
+    } else if (documentName.includes("photo") || documentName.includes("id")) {
+      navigate("/id-photo-document");
+    } else if (
+      documentName.includes("processing") ||
+      documentName.includes("fee")
+    ) {
+      navigate("/processing-fee-document");
+    } else if (
+      documentName.includes("employment") ||
+      documentName.includes("certificate")
+    ) {
+      navigate("/certificate-of-employment-document");
+    } else if (
+      documentName.includes("company") ||
+      documentName.includes("registration")
+    ) {
+      navigate("/company-registration-document");
+    } else if (
+      documentName.includes("financial") ||
+      documentName.includes("company")
+    ) {
+      navigate("/company-financial-document");
+    } else if (
+      documentName.includes("resident") ||
+      documentName.includes("tax")
+    ) {
+      navigate("/resident-tax-document");
+    } else if (
+      documentName.includes("tax") ||
+      documentName.includes("payment")
+    ) {
+      navigate("/tax-payment-document");
+    } else if (
+      documentName.includes("enrollment") ||
+      documentName.includes("certificate")
+    ) {
+      navigate("/certificate-of-enrollment-document");
+    } else if (
+      documentName.includes("academic") ||
+      documentName.includes("transcript")
+    ) {
+      navigate("/academic-transcript-document");
+    } else if (
+      documentName.includes("bank") ||
+      documentName.includes("balance")
+    ) {
+      navigate("/bank-balance-document");
+    } else if (
+      documentName.includes("scholarship") ||
+      documentName.includes("award")
+    ) {
+      navigate("/scholarship-award-document");
+    } else if (
+      documentName.includes("remittance") ||
+      documentName.includes("certificate")
+    ) {
+      navigate("/certificate-of-remittance-document");
+    } else if (
+      documentName.includes("guarantee") ||
+      documentName.includes("letter")
+    ) {
+      navigate("/letter-of-guarantee-document");
+    } else if (
+      documentName.includes("marriage") ||
+      documentName.includes("certificate")
+    ) {
+      navigate("/marriage-certificate-document");
+    } else if (
+      documentName.includes("birth") ||
+      documentName.includes("certificate")
+    ) {
+      navigate("/birth-certificate-document");
+    } else if (
+      documentName.includes("family") ||
+      documentName.includes("passport")
+    ) {
+      navigate("/family-passport-document");
+    } else {
+      // For other documents, you can add more conditions here
+      console.log("Document page not yet implemented for:", document.name);
+    }
   };
 
   return (

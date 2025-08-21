@@ -1,0 +1,76 @@
+.document-page {
+  min-height: 100vh;
+  background: var(--app-bg);
+  color: white;
+  padding: 1rem;
+}
+
+.document-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.document-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.document-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.document-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.document-section h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.document-section p {
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.document-section ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.document-section li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.document-section:last-child {
+  margin-bottom: 0;
+}
