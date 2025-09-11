@@ -474,6 +474,7 @@ const translations = {
     deadline_expired: "Batas waktu telah berakhir",
     documents_question:
       "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
+    view_reminders: "Lihat Pengingat",
 
     // Document Options
     application_extension_form: "Formulir Perpanjangan Permohonan",
@@ -797,6 +798,7 @@ const translations = {
     not_available_for_submission: "提出不可",
     deadline_expired: "期限が切れています",
     documents_question: "ビザ延長の申請に必要な書類は何ですか？",
+    view_reminders: "リマインダーを表示",
 
     // Document Options
     application_extension_form: "在留期間更新許可申請書",
