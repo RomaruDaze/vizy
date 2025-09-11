@@ -39,6 +39,10 @@ const VisaStatus = ({
   const { t, language } = useLanguage();
   const [showReminderPopup, setShowReminderPopup] = useState(false);
   const [showDocumentsPopup, setShowDocumentsPopup] = useState(false);
+  const [showDeadlineEditPopup, setShowDeadlineEditPopup] = useState(false);
+  const [showDeadlineConfirmPopup, setShowDeadlineConfirmPopup] =
+    useState(false);
+  const [newDeadline, setNewDeadline] = useState("");
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [newReminder, setNewReminder] = useState({
@@ -374,6 +378,48 @@ const VisaStatus = ({
     navigate("/user-guide");
   };
 
+  // New deadline editing functions
+  const handleDeadlineClick = () => {
+    setNewDeadline(answers.deadline || "");
+    setShowDeadlineEditPopup(true);
+  };
+
+  const handleCloseDeadlineEditPopup = () => {
+    setShowDeadlineEditPopup(false);
+    setNewDeadline("");
+  };
+
+  const handleSetDeadline = () => {
+    if (newDeadline) {
+      setShowDeadlineEditPopup(false);
+      setShowDeadlineConfirmPopup(true);
+    }
+  };
+
+  const handleCloseDeadlineConfirmPopup = () => {
+    setShowDeadlineConfirmPopup(false);
+    setNewDeadline("");
+  };
+
+  const handleConfirmDeadlineChange = async () => {
+    if (currentUser && newDeadline) {
+      try {
+        await updateUserProfile(currentUser.uid, {
+          deadline: newDeadline,
+        });
+
+        // Update the answers prop by calling a callback if provided
+        // For now, we'll reload the page to reflect the changes
+        window.location.reload();
+      } catch (error) {
+        console.error("Error updating deadline:", error);
+        alert("Error updating deadline. Please try again.");
+      }
+    }
+    setShowDeadlineConfirmPopup(false);
+    setNewDeadline("");
+  };
+
   const groupedDocuments = documents.reduce((groups, doc) => {
     const category = doc.category || "General";
     if (!groups[category]) {
@@ -411,7 +457,10 @@ const VisaStatus = ({
         </div>
 
         <div
-          className={`deadline-availability ${deadlineStatus?.status || ""}`}
+          className={`deadline-availability ${
+            deadlineStatus?.status || ""
+          } clickable`}
+          onClick={handleDeadlineClick}
         >
           <div className="deadline-date">
             {answers.deadline
@@ -440,6 +489,100 @@ const VisaStatus = ({
           </button>
         </div>
       </div>
+
+      {/* Deadline Edit Popup */}
+      {showDeadlineEditPopup && (
+        <div
+          className="deadline-edit-popup-overlay"
+          onClick={handleCloseDeadlineEditPopup}
+        >
+          <div
+            className="deadline-edit-popup-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="deadline-edit-popup-header">
+              <button
+                className="close-button"
+                onClick={handleCloseDeadlineEditPopup}
+              >
+                <img
+                  src="https://img.icons8.com/sf-black-filled/100/FFFFFF/back.png"
+                  alt="Back"
+                />
+              </button>
+              <h3>{t("edit_deadline")}</h3>
+            </div>
+
+            <div className="deadline-edit-content">
+              <div className="form-group">
+                <label>{t("deadline_date")}</label>
+                <input
+                  type="date"
+                  value={newDeadline}
+                  onChange={(e) => setNewDeadline(e.target.value)}
+                  className="deadline-date-input"
+                />
+              </div>
+            </div>
+
+            <div className="deadline-edit-actions">
+              <button
+                className="cancel-button"
+                onClick={handleCloseDeadlineEditPopup}
+              >
+                {t("cancel")}
+              </button>
+              <button
+                className="set-button"
+                onClick={handleSetDeadline}
+                disabled={!newDeadline}
+              >
+                {t("set")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Deadline Confirmation Popup */}
+      {showDeadlineConfirmPopup && (
+        <div
+          className="deadline-confirm-popup-overlay"
+          onClick={handleCloseDeadlineConfirmPopup}
+        >
+          <div
+            className="deadline-confirm-popup-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="deadline-confirm-popup-header">
+              <h3>{t("confirm_deadline_change")}</h3>
+            </div>
+
+            <div className="deadline-confirm-content">
+              <p>{t("are_you_sure_change_deadline")}</p>
+              <div className="deadline-preview">
+                <strong>{t("new_deadline")}:</strong>{" "}
+                {formatDate(new Date(newDeadline))}
+              </div>
+            </div>
+
+            <div className="deadline-confirm-actions">
+              <button
+                className="cancel-button"
+                onClick={handleCloseDeadlineConfirmPopup}
+              >
+                {t("cancel")}
+              </button>
+              <button
+                className="confirm-button"
+                onClick={handleConfirmDeadlineChange}
+              >
+                {t("confirm")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="documents-card" onClick={handleDocumentsClick}>
         <div className="documents-content">

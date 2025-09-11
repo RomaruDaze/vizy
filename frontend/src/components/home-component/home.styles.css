@@ -956,7 +956,7 @@
 }
 
 .form-group label {
-  color: white;
+  color: white !important;
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -1344,4 +1344,194 @@
   .documents-popup-header h3 {
     font-size: 1.1rem;
   }
+}
+
+/* Add these styles after the existing popup styles (around line 950) */
+
+/* Deadline Edit Popup Styles */
+.deadline-edit-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.deadline-edit-popup-content {
+  background: var(--master-gradient);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.deadline-edit-popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.deadline-edit-popup-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-left: 50px;
+}
+
+.deadline-edit-content {
+  margin-bottom: 1.5rem;
+}
+
+.deadline-date-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+}
+
+.deadline-date-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.deadline-edit-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Deadline Confirmation Popup Styles */
+.deadline-confirm-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  backdrop-filter: blur(5px);
+}
+
+.deadline-confirm-popup-content {
+  background: var(--master-gradient);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.deadline-confirm-popup-header {
+  margin-bottom: 1.5rem;
+}
+
+.deadline-confirm-popup-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.deadline-confirm-content {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.deadline-confirm-content p {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.deadline-preview {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.deadline-preview strong {
+  color: white;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.deadline-confirm-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Button Styles */
+.cancel-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.set-button,
+.confirm-button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.set-button:hover,
+.confirm-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.set-button:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Make deadline availability clickable */
+.deadline-availability.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deadline-availability.clickable:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
 }
