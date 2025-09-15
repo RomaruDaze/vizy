@@ -1,6 +1,6 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface UserProfileProps {
   onAccountClick?: () => void;
@@ -9,7 +9,13 @@ interface UserProfileProps {
 const UserProfile = ({ onAccountClick }: UserProfileProps) => {
   const { currentUser } = useAuth();
   const { t } = useLanguage();
-  const [imageError, setImageError] = useState(false);
+  const [profileImage, setProfileImage] = useState<string>("");
+
+  // List of available profile pictures in assets/pp/
+  const profilePictures = [
+    "profile1.png",
+    "profile2.png",
+  ];
 
   // Get the user's display name or first letter of email as fallback
   const getUserDisplayName = () => {
@@ -31,6 +37,19 @@ const UserProfile = ({ onAccountClick }: UserProfileProps) => {
     return displayName.charAt(0).toUpperCase();
   };
 
+  // Select a random profile picture based on user ID for consistency
+  useEffect(() => {
+    if (currentUser?.uid) {
+      // Use the user's UID to generate a consistent "random" selection
+      const hash = currentUser.uid.split("").reduce((a, b) => {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return a & a;
+      }, 0);
+      const index = Math.abs(hash) % profilePictures.length;
+      setProfileImage(profilePictures[index]);
+    }
+  }, [currentUser?.uid]);
+
   const handleClick = () => {
     if (onAccountClick) {
       onAccountClick();
@@ -39,19 +58,18 @@ const UserProfile = ({ onAccountClick }: UserProfileProps) => {
 
   // Handle image load error
   const handleImageError = () => {
-    setImageError(true);
+    setProfileImage("");
   };
 
   return (
     <div className="user-profile" onClick={handleClick}>
       <div className="profile-picture">
-        {currentUser?.photoURL && !imageError ? (
+        {profileImage ? (
           <img
-            src={currentUser.photoURL}
+            src={`/src/assets/pp/${profileImage}`}
             alt="Profile"
             className="profile-avatar"
             onError={handleImageError}
-            onLoad={() => setImageError(false)}
           />
         ) : (
           <div className="profile-avatar-placeholder">{getAvatarLetter()}</div>
