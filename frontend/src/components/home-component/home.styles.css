@@ -590,12 +590,43 @@
   justify-content: center;
   background: rgba(255, 255, 255, 0.2);
   flex-shrink: 0;
+  /* Add these to ensure proper centering */
+  position: relative;
+}
+
+/* Add a fallback background for when image fails to load */
+.profile-picture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  z-index: -1;
 }
 
 .profile-avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  /* Add these properties to fix the white block issue */
+  display: block;
+  border: none;
+  outline: none;
+  /* Ensure the image loads properly */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Add error handling for failed image loads */
+.profile-avatar:not([src]),
+.profile-avatar[src=""],
+.profile-avatar[src*="undefined"] {
+  display: none;
 }
 
 .profile-avatar-placeholder {

@@ -1,5 +1,6 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useState } from "react";
 
 interface UserProfileProps {
   onAccountClick?: () => void;
@@ -8,6 +9,7 @@ interface UserProfileProps {
 const UserProfile = ({ onAccountClick }: UserProfileProps) => {
   const { currentUser } = useAuth();
   const { t } = useLanguage();
+  const [imageError, setImageError] = useState(false);
 
   // Get the user's display name or first letter of email as fallback
   const getUserDisplayName = () => {
@@ -35,14 +37,21 @@ const UserProfile = ({ onAccountClick }: UserProfileProps) => {
     }
   };
 
+  // Handle image load error
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className="user-profile" onClick={handleClick}>
       <div className="profile-picture">
-        {currentUser?.photoURL ? (
+        {currentUser?.photoURL && !imageError ? (
           <img
             src={currentUser.photoURL}
             alt="Profile"
             className="profile-avatar"
+            onError={handleImageError}
+            onLoad={() => setImageError(false)}
           />
         ) : (
           <div className="profile-avatar-placeholder">{getAvatarLetter()}</div>
