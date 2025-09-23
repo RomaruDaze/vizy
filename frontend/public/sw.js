@@ -12,7 +12,7 @@ const basePath = getBasePath();
 self.addEventListener('push', function (event) {
     const options = {
         body: event.data ? event.data.text() : 'Test notification from Vizy!',
-        icon: `${basePath}/vizy.svg`,
+        icon: `${basePath}/vizy.png`,
         badge: `${basePath}/vizy.svg`,
         vibrate: [200, 100, 200],
         data: {
@@ -23,12 +23,12 @@ self.addEventListener('push', function (event) {
             {
                 action: 'explore',
                 title: 'Open App',
-                icon: `${basePath}/vizy.svg`
+                icon: `${basePath}/vizy.png`
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: `${basePath}/vizy.svg`
+                icon: `${basePath}/vizy.png`
             }
         ]
     };
