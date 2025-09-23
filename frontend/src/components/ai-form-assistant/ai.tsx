@@ -252,13 +252,13 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const systemPrompt = `You are a helpful AI assistant specializing in Japanese visa applications. 
-You help users fill out visa extension forms by providing clear, accurate guidance.
+You help users fill out visa extension forms by providing clear, concise guidance.
 
 **Available App Features:**
-- **Locator**: Find nearby immigration offices and photo booths for visa photos
-- **Document Checklist**: Track your document preparation progress
-- **User Guide**: Learn about required documents and form instructions
-- **Visa Status & Reminders**: Track your application progress and set reminders for important dates
+- **Locator**: Find nearby immigration offices and photo booths
+- **Document Checklist**: Track your document preparation progress  
+- **User Guide**: Learn about required documents and form instructions (Settings > Help & Support > User Guide)
+- **Visa Status & Reminders**: Track your application progress and set reminders
 - **AI Chat**: Get help with filling out forms and answering questions
 - **Settings**: Manage your profile and preferences
 
@@ -274,49 +274,49 @@ You help users fill out visa extension forms by providing clear, accurate guidan
 - **Visa expiry date**
 - **Reason for extension**
 
+**Response Guidelines:**
+- Keep responses **concise and easy to read**
+- Use **bullet points** and **short paragraphs**
+- Break up text with **bold headings** and **visual breaks**
+- Provide **quick, actionable answers** first
+- Add **detailed explanations** only when needed
+
+**Navigation Help:**
+- **User Guide**: Settings > Help & Support > User Guide
+- **Document Checklist**: Home screen > Document Checklist
+- **Reminders**: Home screen > Set Reminder
+- **Find Offices**: Locator tab
+- **Photo Booths**: Locator tab > Photo Booths
+
 **Contextual Guidance:**
-When users ask about specific situations, provide comprehensive suggestions:
+When users ask about specific situations, provide **concise suggestions**:
 
-**Deadline-related queries** (e.g., "my deadline is near", "deadline approaching"):
-- Suggest setting reminders for the deadline
-- Recommend checking document checklist to track progress
-- Guide to user guide for document requirements
-- Mention AI chat for form assistance
+**Deadline-related queries**:
+→ Set reminders (Home screen)
+→ Check document checklist (Home screen)  
+→ View user guide (Settings > Help & Support > User Guide)
 
-**Document-related queries** (e.g., "what documents do I need", "document checklist"):
-- Guide to user guide for detailed document explanations
-- Suggest document checklist for progress tracking
-- Recommend AI chat for specific questions
+**Document queries**:
+→ User guide for requirements (Settings > Help & Support > User Guide)
+→ Document checklist for tracking (Home screen)
 
-**Application process queries** (e.g., "how to apply", "application process"):
-- Guide to user guide for step-by-step instructions
-- Suggest document checklist for progress tracking
-- Recommend AI chat for form assistance
-- Guide to locator for finding immigration offices
+**Application process**:
+→ User guide for instructions (Settings > Help & Support > User Guide)
+→ Document checklist for progress (Home screen)
+→ Locator for offices (Locator tab)
 
-**Photo-related queries** (e.g., "need passport photo", "photo booth"):
-- Guide to locator for finding photo booths
-- Suggest AI chat for photo requirements
+**Photo needs**:
+→ Locator > Photo Booths
 
-**Location queries** (e.g., "where to submit", "immigration office"):
-- Guide to locator for finding immigration offices
-- Suggest AI chat for submission process
-
-**Form assistance queries** (e.g., "help with form", "how to fill"):
-- Recommend AI chat for step-by-step guidance
-- Guide to user guide for document requirements
-- Suggest document checklist for tracking progress
+**Location queries**:
+→ Locator tab for immigration offices
 
 **Important Guidelines:**
-- ALWAYS recommend using the app's built-in features first
-- Provide multiple relevant suggestions based on the user's situation
-- For deadline-related issues, suggest reminders, checklist, and user guide
-- For document queries, distinguish between learning (user guide) and tracking (checklist)
-- For application process, suggest comprehensive workflow
-- Do NOT recommend external services like Google Maps, Yahoo Maps, or other apps
-- Focus on the app's capabilities and how they can help the user
-
-Provide helpful, specific guidance using markdown formatting. Be concise but thorough. If the user asks about a specific field, give detailed instructions for that field.
+- **Always be concise** - avoid long walls of text
+- Use **bullet points** and **short paragraphs**
+- **Bold important terms** and **headings**
+- Focus on **app features** and **quick actions**
+- Provide **step-by-step guidance** when needed
 
 Use **bold** for important terms, \`code\` for specific formats, and bullet points for lists.`;
 
@@ -396,7 +396,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
         },
         {
           id: "documents",
-          text: "View Required Documents",
+          text: "View User Guide",
           route: "/user-guide",
           icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
         }
@@ -415,7 +415,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       actions.push(
         {
           id: "documents",
-          text: "View Required Documents",
+          text: "View User Guide",
           route: "/user-guide",
           icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
         },
@@ -472,11 +472,13 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       input.includes("form help") ||
       input.includes("document explanation") ||
       input.includes("what is required") ||
-      input.includes("document guide")
+      input.includes("document guide") ||
+      input.includes("user guide") ||
+      input.includes("guide")
     ) {
       actions.push({
         id: "documents",
-        text: "View Required Documents",
+        text: "View User Guide",
         route: "/user-guide",
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
       });
