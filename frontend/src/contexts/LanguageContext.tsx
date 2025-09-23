@@ -32,6 +32,7 @@ interface LanguageProviderProps {
 // Translation dictionary
 const translations = {
   en: {
+    // ===== BASIC UI ELEMENTS =====
     language: "Language",
     english: "English",
     japanese: "Japanese",
@@ -49,6 +50,14 @@ const translations = {
     loading: "Loading...",
     error: "Error",
     success: "Success",
+    back: "Back",
+    next: "Next",
+    finish: "Finish",
+    select: "Select",
+    confirm: "Confirm",
+    of: "of",
+
+    // ===== NAVIGATION & MAIN FEATURES =====
     immigration_offices: "Immigration Offices",
     photo_booths: "Photo Booths",
     reset_location: "Reset",
@@ -56,33 +65,24 @@ const translations = {
     distance: "Distance",
     directions: "Directions",
     call: "Call",
+    document_checklist: "Document Checklist",
+    ai_form: "AI Form",
+    set_reminder: "Set Reminder",
+    view_reminders: "View Reminders",
+    reminders: "Reminders",
+    contact_support: "Contact Support",
+
+    // ===== AI CHAT & ASSISTANT =====
     ai_welcome:
       "Hello! I'm your AI visa application assistant. I can help you fill out your visa extension form step by step. What would you like to know?",
     ai_loading: "Loading immigration offices...",
     ai_loading_photo: "Loading photo booths...",
     ai_quick_tips: "Here are some quick questions you can ask me:",
-    full_name: "Full Name",
-    address: "Address",
-    date_of_birth: "Date of Birth",
-    documents: "Documents",
-    full_name_desc: "Please enter your full name",
-    address_desc: "Please enter your address",
-    date_of_birth_desc: "Please enter your date of birth",
-    visa_expiry_date: "Visa Expiry Date",
-    visa_expiry_desc: "Please enter your visa expiry date",
-    documents_desc: "Please select the documents you have",
-    start_new_conversation: "Start new conversation",
-    conversation_history: "Conversation History",
     ask_anything_about_visa: "Ask anything about your visa",
     camera: "Camera",
     image: "Image",
-    welcome: "Welcome",
-    getting_started_message: "Let's get started with your visa application",
-    get_started: "Get Started",
-    manage_account: "Manage your account settings",
-    customize_experience: "Customize your experience",
-    get_help_support: "Get help and support",
-    privacy_security_settings: "Privacy and security settings",
+    start_new_conversation: "Start new conversation",
+    conversation_history: "Conversation History",
     welcome_ai_assistant: "Welcome to AI Form Assistant!",
     what_i_can_help: "✨ What I can help you with:",
     form_guidance: "Form Guidance",
@@ -98,54 +98,74 @@ const translations = {
     visa_expiry_question: "Help me with the visa expiry date field",
     lets_start: "Let's start!",
     vizy_ai: "Vizy AI",
-    accessibility: "Accessibility",
-    help_support: "Help & Support",
-    privacy_security: "Privacy & Security",
-    manage_profile_account: "Manage your profile and account settings",
-    choose_theme_colors: "Choose your preferred theme and colors",
-    get_help_contact_support: "Get help and contact support",
-    manage_privacy_security: "Manage your privacy and security settings",
-    notification_test: "Notification Test",
-    test_push_notifications: "Test push notifications",
+
+    // ===== FORM FIELDS =====
+    full_name: "Full Name",
+    address: "Address",
+    date_of_birth: "Date of Birth",
+    documents: "Documents",
+    full_name_desc: "Please enter your full name",
+    address_desc: "Please enter your address",
+    date_of_birth_desc: "Please enter your date of birth",
+    documents_desc: "Please select the documents you have",
+    visa_expiry_date: "Visa Expiry Date",
+    visa_expiry_desc: "Please enter your visa expiry date",
+    documents_question:
+      "Which documents do i need to apply for a visa extension?",
+
+    // ===== WELCOME & ONBOARDING =====
+    welcome: "Welcome",
     welcome_back: "Welcome back!",
+    getting_started_message: "Let's get started with your visa application",
+    get_started: "Get Started",
     whats_your_deadline: "What's your deadline?",
     select_your_deadline: "Select your deadline",
     whats_your_current_residency_type: "What's your current Residency type?",
+    what_do_you_want_to_do: "What do you want to do?",
+    which_documents_do_you_have: "Which documents do you already have?",
+    have_you_applied_before: "Have you applied for a Residency before?",
+    select_target_residency_type: "Select your target Residency type:",
+
+    // ===== RESIDENCY TYPES =====
     international_student_residency: "International Student Residency",
     work_residency: "Work Residency",
     family_residency: "Family Residency",
     specified_skill_worker_residency: "Specified Skill Worker Residency",
-    what_do_you_want_to_do: "What do you want to do?",
     extend_current_residency: "Extend my current Residency",
     change_to_different_residency_type: "Change to a different Residency type",
-    which_documents_do_you_have: "Which documents do you already have?",
-    have_you_applied_before: "Have you applied for a Residency before?",
+
+    // ===== APPLICATION OPTIONS =====
     yes_successfully: "Yes, successfully",
     yes_but_rejected: "Yes, but was rejected",
     no_first_time: "No, this is my first time",
     not_sure: "I'm not sure",
-    of: "of",
-    back: "Back",
-    next: "Next",
-    finish: "Finish",
+
+    // ===== DEADLINE & REMINDERS =====
     your_residency_deadline: "Your Residency Deadline",
     no_deadline_set: "No deadline set",
     incomplete_documents: "Incomplete Documents",
     documents_remaining: "documents remaining",
-    document_checklist: "Document Checklist",
     save_changes: "Save Changes",
-    ai_form: "AI Form",
-    set_reminder: "Set Reminder",
     date: "Date",
     time: "Time",
     clear_reminder: "Clear Reminder",
     available_for_submission: "Available for submission",
     not_available_for_submission: "Not available for submission",
     deadline_expired: "Deadline has expired",
-    documents_question:
-      "Which documents do i need to apply for a visa extension?",
+    no_reminders_set: "No reminders set",
+    add_new_reminder: "Add New Reminder",
+    reminder_title: "Reminder title",
+    reminder_description: "Description (optional)",
+    add_reminder: "Add Reminder",
+    edit_deadline: "Edit Deadline",
+    deadline_date: "Deadline Date",
+    set: "Set",
+    confirm_deadline_change: "Confirm Deadline Change",
+    are_you_sure_change_deadline:
+      "Are you sure you want to change your deadline?",
+    new_deadline: "New Deadline",
 
-    // Document Options
+    // ===== DOCUMENT TYPES =====
     application_extension_form: "Application Extension Form",
     passport: "Passport",
     residence_card: "Residence Card",
@@ -168,10 +188,7 @@ const translations = {
     family_register: "Family Register",
     resident_certificate: "Resident Certificate",
 
-    // Conditional Label
-    select_target_residency_type: "Select your target Residency type:",
-
-    // Signup Page
+    // ===== AUTHENTICATION =====
     create_account: "Create Your Account",
     join_vizy_message: "Join Vizy and start your immigration journey",
     nickname: "Nickname",
@@ -204,6 +221,8 @@ const translations = {
     dont_have_account: "Don't have an account?",
     sign_up: "Sign up",
     redirecting: "Redirecting...",
+
+    // ===== TERMS & LEGAL =====
     terms_agreement: "By using our service, you agree to the following terms:",
     service_description_title: "Service Description",
     service_description:
@@ -224,9 +243,19 @@ const translations = {
       "We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of any changes.",
     last_updated: "Last updated",
     i_understand: "I Understand",
-    contact_support: "Contact Support",
 
-    // Settings translations
+    // ===== SETTINGS =====
+    accessibility: "Accessibility",
+    help_support: "Help & Support",
+    privacy_security: "Privacy & Security",
+    manage_profile_account: "Manage your profile and account settings",
+    choose_theme_colors: "Choose your preferred theme and colors",
+    get_help_contact_support: "Get help and contact support",
+    manage_privacy_security: "Manage your privacy and security settings",
+    notification_test: "Notification Test",
+    test_push_notifications: "Test push notifications",
+
+    // ===== THEMES =====
     themes: "Themes",
     choose_your_theme: "Choose Your Theme",
     select_color_theme_matches_style:
@@ -247,10 +276,9 @@ const translations = {
     deep_blue_waters: "Deep blue waters",
     dark_obsidian_tones: "Dark obsidian tones",
     pink_red_gradient: "Pink to red gradient",
-    select: "Select",
     theme: "theme",
 
-    // FAQ translations
+    // ===== FAQ =====
     how_reset_password: "How do I reset my password?",
     reset_password_answer:
       "Go to Settings → Privacy & Security → Reset Password. Enter your email and we'll send you a password reset link.",
@@ -290,7 +318,7 @@ const translations = {
     no_faq_items_found: "No FAQ items found for your search.",
     try_different_keywords: "Try different keywords or browse all categories.",
 
-    // Help & Support translations
+    // ===== HELP & SUPPORT =====
     user_guide: "User Guide",
     learn_use_app_effectively: "Learn how to use the app effectively",
     find_answers_frequently_asked: "Find answers to frequently asked questions",
@@ -315,7 +343,7 @@ const translations = {
     sending: "Sending...",
     send_message: "Send Message",
 
-    // Privacy & Security translations
+    // ===== PRIVACY & SECURITY =====
     reset_password: "Reset Password",
     send_password_reset_email_to: "Send password reset email to",
     delete_account: "Delete Account",
@@ -345,25 +373,9 @@ const translations = {
     reauthentication_failed: "Re-authentication failed",
     deleting: "Deleting...",
     confirm_deletion: "Confirm Deletion",
-
-    // Reminder translations
-    view_reminders: "View Reminders",
-    reminders: "Reminders",
-    no_reminders_set: "No reminders set",
-    add_new_reminder: "Add New Reminder",
-    reminder_title: "Reminder title",
-    reminder_description: "Description (optional)",
-    add_reminder: "Add Reminder",
-    edit_deadline: "Edit Deadline",
-    deadline_date: "Deadline Date",
-    set: "Set",
-    confirm_deadline_change: "Confirm Deadline Change",
-    are_you_sure_change_deadline:
-      "Are you sure you want to change your deadline?",
-    new_deadline: "New Deadline",
-    confirm: "Confirm",
   },
   id: {
+    // ===== BASIC UI ELEMENTS =====
     language: "Bahasa",
     english: "English",
     japanese: "Jepang",
@@ -381,6 +393,14 @@ const translations = {
     loading: "Memuat...",
     error: "Error",
     success: "Berhasil",
+    back: "Kembali",
+    next: "Selanjutnya",
+    finish: "Selesai",
+    select: "Pilih",
+    confirm: "Konfirmasi",
+    of: "dari",
+
+    // ===== NAVIGATION & MAIN FEATURES =====
     immigration_offices: "Kantor Imigrasi",
     photo_booths: "Booth Foto",
     reset_location: "Reset",
@@ -388,34 +408,25 @@ const translations = {
     distance: "Jarak",
     directions: "Petunjuk Arah",
     call: "Telepon",
+    document_checklist: "Daftar Periksa Dokumen",
+    ai_form: "Formulir AI",
+    set_reminder: "Atur Pengingat",
+    view_reminders: "Lihat Pengingat",
+    reminders: "Pengingat",
+    contact_support: "Hubungi Dukungan",
+
+    // ===== AI CHAT & ASSISTANT =====
     ai_welcome:
       "Halo! Saya asisten AI untuk aplikasi visa Anda. Saya dapat membantu Anda mengisi formulir perpanjangan visa langkah demi langkah. Apa yang ingin Anda ketahui?",
     ai_loading: "Memuat kantor imigrasi...",
     ai_loading_photo: "Memuat booth foto...",
     ai_quick_tips:
       "Berikut beberapa pertanyaan cepat yang bisa Anda tanyakan kepada saya:",
-    full_name: "Nama Lengkap",
-    address: "Alamat",
-    date_of_birth: "Tanggal Lahir",
-    documents: "Dokumen",
-    full_name_desc: "Silakan masukkan nama lengkap Anda",
-    address_desc: "Silakan masukkan alamat Anda",
-    date_of_birth_desc: "Silakan masukkan tanggal lahir Anda",
-    documents_desc: "Silakan pilih dokumen yang Anda miliki",
-    visa_expiry_date: "Tanggal Kedaluwarsa Visa",
-    visa_expiry_desc: "Silakan masukkan tanggal kedaluwarsa visa Anda",
-    start_new_conversation: "Mulai percakapan baru",
-    conversation_history: "Riwayat Percakapan",
     ask_anything_about_visa: "Tanyakan apa saja tentang visa Anda",
     camera: "Kamera",
     image: "Gambar",
-    welcome: "Selamat Datang",
-    getting_started_message: "Mari mulai dengan aplikasi visa Anda",
-    get_started: "Mulai",
-    manage_account: "Kelola pengaturan akun Anda",
-    customize_experience: "Sesuaikan pengalaman Anda",
-    get_help_support: "Dapatkan bantuan dan dukungan",
-    privacy_security_settings: "Pengaturan privasi dan keamanan",
+    start_new_conversation: "Mulai percakapan baru",
+    conversation_history: "Riwayat Percakapan",
     welcome_ai_assistant: "Selamat datang di Asisten Formulir AI!",
     what_i_can_help: "✨ Yang bisa saya bantu:",
     form_guidance: "Panduan Formulir",
@@ -434,59 +445,77 @@ const translations = {
     visa_expiry_question: "Bantu saya dengan bidang tanggal kedaluwarsa visa",
     lets_start: "Mari mulai!",
     vizy_ai: "Vizy AI",
-    accessibility: "Aksesibilitas",
-    help_support: "Bantuan & Dukungan",
-    privacy_security: "Privasi & Keamanan",
-    manage_profile_account: "Kelola profil dan pengaturan akun Anda",
-    choose_theme_colors: "Pilih tema dan warna yang Anda sukai",
-    get_help_contact_support: "Dapatkan bantuan dan hubungi dukungan",
-    manage_privacy_security: "Kelola pengaturan privasi dan keamanan",
-    notification_test: "Tes Notifikasi",
-    test_push_notifications: "Tes notifikasi push",
+
+    // ===== FORM FIELDS =====
+    full_name: "Nama Lengkap",
+    address: "Alamat",
+    date_of_birth: "Tanggal Lahir",
+    documents: "Dokumen",
+    full_name_desc: "Silakan masukkan nama lengkap Anda",
+    address_desc: "Silakan masukkan alamat Anda",
+    date_of_birth_desc: "Silakan masukkan tanggal lahir Anda",
+    documents_desc: "Silakan pilih dokumen yang Anda miliki",
+    visa_expiry_date: "Tanggal Kedaluwarsa Visa",
+    visa_expiry_desc: "Silakan masukkan tanggal kedaluwarsa visa Anda",
+    documents_question:
+      "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
+
+    // ===== WELCOME & ONBOARDING =====
+    welcome: "Selamat Datang",
     welcome_back: "Selamat datang kembali!",
+    getting_started_message: "Mari mulai dengan aplikasi visa Anda",
+    get_started: "Mulai",
     whats_your_deadline: "Apa batas waktu Anda?",
     select_your_deadline: "Pilih batas waktu Anda",
     whats_your_current_residency_type: "Apa jenis izin tinggal Anda saat ini?",
+    what_do_you_want_to_do: "Apa yang ingin Anda lakukan?",
+    which_documents_do_you_have: "Dokumen apa yang sudah Anda miliki?",
+    have_you_applied_before:
+      "Apakah Anda pernah mengajukan izin tinggal sebelumnya?",
+    select_target_residency_type: "Pilih jenis izin tinggal target Anda:",
+
+    // ===== RESIDENCY TYPES =====
     international_student_residency: "Izin Tinggal Pelajar Internasional",
     work_residency: "Izin Tinggal Kerja",
     family_residency: "Izin Tinggal Keluarga",
     specified_skill_worker_residency:
       "Izin Tinggal Pekerja Keterampilan Tertentu",
-    what_do_you_want_to_do: "Apa yang ingin Anda lakukan?",
     extend_current_residency: "Perpanjang izin tinggal saya saat ini",
     change_to_different_residency_type:
       "Ubah ke jenis izin tinggal yang berbeda",
-    which_documents_do_you_have: "Dokumen apa yang sudah Anda miliki?",
-    have_you_applied_before:
-      "Apakah Anda pernah mengajukan izin tinggal sebelumnya?",
+
+    // ===== APPLICATION OPTIONS =====
     yes_successfully: "Ya, berhasil",
     yes_but_rejected: "Ya, tetapi ditolak",
     no_first_time: "Tidak, ini pertama kali saya",
     not_sure: "Saya tidak yakin",
-    of: "dari",
-    back: "Kembali",
-    next: "Selanjutnya",
-    finish: "Selesai",
+
+    // ===== DEADLINE & REMINDERS =====
     your_residency_deadline: "Batas Waktu Izin Tinggal Anda",
     no_deadline_set: "Tidak ada batas waktu yang ditetapkan",
     incomplete_documents: "Dokumen Tidak Lengkap",
     documents_remaining: "dokumen tersisa",
-    document_checklist: "Daftar Periksa Dokumen",
     save_changes: "Simpan Perubahan",
-    ai_form: "Formulir AI",
-    set_reminder: "Atur Pengingat",
     date: "Tanggal",
     time: "Waktu",
     clear_reminder: "Hapus Pengingat",
     available_for_submission: "Tersedia untuk pengajuan",
     not_available_for_submission: "Tidak tersedia untuk pengajuan",
     deadline_expired: "Batas waktu telah berakhir",
-    documents_question:
-      "Dokumen apa yang saya butuhkan untuk perpanjangan visa?",
-    view_reminders: "Lihat Pengingat",
-    contact_support: "Hubungi Dukungan",
+    no_reminders_set: "Tidak ada pengingat yang ditetapkan",
+    add_new_reminder: "Tambah Pengingat Baru",
+    reminder_title: "Judul pengingat",
+    reminder_description: "Deskripsi (opsional)",
+    add_reminder: "Tambah Pengingat",
+    edit_deadline: "Edit Batas Waktu",
+    deadline_date: "Tanggal Batas Waktu",
+    set: "Atur",
+    confirm_deadline_change: "Konfirmasi Perubahan Batas Waktu",
+    are_you_sure_change_deadline:
+      "Apakah Anda yakin ingin mengubah batas waktu?",
+    new_deadline: "Batas Waktu Baru",
 
-    // Document Options
+    // ===== DOCUMENT TYPES =====
     application_extension_form: "Formulir Perpanjangan Permohonan",
     passport: "Paspor",
     residence_card: "Kartu Izin Tinggal",
@@ -509,10 +538,7 @@ const translations = {
     family_register: "Daftar Keluarga",
     resident_certificate: "Sertifikat Penduduk",
 
-    // Conditional Label
-    select_target_residency_type: "Pilih jenis izin tinggal target Anda:",
-
-    // Signup Page
+    // ===== AUTHENTICATION =====
     create_account: "Buat Akun Anda",
     join_vizy_message:
       "Bergabung dengan Vizy dan mulai perjalanan imigrasi Anda",
@@ -546,29 +572,43 @@ const translations = {
     dont_have_account: "Tidak punya akun?",
     sign_up: "Daftar",
     redirecting: "Mengalihkan...",
+
+    // ===== TERMS & LEGAL =====
     terms_agreement:
       "Dengan menggunakan layanan kami, Anda setuju dengan ketentuan berikut:",
     service_description_title: "Deskripsi Layanan",
     service_description:
       "Vizy adalah aplikasi asisten imigrasi yang dirancang untuk membantu pengguna menemukan kantor imigrasi dan booth foto di Jepang.",
     user_responsibilities_title: "Tanggung Jawab Pengguna",
-    you_are_responsible_for: "以下の責任があります：",
-    providing_accurate_info: "正確な情報の提供",
-    maintaining_account_security: "アカウントのセキュリティ維持",
-    using_service_compliance: "地域の法律に準拠したサービスの利用",
-    privacy: "プライバシー",
+    you_are_responsible_for: "Anda bertanggung jawab untuk:",
+    providing_accurate_info: "Memberikan informasi yang akurat",
+    maintaining_account_security: "Mempertahankan keamanan akun Anda",
+    using_service_compliance:
+      "Menggunakan layanan sesuai dengan hukum setempat",
+    privacy: "Privasi",
     privacy_description:
-      "当社はプライバシーポリシーに従ってデータを収集・処理します。個人情報は保護され、同意なしに第三者と共有されることはありません。",
-    limitation_of_liability: "責任の制限",
+      "Kami mengumpulkan dan memproses data Anda sesuai dengan Kebijakan Privasi kami. Informasi pribadi Anda dilindungi dan tidak akan dibagikan kepada pihak ketiga tanpa persetujuan Anda.",
+    limitation_of_liability: "Pembatasan Tanggung Jawab",
     liability_description:
-      "Vizyは参考情報のみを提供します。当サービスを通じて提供される情報に基づいて行われた決定について、当社は責任を負いません。",
-    changes_to_terms: "利用規約の変更",
+      "Vizy menyediakan informasi untuk referensi saja. Kami tidak bertanggung jawab atas keputusan yang dibuat berdasarkan informasi yang disediakan melalui layanan kami.",
+    changes_to_terms: "Perubahan Ketentuan",
     terms_changes_description:
-      "当社はいつでもこれらの条件を変更する権利を留保します。サービスの継続利用は、変更の承諾を構成します。",
-    last_updated: "最終更新日",
-    i_understand: "理解しました",
+      "Kami berhak mengubah ketentuan ini kapan saja. Penggunaan layanan yang berkelanjutan merupakan penerimaan terhadap perubahan apa pun.",
+    last_updated: "Terakhir diperbarui",
+    i_understand: "Saya Mengerti",
 
-    // Settings translations
+    // ===== SETTINGS =====
+    accessibility: "Aksesibilitas",
+    help_support: "Bantuan & Dukungan",
+    privacy_security: "Privasi & Keamanan",
+    manage_profile_account: "Kelola profil dan pengaturan akun Anda",
+    choose_theme_colors: "Pilih tema dan warna yang Anda sukai",
+    get_help_contact_support: "Dapatkan bantuan dan hubungi dukungan",
+    manage_privacy_security: "Kelola pengaturan privasi dan keamanan",
+    notification_test: "Tes Notifikasi",
+    test_push_notifications: "Tes notifikasi push",
+
+    // ===== THEMES =====
     themes: "Tema",
     choose_your_theme: "Pilih Tema Anda",
     select_color_theme_matches_style:
@@ -589,10 +629,9 @@ const translations = {
     deep_blue_waters: "Perairan biru dalam",
     dark_obsidian_tones: "Nada obsidian gelap",
     pink_red_gradient: "Gradien merah muda ke merah",
-    select: "Pilih",
     theme: "tema",
 
-    // FAQ translations
+    // ===== FAQ =====
     how_reset_password: "Bagaimana cara mereset password saya?",
     reset_password_answer:
       "Pergi ke Pengaturan → Privasi & Keamanan → Reset Password. Masukkan email Anda dan kami akan mengirimkan link reset password.",
@@ -624,78 +663,79 @@ const translations = {
       "Bagaimana jika saya menemukan informasi yang salah?",
     incorrect_information_answer:
       "Silakan hubungi dukungan dengan detailnya dan kami akan memverifikasi dan memperbarui informasinya.",
-    all_questions: "すべての質問",
-    app_features: "アプリ機能",
-    locator_features: "ロケーター機能",
-    search_faq: "FAQを検索...",
-    collapse: "折りたたむ",
-    expand: "展開",
-    no_faq_items_found: "検索に一致するFAQ項目が見つかりません。",
+    all_questions: "Semua Pertanyaan",
+    app_features: "Fitur Aplikasi",
+    locator_features: "Fitur Locator",
+    search_faq: "Cari FAQ...",
+    collapse: "Tutup",
+    expand: "Buka",
+    no_faq_items_found:
+      "Tidak ada item FAQ yang ditemukan untuk pencarian Anda.",
     try_different_keywords:
-      "異なるキーワードを試すか、すべてのカテゴリを閲覧してください。",
+      "Coba kata kunci yang berbeda atau jelajahi semua kategori.",
 
-    // Help & Support translations
-    user_guide: "ユーザーガイド",
-    learn_use_app_effectively: "アプリを効果的に使用する方法を学ぶ",
-    find_answers_frequently_asked: "よくある質問の答えを見つける",
-    get_touch_support_team: "サポートチームに連絡する",
-    faqs: "よくある質問",
-    title: "タイトル",
-    brief_description_issue: "問題の簡単な説明",
-    problem_category: "問題のカテゴリ",
-    select_category: "カテゴリを選択",
-    technical_issue: "技術的な問題",
-    account_problem: "アカウントの問題",
-    feature_request: "機能リクエスト",
-    bug_report: "バグ報告",
-    general_inquiry: "一般的な問い合わせ",
-    other: "その他",
-    message: "メッセージ",
-    describe_issue_detail: "問題を詳しく説明してください...",
-    please_fill_all_fields: "すべての項目を入力してください",
+    // ===== HELP & SUPPORT =====
+    user_guide: "Panduan Pengguna",
+    learn_use_app_effectively:
+      "Pelajari cara menggunakan aplikasi secara efektif",
+    find_answers_frequently_asked:
+      "Temukan jawaban untuk pertanyaan yang sering diajukan",
+    get_touch_support_team: "Hubungi tim dukungan kami",
+    faqs: "FAQ",
+    title: "Judul",
+    brief_description_issue: "Deskripsi singkat masalah Anda",
+    problem_category: "Kategori Masalah",
+    select_category: "Pilih kategori",
+    technical_issue: "Masalah Teknis",
+    account_problem: "Masalah Akun",
+    feature_request: "Permintaan Fitur",
+    bug_report: "Laporan Bug",
+    general_inquiry: "Pertanyaan Umum",
+    other: "Lainnya",
+    message: "Pesan",
+    describe_issue_detail: "Silakan jelaskan masalah Anda secara detail...",
+    please_fill_all_fields: "Silakan isi semua bidang",
     message_sent_successfully:
-      "メッセージが正常に送信されました！すぐにご連絡いたします。",
-    failed_to_send_message:
-      "メッセージの送信に失敗しました。もう一度お試しください。",
-    sending: "送信中...",
-    send_message: "メッセージを送信",
+      "Pesan berhasil dikirim! Kami akan segera menghubungi Anda.",
+    failed_to_send_message: "Gagal mengirim pesan. Silakan coba lagi.",
+    sending: "Mengirim...",
+    send_message: "Kirim Pesan",
 
-    // Privacy & Security translations
-    reset_password: "パスワードをリセット",
-    send_password_reset_email_to: "パスワードリセットメールを送信先",
-    delete_account: "アカウントを削除",
-    permanently_delete_account_data: "アカウントとデータを完全に削除",
+    // ===== PRIVACY & SECURITY =====
+    reset_password: "Reset Password",
+    send_password_reset_email_to: "Kirim email reset password ke",
+    delete_account: "Hapus Akun",
+    permanently_delete_account_data: "Hapus akun dan data Anda secara permanen",
     password_reset_email_sent:
-      "パスワードリセットメールが送信されました！受信トレイを確認してください。",
-    no_account_found_email: "このメールアドレスでアカウントが見つかりません。",
-    invalid_email_format: "無効なメールアドレス形式です。",
-    too_many_requests: "リクエストが多すぎます。後でもう一度お試しください。",
-    failed_send_reset_email: "リセットメールの送信に失敗しました",
-    failed_delete_account:
-      "アカウントの削除に失敗しました。もう一度お試しください。",
-    send_password_reset_link_to: "パスワードリセットリンクを送信先",
-    send_reset_email: "リセットメールを送信",
-    action_cannot_undone: "この操作は取り消せません。",
-    all_your_data_including: "すべてのデータ、以下を含む：",
-    profile_information: "プロフィール情報",
-    saved_preferences: "保存された設定",
-    account_history: "アカウント履歴",
-    all_app_data: "すべてのアプリデータ",
-    will_be_permanently_deleted: "が完全に削除されます。",
-    reauthenticate: "再認証",
+      "Email reset password telah dikirim! Periksa kotak masuk Anda.",
+    no_account_found_email:
+      "Tidak ada akun yang ditemukan dengan alamat email ini.",
+    invalid_email_format: "Format alamat email tidak valid.",
+    too_many_requests: "Terlalu banyak permintaan. Silakan coba lagi nanti.",
+    failed_send_reset_email: "Gagal mengirim email reset",
+    failed_delete_account: "Gagal menghapus akun. Silakan coba lagi.",
+    send_password_reset_link_to: "Kami akan mengirimkan link reset password ke",
+    send_reset_email: "Kirim Email Reset",
+    action_cannot_undone: "Tindakan ini tidak dapat dibatalkan.",
+    all_your_data_including: "Semua data Anda, termasuk:",
+    profile_information: "Informasi profil",
+    saved_preferences: "Preferensi yang disimpan",
+    account_history: "Riwayat akun",
+    all_app_data: "Semua data aplikasi",
+    will_be_permanently_deleted: "akan dihapus secara permanen.",
+    reauthenticate: "Autentikasi Ulang",
     security_reasons_enter_password:
-      "セキュリティ上の理由により、アカウント削除を確認するためにパスワードを入力してください。",
-    enter_your_password: "パスワードを入力",
-    please_enter_password: "パスワードを入力してください",
-    incorrect_password:
-      "パスワードが正しくありません。もう一度お試しください。",
-    authentication_failed: "認証に失敗しました。もう一度お試しください。",
-    reauthentication_failed: "再認証に失敗しました",
-    deleting: "削除中...",
-    confirm_deletion: "削除を確認",
+      "Untuk alasan keamanan, silakan masukkan password Anda untuk mengonfirmasi penghapusan akun.",
+    enter_your_password: "Masukkan password Anda",
+    please_enter_password: "Silakan masukkan password Anda",
+    incorrect_password: "Password salah. Silakan coba lagi.",
+    authentication_failed: "Autentikasi gagal. Silakan coba lagi.",
+    reauthentication_failed: "Autentikasi ulang gagal",
+    deleting: "Menghapus...",
+    confirm_deletion: "Konfirmasi Penghapusan",
   },
   ja: {
-    // Basic translations
+    // ===== BASIC UI ELEMENTS =====
     language: "言語",
     english: "英語",
     indonesian: "インドネシア語",
@@ -713,6 +753,14 @@ const translations = {
     loading: "読み込み中...",
     error: "エラー",
     success: "成功",
+    back: "戻る",
+    next: "次へ",
+    finish: "完了",
+    select: "選択",
+    confirm: "確認",
+    of: "/",
+
+    // ===== NAVIGATION & MAIN FEATURES =====
     immigration_offices: "入管事務所",
     photo_booths: "証明写真機",
     reset_location: "リセット",
@@ -720,33 +768,24 @@ const translations = {
     distance: "距離",
     directions: "ルート",
     call: "電話",
+    document_checklist: "書類チェックリスト",
+    ai_form: "AI フォーム",
+    set_reminder: "リマインダーを設定",
+    view_reminders: "リマインダーを表示",
+    reminders: "リマインダー",
+    contact_support: "サポートに連絡",
+
+    // ===== AI CHAT & ASSISTANT =====
     ai_welcome:
       "こんにちは！私はビザ申請アシスタントです。ビザ延長フォームの記入を段階的にサポートします。何かご質問はありますか？",
     ai_loading: "入管事務所を読み込み中...",
     ai_loading_photo: "証明写真機を読み込み中...",
     ai_quick_tips: "以下のような質問をしていただけます：",
-    full_name: "氏名",
-    address: "住所",
-    date_of_birth: "生年月日",
-    documents: "書類",
-    full_name_desc: "氏名を入力してください",
-    address_desc: "住所を入力してください",
-    date_of_birth_desc: "生年月日を入力してください",
-    documents_desc: "お持ちの書類を選択してください",
-    visa_expiry_date: "ビザの有効期限",
-    visa_expiry_desc: "ビザの有効期限を入力してください",
-    start_new_conversation: "新しい会話を開始",
-    conversation_history: "会話履歴",
     ask_anything_about_visa: "ビザについて何でも聞いてください",
     camera: "カメラ",
     image: "画像",
-    welcome: "ようこそ",
-    getting_started_message: "ビザ申請を始めましょう",
-    get_started: "始める",
-    manage_account: "アカウント設定を管理",
-    customize_experience: "体験をカスタマイズ",
-    get_help_support: "ヘルプとサポートを取得",
-    privacy_security_settings: "プライバシーとセキュリティ設定",
+    start_new_conversation: "新しい会話を開始",
+    conversation_history: "会話履歴",
     welcome_ai_assistant: "AI フォームアシスタントへようこそ！",
     what_i_can_help: "✨ お手伝いできること：",
     form_guidance: "フォームガイダンス",
@@ -762,55 +801,72 @@ const translations = {
     visa_expiry_question: "ビザ有効期限フィールドについて教えてください",
     lets_start: "始めましょう！",
     vizy_ai: "Vizy AI",
-    accessibility: "アクセシビリティ",
-    help_support: "ヘルプとサポート",
-    privacy_security: "プライバシーとセキュリティ",
-    manage_profile_account: "プロフィールとアカウント設定を管理",
-    choose_theme_colors: "お好みのテーマと色を選択",
-    get_help_contact_support: "ヘルプを取得し、サポートに連絡",
-    manage_privacy_security: "プライバシーとセキュリティ設定を管理",
-    notification_test: "通知テスト",
-    test_push_notifications: "プッシュ通知をテスト",
+
+    // ===== FORM FIELDS =====
+    full_name: "氏名",
+    address: "住所",
+    date_of_birth: "生年月日",
+    documents: "書類",
+    full_name_desc: "氏名を入力してください",
+    address_desc: "住所を入力してください",
+    date_of_birth_desc: "生年月日を入力してください",
+    documents_desc: "お持ちの書類を選択してください",
+    visa_expiry_date: "ビザの有効期限",
+    visa_expiry_desc: "ビザの有効期限を入力してください",
+    documents_question: "ビザ延長の申請に必要な書類は何ですか？",
+
+    // ===== WELCOME & ONBOARDING =====
+    welcome: "ようこそ",
     welcome_back: "おかえりなさい！",
+    getting_started_message: "ビザ申請を始めましょう",
+    get_started: "始める",
     whats_your_deadline: "期限はいつですか？",
     select_your_deadline: "期限を選択してください",
     whats_your_current_residency_type: "現在の在留資格は何ですか？",
+    what_do_you_want_to_do: "何をしたいですか？",
+    which_documents_do_you_have: "どの書類をお持ちですか？",
+    have_you_applied_before: "以前に在留資格の申請をしたことがありますか？",
+    select_target_residency_type: "目標の在留資格を選択してください：",
+
+    // ===== RESIDENCY TYPES =====
     international_student_residency: "留学",
     work_residency: "就労",
     family_residency: "家族滞在",
     specified_skill_worker_residency: "特定技能",
-    what_do_you_want_to_do: "何をしたいですか？",
     extend_current_residency: "現在の在留資格を延長する",
     change_to_different_residency_type: "別の在留資格に変更する",
-    which_documents_do_you_have: "どの書類をお持ちですか？",
-    have_you_applied_before: "以前に在留資格の申請をしたことがありますか？",
+
+    // ===== APPLICATION OPTIONS =====
     yes_successfully: "はい、成功しました",
     yes_but_rejected: "はい、しかし拒否されました",
     no_first_time: "いいえ、初めてです",
     not_sure: "わかりません",
-    of: "/",
-    back: "戻る",
-    next: "次へ",
-    finish: "完了",
+
+    // ===== DEADLINE & REMINDERS =====
     your_residency_deadline: "在留期限",
     no_deadline_set: "期限が設定されていません",
     incomplete_documents: "未完了の書類",
     documents_remaining: "書類が残っています",
-    document_checklist: "書類チェックリスト",
     save_changes: "変更を保存",
-    ai_form: "AI フォーム",
-    set_reminder: "リマインダーを設定",
     date: "日付",
     time: "時間",
     clear_reminder: "リマインダーをクリア",
     available_for_submission: "提出可能",
     not_available_for_submission: "提出不可",
     deadline_expired: "期限が切れています",
-    documents_question: "ビザ延長の申請に必要な書類は何ですか？",
-    view_reminders: "リマインダーを表示",
-    contact_support: "サポートに連絡",
+    no_reminders_set: "リマインダーが設定されていません",
+    add_new_reminder: "新しいリマインダーを追加",
+    reminder_title: "リマインダータイトル",
+    reminder_description: "説明（オプション）",
+    add_reminder: "リマインダーを追加",
+    edit_deadline: "期限を編集",
+    deadline_date: "期限日",
+    set: "設定",
+    confirm_deadline_change: "期限変更を確認",
+    are_you_sure_change_deadline: "期限を変更してもよろしいですか？",
+    new_deadline: "新しい期限",
 
-    // Document Options
+    // ===== DOCUMENT TYPES =====
     application_extension_form: "在留期間更新許可申請書",
     passport: "パスポート",
     residence_card: "在留カード",
@@ -833,10 +889,7 @@ const translations = {
     family_register: "戸籍謄本",
     resident_certificate: "住民票",
 
-    // Conditional Label
-    select_target_residency_type: "目標の在留資格を選択してください：",
-
-    // Signup Page
+    // ===== AUTHENTICATION =====
     create_account: "アカウントを作成",
     join_vizy_message: "Vizyに参加して移民の旅を始めましょう",
     nickname: "ニックネーム",
@@ -869,6 +922,8 @@ const translations = {
     dont_have_account: "アカウントをお持ちでないですか？",
     sign_up: "サインアップ",
     redirecting: "リダイレクト中...",
+
+    // ===== TERMS & LEGAL =====
     terms_agreement:
       "当サービスをご利用いただくことで、以下の条件に同意したものとみなされます：",
     service_description_title: "サービス説明",
@@ -891,7 +946,18 @@ const translations = {
     last_updated: "最終更新日",
     i_understand: "理解しました",
 
-    // Settings translations
+    // ===== SETTINGS =====
+    accessibility: "アクセシビリティ",
+    help_support: "ヘルプとサポート",
+    privacy_security: "プライバシーとセキュリティ",
+    manage_profile_account: "プロフィールとアカウント設定を管理",
+    choose_theme_colors: "お好みのテーマと色を選択",
+    get_help_contact_support: "ヘルプを取得し、サポートに連絡",
+    manage_privacy_security: "プライバシーとセキュリティ設定を管理",
+    notification_test: "通知テスト",
+    test_push_notifications: "プッシュ通知をテスト",
+
+    // ===== THEMES =====
     themes: "テーマ",
     choose_your_theme: "テーマを選択",
     select_color_theme_matches_style:
@@ -912,10 +978,9 @@ const translations = {
     deep_blue_waters: "深い青い海",
     dark_obsidian_tones: "ダークオブシディアンのトーン",
     pink_red_gradient: "ピンクから赤のグラデーション",
-    select: "選択",
     theme: "テーマ",
 
-    // FAQ translations
+    // ===== FAQ =====
     how_reset_password: "パスワードをリセットするには？",
     reset_password_answer:
       "設定 → プライバシーとセキュリティ → パスワードリセットに移動してください。メールアドレスを入力すると、パスワードリセットリンクを送信します。",
@@ -956,7 +1021,7 @@ const translations = {
     try_different_keywords:
       "異なるキーワードを試すか、すべてのカテゴリを閲覧してください。",
 
-    // Help & Support translations
+    // ===== HELP & SUPPORT =====
     user_guide: "ユーザーガイド",
     learn_use_app_effectively: "アプリを効果的に使用する方法を学ぶ",
     find_answers_frequently_asked: "よくある質問の答えを見つける",
@@ -969,7 +1034,7 @@ const translations = {
     technical_issue: "技術的な問題",
     account_problem: "アカウントの問題",
     feature_request: "機能リクエスト",
-    bug_report: "Laporan Bug",
+    bug_report: "バグ報告",
     general_inquiry: "一般的な問い合わせ",
     other: "その他",
     message: "メッセージ",
@@ -982,7 +1047,7 @@ const translations = {
     sending: "送信中...",
     send_message: "メッセージを送信",
 
-    // Privacy & Security translations
+    // ===== PRIVACY & SECURITY =====
     reset_password: "パスワードをリセット",
     send_password_reset_email_to: "パスワードリセットメールを送信先",
     delete_account: "アカウントを削除",
