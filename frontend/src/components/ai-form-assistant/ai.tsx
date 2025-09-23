@@ -457,7 +457,7 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       });
     }
 
-    // User guide queries (learning about documents)
+    // User guide queries (learning about documents and form filling) - EXPANDED
     else if (
       input.includes("document") ||
       input.includes("required") ||
@@ -474,7 +474,46 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       input.includes("what is required") ||
       input.includes("document guide") ||
       input.includes("user guide") ||
-      input.includes("guide")
+      input.includes("guide") ||
+      input.includes("passport") ||
+      input.includes("residence card") ||
+      input.includes("visa") ||
+      input.includes("application form") ||
+      input.includes("photo") ||
+      input.includes("certificate") ||
+      input.includes("where is") ||
+      input.includes("how to get") ||
+      input.includes("how to obtain") ||
+      input.includes("what is") ||
+      input.includes("explain") ||
+      input.includes("major") ||
+      input.includes("field of study") ||
+      input.includes("study") ||
+      input.includes("academic") ||
+      input.includes("university") ||
+      input.includes("college") ||
+      input.includes("school") ||
+      input.includes("education") ||
+      input.includes("degree") ||
+      input.includes("course") ||
+      input.includes("program") ||
+      input.includes("select") ||
+      input.includes("choose") ||
+      input.includes("option") ||
+      input.includes("box") ||
+      input.includes("form field") ||
+      input.includes("fill out") ||
+      input.includes("complete") ||
+      input.includes("question") ||
+      input.includes("help") ||
+      input.includes("confused") ||
+      input.includes("don't know") ||
+      input.includes("not sure") ||
+      input.includes("which one") ||
+      input.includes("how do i") ||
+      input.includes("what should") ||
+      input.includes("can i") ||
+      input.includes("should i")
     ) {
       actions.push({
         id: "documents",
