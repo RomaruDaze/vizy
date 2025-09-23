@@ -65,7 +65,7 @@ const LoginPage = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <img src="./vizy.svg" alt="Vizy Logo" className="logo" />
+          <img src="./vizy.png" alt="Vizy Logo" className="logo" />
           <h1>{t("welcome_to_vizy")}</h1>
           <p>{t("your_immigration_assistant")}</p>
         </div>
