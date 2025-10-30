@@ -47,7 +47,7 @@ const ai = getAI(app, { backend: new GoogleAIBackend() });
 
 // Create a `GenerativeModel` instance with a model that supports your use case
 // Try different model names if one doesn't work
-export const aiModel = getGenerativeModel(ai, { model: "gemini-1.5-flash" });
+export const aiModel = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
 
 // Remove the test function that was causing the error
 // async function run() {

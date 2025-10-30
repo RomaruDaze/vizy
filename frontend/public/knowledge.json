@@ -1,0 +1,157 @@
+{
+  "docs-photo": {
+    "title": "Visa Photo Requirements (JP)",
+    "content": "40mm x 30mm, plain light background, taken within 3 months, no hats, clear face, no heavy filters. Bring 1–2 copies.",
+    "tags": ["photo", "requirements", "application", "visa"]
+  },
+  "format-date": {
+    "title": "Date Format",
+    "content": "Use `YYYY-MM-DD` for all form dates (e.g., 2025-03-21).",
+    "tags": ["format", "date", "form"]
+  },
+  "format-name": {
+    "title": "Full Name (as in Passport)",
+    "content": "Enter your name exactly as shown on your passport. Use uppercase for surname if requested by the form.",
+    "tags": ["name", "passport", "identity"]
+  },
+  "format-passport-number": {
+    "title": "Passport Number",
+    "content": "Use letters and numbers only, no spaces or symbols (e.g., TR1234567).",
+    "tags": ["passport", "number", "format"]
+  },
+  "format-address-jp": {
+    "title": "Japanese Address Format",
+    "content": "Write in this order: postal code, prefecture, city/ward, district, block, building/room. Example: 150-0001 Tokyo-to Shibuya-ku Jingumae 1-2-3 Apt 101.",
+    "tags": ["address", "japan", "format", "postal"]
+  },
+  "format-phone-jp": {
+    "title": "Phone Number (JP)",
+    "content": "Use domestic format with hyphens (e.g., 080-1234-5678).",
+    "tags": ["phone", "format", "japan"]
+  },
+  "visa-types-common": {
+    "title": "Common Visa Types (Examples)",
+    "content": "Student, Engineer/Specialist in Humanities/International Services, Dependent, Skilled Labor, Specified Skilled Worker, Instructor, Researcher.",
+    "tags": ["visa", "types", "examples"]
+  },
+  "status-current": {
+    "title": "Current Status of Residence",
+    "content": "Select your current status printed on your residence card (e.g., Student, Engineer).",
+    "tags": ["status", "residence", "card"]
+  },
+  "visa-expiry": {
+    "title": "Visa Expiry Date",
+    "content": "Use the expiry date on your residence card. Format as `YYYY-MM-DD`.",
+    "tags": ["expiry", "date", "residence-card"]
+  },
+  "reason-extension-guidance": {
+    "title": "Reason for Extension (Guidance)",
+    "content": "Be concise and factual. Examples: continuing studies/employment, pending graduation, ongoing project, job search after graduation (if applicable). Mention documents supporting your reason.",
+    "tags": ["reason", "extension", "examples"]
+  },
+  "financial-proof": {
+    "title": "Proof of Financial Stability",
+    "content": "Bank balance/certificate, scholarship proof, remittance certificate, company/sponsor support letter, tax/resident documents if applicable.",
+    "tags": ["financial", "bank", "documents"]
+  },
+  "supporting-docs-common": {
+    "title": "Common Supporting Documents",
+    "content": "Passport, Residence Card, Application Form, ID Photo, Proof of Funds, Enrollment/Employment Certificate, Tax/Resident records if required.",
+    "tags": ["documents", "supporting", "checklist"]
+  },
+  "where-to-apply": {
+    "title": "Where to Apply",
+    "content": "Apply at the regional immigration office responsible for your address. Use the Locator to find the nearest office.",
+    "tags": ["immigration", "office", "locator"]
+  },
+  "processing-time": {
+    "title": "Processing Time (Typical)",
+    "content": "Varies by office and season; commonly a few weeks. Set reminders and plan before expiry.",
+    "tags": ["processing", "time", "deadline"]
+  },
+  "photo-booths": {
+    "title": "Photo Booths",
+    "content": "Use Locator > Photo Booths to find nearby machines or studios that meet visa photo standards.",
+    "tags": ["photo", "booth", "locator"]
+  },
+  "checklist-usage": {
+    "title": "Document Checklist Usage",
+    "content": "Track required documents in the app (Home > Document Checklist). Mark each item when prepared.",
+    "tags": ["checklist", "tracking", "home"]
+  },
+  "reminders-usage": {
+    "title": "Reminders & Deadlines",
+    "content": "Set reminders (Home) for submission dates and document pickups to avoid missing deadlines.",
+    "tags": ["reminder", "deadline", "status"]
+  },
+  "submission-basics": {
+    "title": "Submission Basics",
+    "content": "Bring original documents and copies. Check office hours, required forms, and fees before visiting.",
+    "tags": ["submission", "office", "fees"]
+  },
+  "application-form-tips": {
+    "title": "Application Form Tips",
+    "content": "Fill in all required fields, use `YYYY-MM-DD` dates, match passport name, and keep reasons specific and verifiable.",
+    "tags": ["form", "tips", "accuracy"]
+  },
+  "language-help": {
+    "title": "Language Help",
+    "content": "If unsure about Japanese terms on the form, ask the AI for field-specific translations or examples.",
+    "tags": ["language", "help", "translation"]
+  },
+  "status-change-overview": {
+    "title": "Changing Status (Student to Work)",
+    "content": "Apply *before* your student visa expires. You must submit proof of graduation (or expected graduation) and either an employment contract or an offer of employment in a field related to your studies. The process is a change of status, not an extension.",
+    "tags": ["status-change", "work", "student", "graduation", "contract"]
+  },
+  "docs-student-enrollment": {
+    "title": "Academic Documents: Enrollment/Graduation",
+    "content": "For extension: Certificate of Enrollment showing expected graduation date. For status change: Official Graduation Certificate (or Expected Graduation Certificate if applying before graduation). All documents must be original or certified copies.",
+    "tags": ["documents", "student", "certificate", "enrollment", "graduation"]
+  },
+  "docs-student-transcript": {
+    "title": "Academic Documents: Transcript",
+    "content": "Provide a complete academic transcript showing courses and grades. This helps Immigration verify that your job is relevant to your field of study for a work visa change.",
+    "tags": ["documents", "student", "transcript", "work-visa", "relevance"]
+  },
+  "job-search-visa-details": {
+    "title": "Designated Activities (Job Search) Visa",
+    "content": "Graduating students can often apply for a 6-month 'Designated Activities' (Tokutei Katsudou) visa for job hunting. Requires proof of graduation, letter from the university, and a detailed plan of your job search activities. Can be extended once.",
+    "tags": ["visa-type", "job-search", "designated-activities", "tokutei-katsudou", "student-graduate"]
+  },
+  "dependent-visa-basics": {
+    "title": "Dependent Status of Residence",
+    "content": "Applies to spouse and children. Requires proof of relationship (marriage/birth certificate) and strong evidence that the primary visa holder (the student/worker) can financially support them (e.g., bank statements, tax documents).",
+    "tags": ["visa-type", "dependent", "family", "financial", "support"]
+  },
+  "tax-certificate-requirement": {
+    "title": "Tax and Resident Certificates",
+    "content": "For extensions (especially if you've been in Japan for a year or more), Immigration often requires your latest Certificate of Tax Payment (Nozei Shomeisho) and Certificate of Resident Tax (Kazei Shomeisho) to prove local financial standing. Get these from your local city/ward office.",
+    "tags": ["documents", "tax", "resident", "city-office", "financial"]
+  },
+  "form-occupation": {
+    "title": "Application Field: Occupation/Employment",
+    "content": "If you are a student, list your occupation as 'Student' (学生). If you are applying for a work visa, list your intended job title (e.g., 'Software Engineer') and the full name of the company that hired you.",
+    "tags": ["form", "occupation", "employment", "student", "work"]
+  },
+  "form-status-purpose": {
+    "title": "Application Field: Purpose of New Status",
+    "content": "State the specific activity you will be engaging in. For a work visa (Engineer), state: 'To engage in activities related to engineering.' For a student extension, state: 'To continue studies at [University Name].'",
+    "tags": ["form", "status-of-residence", "purpose", "work", "student"]
+  },
+  "form-family-japan": {
+    "title": "Application Field: Family in Japan",
+    "content": "List all family members currently residing in Japan, even if they are not dependents. Include their full name, relationship to you, status of residence, and date of birth. Be accurate, as this information is cross-checked.",
+    "tags": ["form", "family", "dependent", "residence"]
+  },
+  "form-travel-history": {
+    "title": "Application Field: Travel History",
+    "content": "List all countries you have visited in the past 5 years, along with the dates and purpose. If the form asks for only specific periods, follow that instruction exactly. Include all past visits to Japan.",
+    "tags": ["form", "history", "travel", "passport"]
+  },
+  "form-criminal-history": {
+    "title": "Application Field: Criminal/Immigration History",
+    "content": "Answer truthfully. If you have any criminal conviction or past immigration violation (overstay, deportation), you must declare it and provide detailed documentation explaining the incident. False statements lead to rejection.",
+    "tags": ["form", "history", "criminal", "violation", "rejection"]
+  }
+}

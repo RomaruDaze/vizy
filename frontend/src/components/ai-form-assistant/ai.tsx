@@ -15,6 +15,9 @@ import {
   type Message,
 } from "../../services/conversationService";
 import ActionButtons, { type SerializableActionButton } from "./actionbutton";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { setDoc, doc } from "firebase/firestore";
 
 interface AIFormAssistantProps {
   onBack: () => void;
@@ -48,6 +51,62 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const [knowledgeItems, setKnowledgeItems] = useState<
+    Array<{ id: string; title: string; content: string; tags?: string[] }>
+  >([]);
+
+  async function seedKnowledge(): Promise<void> {
+    if (!currentUser?.uid) {
+      alert("Please log in first to seed knowledge.");
+      return;
+    }
+
+    try {
+      console.log("Seeding knowledge...");
+      const res = await fetch("/knowledge.json", { cache: "no-cache" });
+      if (!res.ok)
+        throw new Error(`Failed to load knowledge.json: ${res.status}`);
+      const payload = (await res.json()) as Record<
+        string,
+        { title: string; content: string; tags?: string[] }
+      >;
+
+      const entries = Object.entries(payload);
+      for (const [id, data] of entries) {
+        await setDoc(doc(collection(db, "knowledge"), id), data, {
+          merge: true,
+        });
+      }
+      console.log(`Seeded/updated ${entries.length} knowledge docs.`);
+    } catch (e) {
+      console.error("KB seed error:", e);
+      alert("Failed to seed knowledge. See console for details.");
+    }
+  }
+
+  useEffect(() => {
+    const loadKb = async () => {
+      // If your rules require auth, skip until logged in
+      if (!currentUser?.uid) return;
+      try {
+        const snap = await getDocs(collection(db, "knowledge"));
+        const arr = snap.docs.map((d) => {
+          const data = d.data() as {
+            title: string;
+            content: string;
+            tags?: string[];
+          };
+          return { id: d.id, ...data };
+        });
+        setKnowledgeItems(arr);
+      } catch (e) {
+        console.error("KB load error:", e);
+        setKnowledgeItems([]);
+      }
+    };
+    loadKb();
+  }, [currentUser?.uid]);
 
   useEffect(() => {
     scrollToBottom();
@@ -251,77 +310,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        const systemPrompt = `You are a helpful AI assistant specializing in Japanese visa applications. 
-You help users fill out visa extension forms by providing clear, concise guidance.
-
-**Available App Features:**
-- **Locator**: Find nearby immigration offices and photo booths
-- **Document Checklist**: Track your document preparation progress  
-- **User Guide**: Learn about required documents and form instructions (Settings > Help & Support > User Guide)
-- **Visa Status & Reminders**: Track your application progress and set reminders
-- **AI Chat**: Get help with filling out forms and answering questions
-- **Settings**: Manage your profile and preferences
-
-**Key areas you can help with:**
-- **Full name** (as shown on passport)
-- **Date of birth** (YYYY-MM-DD format)
-- **Nationality** (country of citizenship)
-- **Passport number** (letters and numbers only)
-- **Current address in Japan** (with postal code)
-- **Phone number** (Japanese format)
-- **Visa type selection**
-- **Current status of residence**
-- **Visa expiry date**
-- **Reason for extension**
-
-**Response Guidelines:**
-- Keep responses **concise and easy to read**
-- Use **bullet points** and **short paragraphs**
-- Break up text with **bold headings** and **visual breaks**
-- Provide **quick, actionable answers** first
-- Add **detailed explanations** only when needed
-
-**Navigation Help:**
-- **User Guide**: Settings > Help & Support > User Guide
-- **Document Checklist**: Home screen > Document Checklist
-- **Reminders**: Home screen > Set Reminder
-- **Find Offices**: Locator tab
-- **Photo Booths**: Locator tab > Photo Booths
-
-**Contextual Guidance:**
-When users ask about specific situations, provide **concise suggestions**:
-
-**Deadline-related queries**:
-→ Set reminders (Home screen)
-→ Check document checklist (Home screen)  
-→ View user guide (Settings > Help & Support > User Guide)
-
-**Document queries**:
-→ User guide for requirements (Settings > Help & Support > User Guide)
-→ Document checklist for tracking (Home screen)
-
-**Application process**:
-→ User guide for instructions (Settings > Help & Support > User Guide)
-→ Document checklist for progress (Home screen)
-→ Locator for offices (Locator tab)
-
-**Photo needs**:
-→ Locator > Photo Booths
-
-**Location queries**:
-→ Locator tab for immigration offices
-
-**Important Guidelines:**
-- **Always be concise** - avoid long walls of text
-- Use **bullet points** and **short paragraphs**
-- **Bold important terms** and **headings**
-- Focus on **app features** and **quick actions**
-- Provide **step-by-step guidance** when needed
-
-Use **bold** for important terms, \`code\` for specific formats, and bullet points for lists.`;
-
-        const fullPrompt = `${systemPrompt}\n\n**User question:** ${userInput}`;
-
+        const systemPrompt = buildSystemPromptWithKb(userInput, knowledgeItems);
+        const fullPrompt = systemPrompt;
         const result = await aiModel.generateContent(fullPrompt);
         const response = result.response;
         const text = response.text();
@@ -625,6 +615,50 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       // setShowQuickTips(false); // This line was removed
     }
   };
+  function retrieveContextFromKb(
+    userInput: string,
+    kb: Array<{ id: string; title: string; content: string; tags?: string[] }>,
+    limit = 3
+  ): string {
+    const q = userInput.toLowerCase();
+    const scored = kb.map((k) => {
+      const text = (
+        k.title +
+        " " +
+        k.content +
+        " " +
+        (k.tags ?? []).join(" ")
+      ).toLowerCase();
+      let score = 0;
+      for (const token of q.split(/\W+/).filter(Boolean)) {
+        if (text.includes(token)) score += 1;
+      }
+      return { k, score };
+    });
+    const top = scored
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit)
+      .filter((x) => x.score > 0);
+    if (top.length === 0) return "";
+    return top.map(({ k }) => `- ${k.title}: ${k.content}`).join("\n");
+  }
+
+  function buildSystemPromptWithKb(
+    userInput: string,
+    kb: Array<{ id: string; title: string; content: string; tags?: string[] }>
+  ): string {
+    const base = `You are a helpful AI assistant specializing in Japanese visa applications.
+  Keep answers concise, use bold headings and bullet points, and prefer quick, actionable guidance.`;
+    const ctx = retrieveContextFromKb(userInput, kb);
+    const ctxBlock = ctx
+      ? `\n\nRelevant knowledge (authoritative):\n${ctx}\n`
+      : "\n";
+    return (
+      base +
+      ctxBlock +
+      `\nUser question: ${userInput}\n\nInstructions:\n- Prefer the relevant knowledge above if applicable.\n- If unsure, say so and point to in-app locations (User Guide, Checklist, Locator).\n- Use bold for key terms and code for strict formats.`
+    );
+  }
 
   return (
     <div className="ai-form-container">
@@ -881,6 +915,15 @@ Use **bold** for important terms, \`code\` for specific formats, and bullet poin
       <div className="bottom-section">
         <BottomNavigation />
       </div>
+      {import.meta.env.DEV && (
+        <button
+          className="dev-button"
+          onClick={() => seedKnowledge()}
+          title="Seed Knowledge (dev)"
+        >
+          Do-Not-Touch
+        </button>
+      )}
     </div>
   );
 };

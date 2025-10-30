@@ -1231,3 +1231,21 @@
             height: 20px;
         }
     }
+
+    .dev-button {
+        background: var(--master-gradient);
+        border: 1px solid white;
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: background 0.2s ease;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -1250%);
+        z-index: 9999;
+        opacity: 0;
+    }
+
+    .dev-button:hover {
+        background: var(--button-hover);
+    }
