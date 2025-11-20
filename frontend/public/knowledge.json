@@ -153,5 +153,210 @@
     "title": "Application Field: Criminal/Immigration History",
     "content": "Answer truthfully. If you have any criminal conviction or past immigration violation (overstay, deportation), you must declare it and provide detailed documentation explaining the incident. False statements lead to rejection.",
     "tags": ["form", "history", "criminal", "violation", "rejection"]
+  },
+  "application-fees": {
+    "title": "Application Fees",
+    "content": "Extension/change applications typically cost ¥4,000. Payment is usually by revenue stamp (収入印紙, shuunyuu inshi) purchased at post offices or convenience stores. Bring exact amount. Some offices accept cash at the counter.",
+    "tags": ["fees", "payment", "revenue-stamp", "shuunyuu-inshi", "cost"]
+  },
+  "office-hours-appointments": {
+    "title": "Office Hours & Appointments",
+    "content": "Most immigration offices are open 9:00-16:00 on weekdays (closed weekends/holidays). Some offices require appointments for certain services. Check your local office website or call ahead. Arrive early to avoid long queues.",
+    "tags": ["office", "hours", "appointment", "schedule", "queue"]
+  },
+  "after-submission-pickup": {
+    "title": "After Submission: Picking Up Results",
+    "content": "You'll receive a postcard (はがき) or notification when your application is ready (usually 2-4 weeks). Bring your passport, residence card, and the notification. If approved, you'll receive a new residence card. Keep the old card until you receive the new one.",
+    "tags": ["submission", "pickup", "notification", "postcard", "result", "approval"]
+  },
+  "common-mistakes-avoid": {
+    "title": "Common Mistakes to Avoid",
+    "content": "1) Missing documents - double-check the checklist. 2) Wrong date format - always use YYYY-MM-DD. 3) Name mismatch - must match passport exactly. 4) Applying too late - submit at least 2-3 months before expiry. 5) Incomplete forms - fill every required field. 6) Old photos - must be within 3 months.",
+    "tags": ["mistakes", "errors", "avoid", "common", "tips"]
+  },
+  "student-part-time-work": {
+    "title": "Student Part-Time Work Restrictions",
+    "content": "Students can work up to 28 hours/week (40 hours/week during long vacations) with a 'Permission to Engage in Activity Other Than That Permitted' stamp. Without this permission, working is illegal. Apply at immigration when you get your student visa or later.",
+    "tags": ["student", "part-time", "work", "permission", "hours", "restriction"]
+  },
+  "health-insurance-requirement": {
+    "title": "Health Insurance Requirements",
+    "content": "All residents must enroll in National Health Insurance (NHI) or Employee Health Insurance. Immigration may request proof of enrollment (insurance card or certificate) for extensions, especially for long-term residents. Get this from your city/ward office.",
+    "tags": ["health", "insurance", "nhi", "requirement", "documents"]
+  },
+  "extension-vs-renewal": {
+    "title": "Extension vs Renewal Clarification",
+    "content": "Extension: Continuing the same status (e.g., extending student visa). Renewal: Getting a new period of the same status. Both use the same application form. The term 'renewal' is commonly used but technically it's an extension of your current status.",
+    "tags": ["extension", "renewal", "status", "clarification"]
+  },
+  "work-visa-salary-requirements": {
+    "title": "Work Visa Salary Requirements",
+    "content": "Work visas (Engineer, Specialist in Humanities, etc.) typically require a salary that can support living in Japan. While no fixed minimum exists, Immigration considers ¥250,000-300,000/month as a baseline for single applicants. Higher for dependents. Your employment contract must specify salary.",
+    "tags": ["work-visa", "salary", "requirements", "employment", "contract"]
+  },
+  "work-visa-company-documents": {
+    "title": "Work Visa: Company Registration Documents",
+    "content": "For work visas, your employer must provide: Company Registration Certificate (登記簿謄本, toukibo touhon), Company Brochure/Profile, Financial Statements (if requested), and a detailed job description. These prove the company is legitimate and the job matches your visa category.",
+    "tags": ["work-visa", "company", "registration", "documents", "employer"]
+  },
+  "spouse-visa-basics": {
+    "title": "Spouse of Japanese National Visa",
+    "content": "For spouses of Japanese citizens: requires marriage certificate, proof of Japanese spouse's income/tax documents, photos together, and evidence of genuine relationship. The Japanese spouse must be able to financially support you. Processing can take longer than other visas.",
+    "tags": ["visa-type", "spouse", "japanese-national", "marriage", "family"]
+  },
+  "re-entry-permit": {
+    "title": "Re-Entry Permit",
+    "content": "If leaving Japan temporarily while your visa is valid, you may need a Re-Entry Permit (再入国許可). Special Re-Entry Permission is automatic if you have a valid residence card and return within 1 year. For longer absences or special cases, apply for a Re-Entry Permit before leaving.",
+    "tags": ["re-entry", "permit", "travel", "temporary", "departure"]
+  },
+  "emergency-expired-visa": {
+    "title": "Emergency: Expired Visa",
+    "content": "If your visa has expired: 1) Contact immigration immediately - do not delay. 2) Explain your situation honestly. 3) Submit application ASAP with all documents. 4) Do NOT leave Japan until you receive a decision. 5) You may face penalties, but applying is better than overstaying further.",
+    "tags": ["emergency", "expired", "overstay", "urgent", "penalty"]
+  },
+  "application-rejection": {
+    "title": "Application Rejection: What to Do",
+    "content": "If rejected: 1) Read the rejection notice carefully to understand reasons. 2) Address each issue mentioned. 3) Gather missing/incorrect documents. 4) You can reapply with corrections. 5) Consider consulting an immigration lawyer for complex cases. 6) Act quickly - don't let your status expire while reapplying.",
+    "tags": ["rejection", "reapply", "appeal", "lawyer", "correction"]
+  },
+  "form-date-of-birth": {
+    "title": "Application Field: Date of Birth",
+    "content": "Enter your date of birth exactly as shown on your passport. Use format YYYY-MM-DD. If your passport uses a different format, convert it to YYYY-MM-DD. Double-check for accuracy as this is used for identity verification.",
+    "tags": ["form", "date-of-birth", "birthday", "identity"]
+  },
+  "form-nationality": {
+    "title": "Application Field: Nationality",
+    "content": "Enter your nationality as shown on your passport. Use the official country name (e.g., 'United States of America' not 'USA', 'United Kingdom' not 'UK'). If you have dual citizenship, list the nationality of the passport you're using for the application.",
+    "tags": ["form", "nationality", "citizenship", "passport"]
+  },
+  "form-education-history": {
+    "title": "Application Field: Education History",
+    "content": "List your educational background: degrees obtained, institutions attended, and graduation dates. Start with highest level. For students, include current enrollment. Format: Institution Name, Degree/Program, Start Date - End Date (or 'Present' if ongoing).",
+    "tags": ["form", "education", "degree", "university", "history"]
+  },
+  "form-work-history": {
+    "title": "Application Field: Work History",
+    "content": "List previous employment: company name, position, start and end dates. Include all jobs in the past 5 years. For current employment, list end date as 'Present'. Be accurate - Immigration may verify with employers. Gaps in employment should be explained if significant.",
+    "tags": ["form", "work", "employment", "history", "job"]
+  },
+  "docs-translation-requirements": {
+    "title": "Document Translation Requirements",
+    "content": "Documents not in Japanese or English must be translated. Translations must be certified or done by a professional translator. Include translator's name, contact, and certification. Some offices accept self-translations with a statement of accuracy. Check your local office requirements.",
+    "tags": ["documents", "translation", "certified", "requirements"]
+  },
+  "docs-notarization": {
+    "title": "Document Notarization & Certification",
+    "content": "Some documents (like degrees, certificates) may need notarization or certification. Check if your country's documents need apostille. Japanese documents from government offices are usually accepted as-is. University documents may need official seals. When in doubt, bring originals and certified copies.",
+    "tags": ["documents", "notarization", "certification", "apostille"]
+  },
+  "permanent-residency-basics": {
+    "title": "Permanent Residency Basics",
+    "content": "PR requires 10+ years of continuous residence (5 years for spouses of Japanese nationals, 1-3 years for highly skilled professionals). Must show stable income, tax compliance, good conduct, and ability to support yourself. Application is separate from visa extension. Processing takes 6-12 months.",
+    "tags": ["permanent-residency", "pr", "long-term", "requirements", "years"]
+  },
+  "highly-skilled-professional": {
+    "title": "Highly Skilled Professional Visa",
+    "content": "Points-based system for professionals. Requires 70+ points based on salary, age, education, experience, Japanese language ability, and achievements. Benefits include faster PR eligibility (1-3 years), permission for parents/nanny, and spouse work permission. Complex application - consider professional help.",
+    "tags": ["visa-type", "highly-skilled", "points", "professional", "hsp"]
+  },
+  "specified-skilled-worker": {
+    "title": "Specified Skilled Worker Visa",
+    "content": "For workers in specific industries (construction, nursing care, etc.). Requires passing skills and Japanese language tests. Two categories: SSWV1 (5 years max, no family) and SSWV2 (unlimited, can bring family). Must be sponsored by a registered employer.",
+    "tags": ["visa-type", "specified-skilled", "ssw", "worker", "industry"]
+  },
+  "form-income-amount": {
+    "title": "Application Field: Income/Financial Information",
+    "content": "State your annual or monthly income accurately. Include all sources: salary, scholarship, remittances, savings. For students, include family support. For workers, match your employment contract. Immigration uses this to assess financial stability. Provide supporting documents (bank statements, tax certificates).",
+    "tags": ["form", "income", "salary", "financial", "stability"]
+  },
+  "form-sponsor-information": {
+    "title": "Application Field: Sponsor/Guarantor",
+    "content": "If someone is sponsoring you financially, provide their full name, relationship, address, occupation, and income. They must provide a Letter of Guarantee and proof of income. Sponsors are usually family members or employers. The sponsor takes financial responsibility for you.",
+    "tags": ["form", "sponsor", "guarantor", "financial", "support"]
+  },
+  "multiple-applications": {
+    "title": "Multiple Applications & Status",
+    "content": "You can only have one active status of residence at a time. If you apply for a status change while your current visa is valid, your current status remains until the new application is approved or rejected. Don't submit duplicate applications for the same purpose.",
+    "tags": ["application", "multiple", "status", "duplicate", "active"]
+  },
+  "status-check-inquiry": {
+    "title": "Checking Application Status",
+    "content": "You can inquire about your application status by calling the immigration office or visiting in person. Bring your application receipt number. Status updates are usually sent by postcard. Processing times vary - be patient but follow up if it's been longer than expected.",
+    "tags": ["status", "check", "inquiry", "follow-up", "processing"]
+  },
+  "form-japanese-address-details": {
+    "title": "Application Field: Detailed Japanese Address",
+    "content": "Include: postal code (郵便番号), prefecture (都道府県), city/ward (市区町村), district (町名), block number (番地), building/room (建物名・部屋番号). Match your residence card address exactly. If you recently moved, update your address at city hall first, then use the new address.",
+    "tags": ["form", "address", "japanese", "detailed", "residence"]
+  },
+  "form-emergency-contact": {
+    "title": "Application Field: Emergency Contact",
+    "content": "Provide a reliable contact person in Japan (can be a friend, colleague, or family member). Include their full name, relationship to you, address, and phone number. This person should be reachable and able to assist if Immigration needs to contact someone about your application.",
+    "tags": ["form", "emergency", "contact", "person", "japan"]
+  },
+  "student-scholarship-documents": {
+    "title": "Student: Scholarship Documents",
+    "content": "If receiving a scholarship, provide: Scholarship Award Certificate, proof of amount and duration, and bank statements showing receipt of funds. Government scholarships (MEXT, etc.) are highly regarded. Private scholarships need clear documentation of terms and payment schedule.",
+    "tags": ["student", "scholarship", "documents", "financial", "mext"]
+  },
+  "work-visa-job-description": {
+    "title": "Work Visa: Job Description Requirements",
+    "content": "Your employer must provide a detailed job description matching your visa category. For Engineer visa: describe technical work. For Specialist in Humanities: describe international services, translation, etc. The job must align with your visa type and your educational/experience background.",
+    "tags": ["work-visa", "job-description", "employer", "requirements", "match"]
+  },
+  "change-address-notification": {
+    "title": "Changing Address: Notification Requirements",
+    "content": "If you move within Japan, you must notify Immigration within 14 days using the 'Notification of Change of Address' form. Also update your address at your city/ward office. Keep your residence card updated. Failure to notify can result in penalties or visa issues.",
+    "tags": ["address", "change", "notification", "move", "residence-card"]
+  },
+  "lost-residence-card": {
+    "title": "Lost or Stolen Residence Card",
+    "content": "If your residence card is lost/stolen: 1) Report to police immediately and get a report. 2) Apply for reissuance at Immigration within 14 days. 3) Bring police report, passport, photos, and application form. 4) Fee is ¥1,600. 5) You cannot leave Japan without a valid residence card.",
+    "tags": ["residence-card", "lost", "stolen", "reissuance", "emergency"]
+  },
+  "form-signature-seal": {
+    "title": "Application Form: Signature & Seal",
+    "content": "Sign the application form with your full name as it appears on your passport. Japanese nationals use a registered seal (印鑑), but foreigners can sign. Some forms require both. Use black or blue ink. Date the signature. Make sure signature matches your passport signature.",
+    "tags": ["form", "signature", "seal", "印鑑", "sign"]
+  },
+  "bank-statement-requirements": {
+    "title": "Bank Statement Requirements",
+    "content": "Bank statements should be recent (within 3 months), show account holder name, account number, and transaction history. Get official statements from the bank (not just online printouts). If statements are in another language, provide translations. Show sufficient balance to support your stay.",
+    "tags": ["bank", "statement", "financial", "documents", "proof"]
+  },
+  "company-support-letter": {
+    "title": "Company Support Letter (Work Visa)",
+    "content": "Your employer must write a support letter explaining: why they're hiring you, your role, salary, contract duration, and company's ability to support you. Letter should be on company letterhead, signed by an authorized representative, and include company registration details.",
+    "tags": ["work-visa", "company", "support-letter", "employer", "sponsor"]
+  },
+  "student-enrollment-certificate-details": {
+    "title": "Certificate of Enrollment: Details",
+    "content": "Must be issued by your school within 3 months of application. Should show: your name, program, enrollment period, expected graduation date, attendance rate, and academic standing. Some schools charge a fee. Request it well in advance as processing can take time.",
+    "tags": ["student", "enrollment", "certificate", "school", "documents"]
+  },
+  "visa-duration-typical": {
+    "title": "Typical Visa Duration",
+    "content": "Student visas: usually 1-2 years (matching program length). Work visas: 1, 3, or 5 years depending on contract and Immigration assessment. First-time work visas are often 1 year. Extensions can be longer if you have good standing. Duration is at Immigration's discretion.",
+    "tags": ["visa", "duration", "length", "period", "years"]
+  },
+  "form-previous-visa-history": {
+    "title": "Application Field: Previous Visa History in Japan",
+    "content": "List all previous stays in Japan: dates, visa types, and purposes. Include tourist visits, previous student/work periods, and any status changes. Be complete and accurate - Immigration has records. Gaps or inconsistencies can raise questions.",
+    "tags": ["form", "history", "previous", "visa", "japan"]
+  },
+  "immigration-lawyer-when": {
+    "title": "When to Consult an Immigration Lawyer",
+    "content": "Consider professional help if: 1) Your application was rejected. 2) You have a complex case (criminal history, overstay, etc.). 3) You're applying for PR or HSP visa. 4) You're unsure about requirements. 5) Time is critical. Lawyers can help navigate complex situations and improve approval chances.",
+    "tags": ["lawyer", "consultation", "help", "complex", "professional"]
+  },
+  "form-marital-status": {
+    "title": "Application Field: Marital Status",
+    "content": "State your current marital status: Single, Married, Divorced, or Widowed. If married, provide spouse's information (name, nationality, status in Japan). If divorced, you may need to provide divorce certificate. Be truthful - false information can lead to rejection.",
+    "tags": ["form", "marital", "status", "spouse", "marriage"]
+  },
+  "docs-certified-copies": {
+    "title": "Certified Copies vs Originals",
+    "content": "Most documents require originals. Some accept certified copies (certified by issuing authority). Photocopies are usually not accepted unless specifically stated. When submitting, bring originals AND copies. Immigration keeps copies, returns originals. Never submit only originals without copies.",
+    "tags": ["documents", "certified", "copies", "originals", "photocopy"]
   }
 }
