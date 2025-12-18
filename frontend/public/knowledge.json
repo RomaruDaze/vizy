@@ -29,6 +29,116 @@
     "content": "Use domestic format with hyphens (e.g., 080-1234-5678).",
     "tags": ["phone", "format", "japan"]
   },
+  "format-nationality": {
+    "title": "Nationality",
+    "content": "Enter your nationality exactly as shown on your passport. Use the official country name (e.g., 'United States of America' not 'USA', 'United Kingdom' not 'UK'). If you have dual citizenship, list the nationality of the passport you're using for the application. Make sure to write in Japanese.",
+    "tags": ["format", "nationality", "citizenship", "passport"]
+  },
+  "format-date-of-birth": {
+    "title": "Date of Birth",
+    "content": "Enter your date of birth exactly as shown on your passport. Use format YYYY-MM-DD (e.g., 1995-06-15). If your passport uses a different format, convert it to YYYY-MM-DD.",
+    "tags": ["format", "date-of-birth", "birthday", "identity"]
+  },
+  "format-sex": {
+    "title": "Sex",
+    "content": "Select either 'Male' or 'Female' as indicated on your passport. Must match your passport exactly.",
+    "tags": ["format", "sex", "gender", "passport"]
+  },
+  "format-marital-status": {
+    "title": "Marital Status",
+    "content": "Select 'Married' or 'No' (Single/Unmarried). If married, you will need to provide additional information about your spouse in the family section.",
+    "tags": ["format", "marital-status", "marriage", "single"]
+  },
+  "format-occupation": {
+    "title": "Occupation",
+    "content": "Enter your current occupation. If you are a student, enter 'Student' (学生). If you are employed, enter your job title (e.g., 'Software Engineer', 'Teacher'). If unemployed, enter 'Unemployed' or 'None'.",
+    "tags": ["format", "occupation", "employment", "job"]
+  },
+  "format-home-town-city": {
+    "title": "Home Town City",
+    "content": "Enter the city where you were born or consider your hometown. Use the official city name in English or your native language. Example: 'Jakarta', 'Manila', 'Bangkok'.",
+    "tags": ["format", "hometown", "city", "birthplace"]
+  },
+  "format-address-japan-no-postal": {
+    "title": "Address in Japan (Without Postal Code)",
+    "content": "Enter your Japanese address without the postal code. Format: Prefecture (都道府県), City/Ward (市区町村), District (町名), Block Number (番地), Building/Room (建物名・部屋番号). Example: Tokyo-to Shibuya-ku Jingumae 1-2-3 Apt 101.",
+    "tags": ["format", "address", "japan", "residence", "no-postal"]
+  },
+  "format-passport-expiration": {
+    "title": "Passport Date of Expiration",
+    "content": "Enter the expiration date of your passport. Use format YYYY-MM-DD (e.g., 2030-12-31). This must match exactly what is printed on your passport.",
+    "tags": ["format", "passport", "expiration", "expiry", "date"]
+  },
+  "format-status-of-residence": {
+    "title": "Status of Residence (Residence Card)",
+    "content": "IMPORTANT: This field asks for your STATUS TYPE/CATEGORY, NOT a description or reason. Look at your residence card - enter exactly what is printed there. For students: enter 'Student' (or '留学生' if that's what's on your card). Other examples: 'Engineer', 'Dependent', 'Instructor', 'Researcher'. This is a simple category field - do NOT enter descriptions like 'To continue studies' or reasons. That information goes in the 'Purpose of New Status' or 'Reason for Extension' fields instead.",
+    "tags": ["format", "status", "residence", "card", "visa-type", "student"]
+  },
+  "format-period-of-stay": {
+    "title": "Period of Stay (Residence Card)",
+    "content": "Enter the period of stay as shown on your residence card. Format examples: '1 year', '3 years', '5 years', or the specific duration printed on your card. This indicates how long your current status is valid.",
+    "tags": ["format", "period", "stay", "residence-card", "duration"]
+  },
+  "format-residence-card-expiration": {
+    "title": "Date of Expiration (Residence Card)",
+    "content": "Enter the expiration date printed on your residence card. Use format YYYY-MM-DD (e.g., 2026-03-31). This is the date your current status of residence expires.",
+    "tags": ["format", "expiration", "expiry", "residence-card", "date"]
+  },
+  "format-residence-card-number": {
+    "title": "Residence Card Number",
+    "content": "Enter your residence card number exactly as printed on your residence card. This is typically a 12-character alphanumeric code (letters and numbers). Do not include spaces or hyphens. The number is usually located on the front of your residence card. Example format: AB1234567890.",
+    "tags": ["format", "residence-card", "number", "card-number", "identification"]
+  },
+  "format-desired-extension-length": {
+    "title": "Desired Length of Extension",
+    "content": "Enter the length of extension you are requesting. Common options: '1 year', '2 years', '3 years', '5 years'. The actual duration granted is at Immigration's discretion based on your circumstances and supporting documents.",
+    "tags": ["format", "extension", "length", "duration", "request"]
+  },
+  "format-reason-of-extension": {
+    "title": "Reason of Extension",
+    "content": "Provide a clear, factual reason for requesting an extension. Examples: 'To continue my studies at [University Name]', 'To continue employment at [Company Name]', 'To complete my research project', 'To search for employment after graduation'. Be specific and mention supporting documents.",
+    "tags": ["format", "reason", "extension", "purpose"]
+  },
+  "format-criminal-record": {
+    "title": "Criminal Record",
+    "content": "Answer 'Yes' or 'No'. If 'Yes', you must provide detailed documentation explaining any criminal convictions or past immigration violations. False statements lead to application rejection. Answer truthfully.",
+    "tags": ["format", "criminal", "record", "yes-no", "history"]
+  },
+  "format-family-reside-japan": {
+    "title": "Family Reside in Japan",
+    "content": "Answer 'Yes' or 'No'. If 'Yes', you must complete the family information table with: relationship, full name, date of birth (YYYY-MM-DD), nationality, whether residing with applicant (Yes/No), place of employment/school, and residence number card number. Include all family members currently in Japan.",
+    "tags": ["format", "family", "japan", "yes-no", "table"]
+  },
+  "format-place-of-employment": {
+    "title": "Place of Employment",
+    "content": "Enter information about your place of employment or school. If you are a STUDENT: enter your school/university information. If you are WORKING: enter your company/workplace information. Required sub-items: 1) Name: Full name of school/university or company. 2) Name Branch: Branch name or campus name (if applicable). 3) Address: Complete address in Japanese format (prefecture, city/ward, district, block, building). 4) Telephone: Phone number in Japanese format with hyphens (e.g., 03-1234-5678). For students, use your school's information. For workers, use your employer's information.",
+    "tags": ["format", "employment", "school", "university", "company", "workplace", "address", "telephone"]
+  },
+  "format-final-learning-experience": {
+    "title": "Final Learning Experience",
+    "content": "Enter your highest level of education completed. Required sub-items: 1) Location: Select 'Japan' or 'Foreign Country' where you obtained this education. 2) Final Learning Experience: Select the highest degree/level completed - Doctor, Master, Bachelor, Junior College, College of Technology, Senior Highschool, Junior Highschool, or Other (if your level is not listed). 3) Name of School and Graduation Date: Enter the full name of the institution and graduation date in YYYY-MM-DD format (e.g., 'Tokyo University, 2023-03-31'). List your highest completed education level.",
+    "tags": ["format", "education", "learning", "degree", "graduation", "school"]
+  },
+  "format-major-field-of-study": {
+    "title": "Major Field of Study",
+    "content": "Select the major field of study that matches your educational background. Check the option that is most suitable for your field. If none of the listed options match your major, check 'Other' and write your specific field of study in the space provided. Examples: Engineering, Business, Medicine, Arts, Sciences, etc.",
+    "tags": ["format", "major", "field-of-study", "education", "subject"]
+  },
+  "format-information-processing-qualification": {
+    "title": "Information Processing Qualification",
+    "content": "Answer 'Yes' or 'No' to the question: 'Does the applicant have any qualifications for information processing or has he/she passed the certifying examination?' If you answer 'Yes', you must write the specific qualification(s) you hold. Examples: IT Passport (情報処理技術者試験), Basic Information Technology Engineer, etc. If you answer 'No', leave the qualification field blank.",
+    "tags": ["format", "qualification", "information-processing", "certification", "examination", "yes-no"]
+  },
+  "format-work-experience": {
+    "title": "Work Experience",
+    "content": "Enter your work experience history. IMPORTANT: Do NOT include part-time work or internships. Only include full-time, regular employment positions. For each position, include: company name, position/title, start date (YYYY-MM-DD), and end date (YYYY-MM-DD or 'Present' if currently employed). List all full-time jobs in chronological order. Part-time jobs and internships should be excluded from this section.",
+    "tags": ["format", "work", "experience", "employment", "full-time", "exclude-part-time", "exclude-internship"]
+  },
+  "format-legal-representative": {
+    "title": "Legal Representative",
+    "content": "If you are filling out the application form yourself, you do NOT need to write anything in the legal representative section. Leave it blank. Legal representative information is only required if someone else (such as a parent, guardian, or legal representative) is filling out the form on your behalf. If you are the applicant and completing the form yourself, skip this section entirely.",
+    "tags": ["format", "legal-representative", "self-application", "skip", "optional"]
+  },
   "visa-types-common": {
     "title": "Common Visa Types (Examples)",
     "content": "Student, Engineer/Specialist in Humanities/International Services, Dependent, Skilled Labor, Specified Skilled Worker, Instructor, Researcher.",
