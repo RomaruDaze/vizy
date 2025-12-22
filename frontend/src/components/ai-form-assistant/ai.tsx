@@ -316,8 +316,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         const response = result.response;
         const text = response.text();
 
-        // Analyze user input for app navigation
-        const actions = analyzeUserIntent(userInput, text);
+        // Pass knowledgeItems to analyzeUserIntent
+        const actions = analyzeUserIntent(userInput, text, knowledgeItems);
 
         return {
           text,
@@ -352,23 +352,194 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
     };
   };
 
-  const analyzeUserIntent = (userInput: string, _aiResponse: string) => {
+  const analyzeUserIntent = (
+    userInput: string,
+    aiResponse: string,
+    knowledgeItems?: Array<{
+      id: string;
+      title: string;
+      content: string;
+      tags?: string[];
+    }>
+  ): SerializableActionButton[] => {
     const input = userInput.toLowerCase();
+    const response = aiResponse.toLowerCase();
     const actions: SerializableActionButton[] = [];
 
-    // Deadline-related queries - suggest multiple actions
+    // Scoring system: more specific patterns get higher scores
+    const intentScores: Record<string, number> = {
+      formFilling: 0,
+      documentChecklist: 0,
+      reminder: 0,
+      applicationProcess: 0,
+      userGuide: 0,
+      location: 0,
+      photoBooth: 0,
+    };
+
+    // 1. FORM FILLING QUERIES (highest priority - most specific)
+    const formFillingPatterns = [
+      /how\s+to\s+(write|fill|complete|fill out|fill in).*form/,
+      /how\s+do\s+i\s+(write|fill|complete|fill out|fill in).*form/,
+      /what\s+should\s+i\s+(write|put|enter).*form/,
+      /form\s+field/,
+      /form\s+question/,
+      /application\s+form\s+(help|guidance|how|what|explain)/,
+      /how\s+to\s+fill.*application\s+form/,
+      /writing.*application\s+form/,
+      /form\s+filling/,
+      /complete.*form/,
+    ];
+
+    if (formFillingPatterns.some((pattern) => pattern.test(input))) {
+      intentScores.formFilling += 10;
+      intentScores.userGuide += 5; // Also suggest user guide
+    }
+
+    // Check AI response for form-related content
     if (
-      input.includes("deadline") ||
-      input.includes("due date") ||
-      input.includes("expiry") ||
-      input.includes("expiration") ||
-      input.includes("near") ||
-      input.includes("approaching") ||
-      input.includes("urgent") ||
-      input.includes("time") ||
-      input.includes("soon")
+      response.includes("form") &&
+      (response.includes("field") ||
+        response.includes("fill") ||
+        response.includes("write"))
     ) {
-      // Suggest reminder, document checklist, and user guide
+      intentScores.formFilling += 5;
+      intentScores.userGuide += 3;
+    }
+
+    // 2. DOCUMENT CHECKLIST QUERIES
+    const checklistPatterns = [
+      /checklist/,
+      /check\s+list/,
+      /document\s+(progress|status|track|completed|mark)/,
+      /track\s+documents/,
+      /mark\s+documents/,
+      /check\s+off\s+documents/,
+      /what\s+documents\s+(do\s+i\s+need|are\s+required|should\s+i\s+prepare)/,
+    ];
+
+    if (checklistPatterns.some((pattern) => pattern.test(input))) {
+      intentScores.documentChecklist += 8;
+    }
+
+    // 3. REMINDER/DEADLINE QUERIES
+    const reminderPatterns = [
+      /(deadline|due\s+date|expiry|expiration|approaching|urgent|soon)/,
+      /set\s+reminder/,
+      /remind\s+me/,
+      /track\s+(status|application)/,
+      /check\s+(status|application\s+status|visa\s+status)/,
+    ];
+
+    if (reminderPatterns.some((pattern) => pattern.test(input))) {
+      intentScores.reminder += 7;
+      intentScores.documentChecklist += 3; // Also suggest checklist
+    }
+
+    // 4. APPLICATION PROCESS QUERIES (broader, lower priority)
+    const applicationProcessPatterns = [
+      /how\s+to\s+apply/,
+      /application\s+process/,
+      /submission/,
+      /submit/,
+      /extension\s+(process|how)/,
+    ];
+
+    if (
+      applicationProcessPatterns.some((pattern) => pattern.test(input)) &&
+      intentScores.formFilling === 0
+    ) {
+      intentScores.applicationProcess += 6;
+      intentScores.userGuide += 4;
+      intentScores.documentChecklist += 3;
+    }
+
+    // 5. USER GUIDE / DOCUMENT EXPLANATION QUERIES
+    const userGuidePatterns = [
+      /(what\s+is|what\s+are|explain|what\s+does|meaning\s+of)/,
+      /(document|passport|residence\s+card|visa|certificate|photo).*(what|how|where|explain)/,
+      /how\s+to\s+(get|obtain|find)/,
+      /where\s+is/,
+      /(major|field\s+of\s+study|education|degree|university|college|school)/,
+      /(help|confused|don'?t\s+know|not\s+sure|which\s+one)/,
+    ];
+
+    if (
+      userGuidePatterns.some((pattern) => pattern.test(input)) &&
+      intentScores.formFilling === 0
+    ) {
+      intentScores.userGuide += 7;
+    }
+
+    // Check knowledge base context - if form-related knowledge was retrieved, boost form filling
+    if (knowledgeItems && knowledgeItems.length > 0) {
+      const formRelatedKb = knowledgeItems.some(
+        (item) =>
+          item.id.includes("format-") ||
+          item.id.includes("form-") ||
+          item.tags?.includes("form")
+      );
+      if (
+        formRelatedKb &&
+        (intentScores.formFilling > 0 || intentScores.userGuide > 0)
+      ) {
+        intentScores.formFilling += 3;
+        intentScores.userGuide += 2;
+      }
+    }
+
+    // 6. LOCATION QUERIES
+    if (
+      /(immigration|office|where|location|find).*(office|immigration)/.test(
+        input
+      )
+    ) {
+      intentScores.location += 6;
+    }
+
+    // 7. PHOTO BOOTH QUERIES
+    if (
+      /(photo|photobooth|photo\s+booth|photo\s+studio|photo\s+machine|passport\s+photo|visa\s+photo)/.test(
+        input
+      )
+    ) {
+      intentScores.photoBooth += 6;
+    }
+
+    // Determine actions based on scores (threshold: 5)
+    const threshold = 5;
+
+    // Form filling queries - prioritize User Guide
+    if (intentScores.formFilling >= threshold) {
+      actions.push({
+        id: "documents",
+        text: "View User Guide",
+        route: "/user-guide",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
+      });
+      // Also suggest document checklist if score is high
+      if (intentScores.documentChecklist >= threshold) {
+        actions.push({
+          id: "document-checklist",
+          text: "Document Checklist",
+          route: "/home",
+          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
+          action: "document-checklist" as const,
+        });
+      }
+    }
+    // Document checklist queries
+    else if (intentScores.documentChecklist >= threshold) {
+      actions.push({
+        id: "document-checklist",
+        text: "Document Checklist",
+        route: "/home",
+        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
+        action: "document-checklist" as const,
+      });
+    }
+    // Reminder queries
+    else if (intentScores.reminder >= threshold) {
       actions.push(
         {
           id: "reminder",
@@ -383,25 +554,11 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
           route: "/home",
           icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
           action: "document-checklist" as const,
-        },
-        {
-          id: "documents",
-          text: "View User Guide",
-          route: "/user-guide",
-          icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
         }
       );
     }
-
-    // Application process queries - suggest comprehensive workflow
-    else if (
-      input.includes("apply") ||
-      input.includes("extension") ||
-      input.includes("how to apply") ||
-      input.includes("application process") ||
-      input.includes("submission") ||
-      input.includes("submit")
-    ) {
+    // Application process queries
+    else if (intentScores.applicationProcess >= threshold) {
       actions.push(
         {
           id: "documents",
@@ -424,87 +581,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         }
       );
     }
-
-    // Document checklist queries (progress tracking)
-    else if (
-      input.includes("checklist") ||
-      input.includes("check list") ||
-      input.includes("document progress") ||
-      input.includes("track documents") ||
-      input.includes("document status") ||
-      input.includes("progress") ||
-      input.includes("completed documents") ||
-      input.includes("document checklist") ||
-      input.includes("mark documents") ||
-      input.includes("check off documents")
-    ) {
-      actions.push({
-        id: "document-checklist",
-        text: "Document Checklist",
-        route: "/home",
-        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/ingredients-list.png",
-        action: "document-checklist" as const,
-      });
-    }
-
-    // User guide queries (learning about documents and form filling) - EXPANDED
-    else if (
-      input.includes("document") ||
-      input.includes("required") ||
-      input.includes("paperwork") ||
-      input.includes("what do i need") ||
-      input.includes("documents") ||
-      input.includes("required documents") ||
-      input.includes("document list") ||
-      input.includes("what documents") ||
-      input.includes("which documents") ||
-      input.includes("how to fill") ||
-      input.includes("form help") ||
-      input.includes("document explanation") ||
-      input.includes("what is required") ||
-      input.includes("document guide") ||
-      input.includes("user guide") ||
-      input.includes("guide") ||
-      input.includes("passport") ||
-      input.includes("residence card") ||
-      input.includes("visa") ||
-      input.includes("application form") ||
-      input.includes("photo") ||
-      input.includes("certificate") ||
-      input.includes("where is") ||
-      input.includes("how to get") ||
-      input.includes("how to obtain") ||
-      input.includes("what is") ||
-      input.includes("explain") ||
-      input.includes("major") ||
-      input.includes("field of study") ||
-      input.includes("study") ||
-      input.includes("academic") ||
-      input.includes("university") ||
-      input.includes("college") ||
-      input.includes("school") ||
-      input.includes("education") ||
-      input.includes("degree") ||
-      input.includes("course") ||
-      input.includes("program") ||
-      input.includes("select") ||
-      input.includes("choose") ||
-      input.includes("option") ||
-      input.includes("box") ||
-      input.includes("form field") ||
-      input.includes("fill out") ||
-      input.includes("complete") ||
-      input.includes("question") ||
-      input.includes("help") ||
-      input.includes("confused") ||
-      input.includes("don't know") ||
-      input.includes("not sure") ||
-      input.includes("which one") ||
-      input.includes("how do i") ||
-      input.includes("what should") ||
-      input.includes("can i") ||
-      input.includes("should i")
-    ) {
+    // User guide queries
+    else if (intentScores.userGuide >= threshold) {
       actions.push({
         id: "documents",
         text: "View User Guide",
@@ -512,34 +590,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/document.png",
       });
     }
-
-    // Reminder queries
-    else if (
-      input.includes("reminder") ||
-      input.includes("remind") ||
-      input.includes("track") ||
-      input.includes("status") ||
-      input.includes("check status") ||
-      input.includes("application status") ||
-      input.includes("visa status")
-    ) {
-      const reminderButton: SerializableActionButton = {
-        id: "reminder",
-        text: "Set Reminders",
-        route: "/home",
-        icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/bell.png",
-        action: "reminder" as const,
-      };
-      actions.push(reminderButton);
-    }
-
     // Location queries
-    else if (
-      input.includes("immigration") ||
-      input.includes("office") ||
-      input.includes("where") ||
-      input.includes("location")
-    ) {
+    else if (intentScores.location >= threshold) {
       actions.push({
         id: "locator",
         text: "Find Immigration Office",
@@ -547,21 +599,8 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
         icon: "https://img.icons8.com/ios-glyphs/100/FFFFFF/map-marker.png",
       });
     }
-
     // Photo booth queries
-    else if (
-      input.includes("photo") ||
-      input.includes("photobooth") ||
-      input.includes("photo booth") ||
-      input.includes("passport photo") ||
-      input.includes("photo studio") ||
-      input.includes("photo machine") ||
-      input.includes("photo booth") ||
-      input.includes("take photo") ||
-      input.includes("get photo") ||
-      input.includes("photo for visa") ||
-      input.includes("visa photo")
-    ) {
+    else if (intentScores.photoBooth >= threshold) {
       actions.push({
         id: "photobooth",
         text: "Find Photo Booths",
