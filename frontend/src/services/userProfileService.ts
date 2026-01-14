@@ -7,9 +7,10 @@ export interface UserProfile {
   purpose?: string;
   purpose_target?: string;
   documents?: string[];
+  documentProgress?: { [key: string]: boolean };
   experience?: string;
   language?: "en" | "ja" | "id"; // Add "id" for Indonesian
-  [key: string]: string | string[] | undefined;
+  [key: string]: string | string[] | { [key: string]: boolean } | undefined;
 }
 
 export const saveUserProfile = async (userId: string, data: UserProfile) => {
