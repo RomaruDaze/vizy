@@ -1,24 +1,13 @@
 # Netlify redirects for Vite/React SPA deployed under /vizy/
-# Don't redirect static assets (JS, CSS, images, etc.) - serve with 200 status
-/vizy/assets/* 200
-/vizy/*.js 200
-/vizy/*.css 200
-/vizy/*.json 200
-/vizy/*.png 200
-/vizy/*.jpg 200
-/vizy/*.jpeg 200
-/vizy/*.svg 200
-/vizy/*.ico 200
-/vizy/*.woff 200
-/vizy/*.woff2 200
-/vizy/*.ttf 200
-/vizy/*.eot 200
+# Map /vizy/assets/* requests to actual /assets/* location
+/vizy/assets/* /assets/:splat 200
 
-# Don't redirect manifest.json - serve it as JSON with correct content-type
-/vizy/manifest.json 200
-
-# Don't redirect service worker
-/vizy/sw.js 200
+# Map /vizy/ root files to root location
+/vizy/manifest.json /manifest.json 200
+/vizy/sw.js /sw.js 200
+/vizy/vizy.png /VIZY.png 200
+/vizy/vizy.svg /vizy.svg 200
+/vizy/VIZY.png /VIZY.png 200
 
 # Redirect all other /vizy/* routes to index.html for SPA routing
-/vizy/*    /vizy/index.html   200
+/vizy/* /index.html 200
