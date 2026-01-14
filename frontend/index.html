@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/vizy/vizy.png" />
+    <link rel="icon" type="image/png" href="./vizy.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Vizy - Your visa and travel companion app" />
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/vizy/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="/vizy/vizy.png" />
+    <link rel="apple-touch-icon" href="./vizy.png" />
     
     <!-- iOS Meta Tags - Updated -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -29,8 +29,15 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/vizy/sw.js', {
-            scope: '/vizy/',
+          // Detect base path from current location
+          // Extract /vizy from pathname (e.g., /vizy/ or /vizy/login)
+          const pathParts = window.location.pathname.split('/').filter(part => part);
+          const basePath = pathParts.length > 0 && pathParts[0] === 'vizy' ? '/vizy' : '';
+          const swPath = basePath ? `${basePath}/sw.js` : './sw.js';
+          const swScope = basePath ? `${basePath}/` : './';
+          
+          navigator.serviceWorker.register(swPath, {
+            scope: swScope,
             updateViaCache: 'none'
           })
           .then(registration => {

@@ -1,7 +1,17 @@
 // Get the correct base path for assets
 const getBasePath = () => {
-    // Check if we're in production (GitHub Pages)
-    if (self.location.hostname === 'romarudaze.github.io') {
+    // Check if we're in production
+    const hostname = self.location.hostname;
+    // Netlify deployment
+    if (hostname === 'vizy-app.netlify.app' || hostname.includes('netlify.app')) {
+        return '/vizy';
+    }
+    // GitHub Pages deployment
+    if (hostname === 'romarudaze.github.io') {
+        return '/vizy';
+    }
+    // Check if pathname starts with /vizy (for any deployment)
+    if (self.location.pathname.startsWith('/vizy')) {
         return '/vizy';
     }
     return '';
@@ -132,7 +142,9 @@ self.addEventListener('fetch', event => {
                                 return cachedResponse;
                             }
                             // Fallback to index.html for SPA routing
-                            return caches.match('/index.html')
+                            const basePath = getBasePath();
+                            const indexPath = basePath ? `${basePath}/index.html` : '/index.html';
+                            return caches.match(indexPath)
                                 .then(indexResponse => {
                                     if (indexResponse) {
                                         return indexResponse;
