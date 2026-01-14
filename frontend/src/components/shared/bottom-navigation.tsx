@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import "./bottom-navigation.styles.css";
 
-const BottomNavigation = () => {
+const BottomNavigation = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
@@ -80,6 +81,8 @@ const BottomNavigation = () => {
       </button>
     </div>
   );
-};
+});
+
+BottomNavigation.displayName = "BottomNavigation";
 
 export default BottomNavigation;

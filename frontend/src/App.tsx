@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,44 +9,109 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
-import Home from "./components/home-component/home";
-import Locator from "./components/locator-component/locator";
-import Settings from "./components/settings-component/settings";
-import LoginPage from "./components/auth/LoginPage";
-import SignupPage from "./components/auth/SignupPage";
-import AIFormAssistant from "./components/ai-form-assistant/ai";
-import UserGuide from "./components/user-guide-component/user-guide";
-import Reminders from "./components/reminders-component/reminders";
-import { InstallPrompt } from "./components/installPrompt-components/InstallPrompt";
+import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 import "./colors.css";
-import PassportDocument from "./documents/documents-passport";
-import ApplicationDocument from "./documents/documents-application";
-import ResidenceCardDocument from "./documents/documents-residenceCard";
-import IdPhotoDocument from "./documents/documents-idPhoto";
-import ProcessingFeeDocument from "./documents/documents-processingFee";
-import CertificateOfEmploymentDocument from "./documents/documents-certificateOfEmployment";
-import CompanyRegistrationDocument from "./documents/documents-companyRegistration";
-import CompanyFinancialDocument from "./documents/documents-companyFinancial";
-import ResidentTaxDocument from "./documents/documents-residentTax";
-import TaxPaymentDocument from "./documents/documents-taxPayment";
-import CertificateOfEnrollmentDocument from "./documents/documents-certificateOfEnrollment";
-import AcademicTranscriptDocument from "./documents/documents-academicTranscript";
-import BankBalanceDocument from "./documents/documents-bankBalance";
-import ScholarshipAwardDocument from "./documents/documents-scholarshipAward";
-import CertificateOfRemittanceDocument from "./documents/documents-certificateOfRemittance";
-import LetterOfGuaranteeDocument from "./documents/documents-letterOfGuarantee";
-import MarriageCertificateDocument from "./documents/documents-marriageCertificate";
-import BirthCertificateDocument from "./documents/documents-birthCertificate";
-import FamilyPassportDocument from "./documents/documents-familyPassport";
+
+// Eagerly loaded components (used on initial page load)
+import Home from "./components/home-component/home";
+import LoginPage from "./components/auth/LoginPage";
+import SignupPage from "./components/auth/SignupPage";
+import { InstallPrompt } from "./components/installPrompt-components/InstallPrompt";
+
+// Lazy loaded components (code splitting for better performance)
+const Locator = lazy(() => import("./components/locator-component/locator"));
+const Settings = lazy(() => import("./components/settings-component/settings"));
+const AIFormAssistant = lazy(
+  () => import("./components/ai-form-assistant/ai")
+);
+const UserGuide = lazy(
+  () => import("./components/user-guide-component/user-guide")
+);
+const Reminders = lazy(
+  () => import("./components/reminders-component/reminders")
+);
+
+// Lazy loaded document components (large, rarely accessed)
+const PassportDocument = lazy(
+  () => import("./documents/documents-passport")
+);
+const ApplicationDocument = lazy(
+  () => import("./documents/documents-application")
+);
+const ResidenceCardDocument = lazy(
+  () => import("./documents/documents-residenceCard")
+);
+const IdPhotoDocument = lazy(() => import("./documents/documents-idPhoto"));
+const ProcessingFeeDocument = lazy(
+  () => import("./documents/documents-processingFee")
+);
+const CertificateOfEmploymentDocument = lazy(
+  () => import("./documents/documents-certificateOfEmployment")
+);
+const CompanyRegistrationDocument = lazy(
+  () => import("./documents/documents-companyRegistration")
+);
+const CompanyFinancialDocument = lazy(
+  () => import("./documents/documents-companyFinancial")
+);
+const ResidentTaxDocument = lazy(
+  () => import("./documents/documents-residentTax")
+);
+const TaxPaymentDocument = lazy(
+  () => import("./documents/documents-taxPayment")
+);
+const CertificateOfEnrollmentDocument = lazy(
+  () => import("./documents/documents-certificateOfEnrollment")
+);
+const AcademicTranscriptDocument = lazy(
+  () => import("./documents/documents-academicTranscript")
+);
+const BankBalanceDocument = lazy(
+  () => import("./documents/documents-bankBalance")
+);
+const ScholarshipAwardDocument = lazy(
+  () => import("./documents/documents-scholarshipAward")
+);
+const CertificateOfRemittanceDocument = lazy(
+  () => import("./documents/documents-certificateOfRemittance")
+);
+const LetterOfGuaranteeDocument = lazy(
+  () => import("./documents/documents-letterOfGuarantee")
+);
+const MarriageCertificateDocument = lazy(
+  () => import("./documents/documents-marriageCertificate")
+);
+const BirthCertificateDocument = lazy(
+  () => import("./documents/documents-birthCertificate")
+);
+const FamilyPassportDocument = lazy(
+  () => import("./documents/documents-familyPassport")
+);
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+    }}
+  >
+    <div>Loading...</div>
+  </div>
+);
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router basename="">
-        <AuthProvider>
-          <LanguageProvider>
-            <Routes>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <Router basename="/vizy">
+          <AuthProvider>
+            <LanguageProvider>
+              <Suspense fallback={<LoadingFallback />}>
+                <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route
@@ -248,14 +314,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* Fallback route */}
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-            <InstallPrompt />
-          </LanguageProvider>
-        </AuthProvider>
-      </Router>
-    </ThemeProvider>
+                  {/* Fallback route */}
+                  <Route path="*" element={<Navigate to="/login" replace />} />
+                </Routes>
+              </Suspense>
+              <InstallPrompt />
+            </LanguageProvider>
+          </AuthProvider>
+        </Router>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

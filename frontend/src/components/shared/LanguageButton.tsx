@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import "./languageButton.styles.css";
 
-const LanguageButton = () => {
+const LanguageButton = memo(() => {
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
   const { language, setLanguage } = useLanguage();
 
@@ -45,6 +45,8 @@ const LanguageButton = () => {
       )}
     </div>
   );
-};
+});
+
+LanguageButton.displayName = "LanguageButton";
 
 export default LanguageButton;

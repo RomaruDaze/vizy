@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/vizy.png" />
+    <link rel="icon" type="image/png" href="/vizy/vizy.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Vizy - Your visa and travel companion app" />
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="/vizy/manifest.json" />
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="/vizy.png" />
+    <link rel="apple-touch-icon" href="/vizy/vizy.png" />
     
     <!-- iOS Meta Tags - Updated -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -29,8 +29,8 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js', {
-            scope: '/',
+          navigator.serviceWorker.register('/vizy/sw.js', {
+            scope: '/vizy/',
             updateViaCache: 'none'
           })
           .then(registration => {

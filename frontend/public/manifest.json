@@ -2,8 +2,8 @@
   "name": "VIZY - Your Visa Companion",
   "short_name": "VIZY",
   "description": "Your visa and travel companion app for managing visa applications, documents, and deadlines",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/vizy/",
+  "scope": "/vizy/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
@@ -11,19 +11,19 @@
   "categories": ["travel", "productivity", "utilities"],
   "icons": [
     {
-      "src": "/VIZY.png",
+      "src": "/vizy/VIZY.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/VIZY.png",
+      "src": "/vizy/VIZY.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/vizy.svg",
+      "src": "/vizy/vizy.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -35,10 +35,10 @@
       "name": "Reminders",
       "short_name": "Reminders",
       "description": "View and manage your visa reminders",
-      "url": "/reminders",
+      "url": "/vizy/reminders",
       "icons": [
         {
-          "src": "/vizy.svg",
+          "src": "/vizy/vizy.svg",
           "sizes": "96x96"
         }
       ]
@@ -47,10 +47,10 @@
       "name": "Documents",
       "short_name": "Documents",
       "description": "Check your document checklist",
-      "url": "/",
+      "url": "/vizy/",
       "icons": [
         {
-          "src": "/vizy.svg",
+          "src": "/vizy/vizy.svg",
           "sizes": "96x96"
         }
       ]
