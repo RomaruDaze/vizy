@@ -9,4 +9,15 @@ export default defineConfig({
     outDir: "dist",
     assetsDir: "assets",
   },
+  server: {
+    port: 5173,
+    host: true, // Allow external connections
+    hmr: {
+      protocol: "ws",
+      host: "localhost",
+      port: 5173,
+    },
+    // Enable WebSocket connections through proxy
+    ws: true,
+  },
 });

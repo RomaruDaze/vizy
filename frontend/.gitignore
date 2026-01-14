@@ -25,3 +25,6 @@ dist-ssr
 
 # Environment variables
 .env
+
+#TestSprite tests
+testsprite_tests/

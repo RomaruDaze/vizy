@@ -49,20 +49,50 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 const CACHE_NAME = 'vizy-app-v1';
+const CACHE_VERSION = 'v1';
 
 self.addEventListener('install', event => {
-    console.log('Service Worker installing...');
+    console.log('Service Worker installing...', CACHE_VERSION);
+    // Force the waiting service worker to become the active service worker
     self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-    console.log('Service Worker activating...');
-    event.waitUntil(self.clients.claim());
+    console.log('Service Worker activating...', CACHE_VERSION);
+    event.waitUntil(
+        Promise.all([
+            // Take control of all clients immediately
+            self.clients.claim(),
+            // Clean up old caches
+            caches.keys().then(cacheNames => {
+                return Promise.all(
+                    cacheNames
+                        .filter(cacheName => cacheName !== CACHE_NAME)
+                        .map(cacheName => {
+                            console.log('Deleting old cache:', cacheName);
+                            return caches.delete(cacheName);
+                        })
+                );
+            })
+        ])
+    );
 });
 
 self.addEventListener('fetch', event => {
-    // Don't intercept module requests or assets
-    if (event.request.destination === 'script' ||
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
+    // Skip cross-origin requests
+    if (!event.request.url.startsWith(self.location.origin)) {
+        return;
+    }
+
+    // Don't intercept module requests or assets during development
+    if (event.request.url.includes('/@vite/') ||
+        event.request.url.includes('/node_modules/') ||
+        event.request.destination === 'script' ||
         event.request.destination === 'style' ||
         event.request.destination === 'image' ||
         event.request.destination === 'font' ||
@@ -83,15 +113,40 @@ self.addEventListener('fetch', event => {
                     // Cache the response for offline use
                     if (response.status === 200) {
                         const responseClone = response.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, responseClone);
-                        });
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseClone);
+                            })
+                            .catch(error => {
+                                console.error('Error caching response:', error);
+                            });
                     }
                     return response;
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.error('Fetch failed, trying cache:', error);
                     // Return cached version if network fails
-                    return caches.match('/index.html');
+                    return caches.match(event.request)
+                        .then(cachedResponse => {
+                            if (cachedResponse) {
+                                return cachedResponse;
+                            }
+                            // Fallback to index.html for SPA routing
+                            return caches.match('/index.html')
+                                .then(indexResponse => {
+                                    if (indexResponse) {
+                                        return indexResponse;
+                                    }
+                                    // Last resort: return a basic offline page
+                                    return new Response('Offline', {
+                                        status: 503,
+                                        statusText: 'Service Unavailable',
+                                        headers: new Headers({
+                                            'Content-Type': 'text/plain'
+                                        })
+                                    });
+                                });
+                        });
                 })
         );
     }

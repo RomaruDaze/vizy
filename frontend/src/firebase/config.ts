@@ -10,23 +10,26 @@ import { getAI, getGenerativeModel, GoogleAIBackend } from "firebase/ai";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// All values must be provided via environment variables
+const getRequiredEnvVar = (key: string): string => {
+  const value = import.meta.env[key];
+  if (!value) {
+    throw new Error(
+      `Missing required environment variable: ${key}. Please check your .env file.`
+    );
+  }
+  return value;
+};
+
 const firebaseConfig = {
-  apiKey:
-    import.meta.env.VITE_FIREBASE_API_KEY ||
-    "AIzaSyAjgircs1OZfvCnvo2GNA3y2-UYRcy-W4k",
-  authDomain:
-    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "vizy-12155.firebaseapp.com",
-  databaseURL:
-    import.meta.env.VITE_FIREBASE_DATABASE_URL ||
-    "https://vizy-12155-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "vizy-12155",
-  storageBucket:
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
-    "vizy-12155.firebasestorage.app",
-  messagingSenderId:
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  apiKey: getRequiredEnvVar("VITE_FIREBASE_API_KEY"),
+  authDomain: getRequiredEnvVar("VITE_FIREBASE_AUTH_DOMAIN"),
+  databaseURL: getRequiredEnvVar("VITE_FIREBASE_DATABASE_URL"),
+  projectId: getRequiredEnvVar("VITE_FIREBASE_PROJECT_ID"),
+  storageBucket: getRequiredEnvVar("VITE_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: getRequiredEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: getRequiredEnvVar("VITE_FIREBASE_APP_ID"),
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID, // Optional
 };
 
 // Initialize Firebase

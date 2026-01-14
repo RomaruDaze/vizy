@@ -15,6 +15,7 @@ import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import AIFormAssistant from "./components/ai-form-assistant/ai";
 import UserGuide from "./components/user-guide-component/user-guide";
+import Reminders from "./components/reminders-component/reminders";
 import { InstallPrompt } from "./components/installPrompt-components/InstallPrompt";
 import "./App.css";
 import "./colors.css";
@@ -74,7 +75,17 @@ function App() {
               <Route
                 path="/ai-form-assistant"
                 element={
-                  <AIFormAssistant onBack={() => window.history.back()} />
+                  <ProtectedRoute>
+                    <AIFormAssistant onBack={() => window.history.back()} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/reminders"
+                element={
+                  <ProtectedRoute>
+                    <Reminders />
+                  </ProtectedRoute>
                 }
               />
               <Route

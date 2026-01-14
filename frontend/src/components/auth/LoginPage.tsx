@@ -29,8 +29,10 @@ const LoginPage = () => {
       setLoading(true);
       await login(email, password);
       // Navigation will be handled by the useEffect above
-    } catch (error: any) {
-      setError(t("failed_to_login") + ": " + error.message);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : t("failed_to_login");
+      setError(t("failed_to_login") + ": " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -42,8 +44,10 @@ const LoginPage = () => {
       setLoading(true);
       await loginWithGoogle();
       // Navigation will be handled by the useEffect above
-    } catch (error: any) {
-      setError(t("failed_google_auth") + ": " + error.message);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : t("failed_google_auth");
+      setError(t("failed_google_auth") + ": " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -128,9 +132,13 @@ const LoginPage = () => {
         <div className="login-footer">
           <p>
             {t("dont_have_account")}{" "}
-            <a href="/signup" className="link-button">
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="link-button"
+            >
               {t("sign_up")}
-            </a>
+            </button>
           </p>
         </div>
       </div>

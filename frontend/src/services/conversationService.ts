@@ -86,10 +86,26 @@ export const getConversations = async (
 
     const conversations: Conversation[] = [];
     snapshot.forEach((childSnapshot) => {
-      const data = childSnapshot.val();
+      const data = childSnapshot.val() as {
+        messages: Array<{
+          id: string;
+          text: string;
+          sender: "user" | "ai";
+          timestamp: string;
+          image?: string;
+          actionButtons?: Array<{
+            id: string;
+            text: string;
+            route: string;
+            icon: string;
+          }>;
+        }>;
+        createdAt: string;
+        updatedAt: string;
+      };
       conversations.push({
         id: childSnapshot.key!,
-        messages: data.messages.map((msg: any) => ({
+        messages: data.messages.map((msg) => ({
           ...msg,
           timestamp: new Date(msg.timestamp),
         })),

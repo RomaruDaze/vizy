@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { getErrorMessage } from "../../utils/firebaseErrors";
 import "./auth.styles.css";
 
 interface LoginProps {
@@ -22,8 +23,8 @@ const Login = ({ onSwitchToSignup, onClose }: LoginProps) => {
       setLoading(true);
       await login(email, password);
       onClose();
-    } catch (error: any) {
-      setError("Failed to log in: " + error.message);
+    } catch (error) {
+      setError("Failed to log in: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -35,8 +36,8 @@ const Login = ({ onSwitchToSignup, onClose }: LoginProps) => {
       setLoading(true);
       await loginWithGoogle();
       onClose();
-    } catch (error: any) {
-      setError("Failed to log in with Google: " + error.message);
+    } catch (error) {
+      setError("Failed to log in with Google: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import type { User } from "firebase/auth";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import type { User, UserCredential, AuthError } from "firebase/auth";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -12,10 +19,10 @@ import { auth } from "../firebase/config";
 
 interface AuthContextType {
   currentUser: User | null;
-  login: (email: string, password: string) => Promise<any>;
-  signup: (email: string, password: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  signup: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
-  loginWithGoogle: () => Promise<any>;
+  loginWithGoogle: () => Promise<UserCredential>;
   loading: boolean;
 }
 
@@ -33,27 +40,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  function signup(email: string, password: string) {
+  const signup = useCallback((email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
-  }
+  }, []);
 
-  function login(email: string, password: string) {
+  const login = useCallback((email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
-  }
+  }, []);
 
-  async function logout() {
+  const logout = useCallback(async () => {
     try {
       await signOut(auth);
       setCurrentUser(null);
     } catch (error) {
       throw error;
     }
-  }
+  }, []);
 
-  function loginWithGoogle() {
+  const loginWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
-  }
+    try {
+      return await signInWithPopup(auth, provider);
+    } catch (error) {
+      const authError = error as AuthError;
+      // Handle account-exists-with-different-credential error
+      if (authError.code === "auth/account-exists-with-different-credential") {
+        // The pending credential is available in error.credential
+        // You can save it and guide the user to sign in with their existing provider
+        throw new Error(
+          "An account already exists with this email using a different sign-in method. Please sign in with your original method first."
+        );
+      }
+      throw error;
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -64,14 +84,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
-    login,
-    signup,
-    logout,
-    loginWithGoogle,
-    loading,
-  };
+  const value = useMemo(
+    () => ({
+      currentUser,
+      login,
+      signup,
+      logout,
+      loginWithGoogle,
+      loading,
+    }),
+    [currentUser, login, signup, logout, loginWithGoogle, loading]
+  );
 
   return (
     <AuthContext.Provider value={value}>

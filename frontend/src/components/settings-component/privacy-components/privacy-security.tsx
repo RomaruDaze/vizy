@@ -8,6 +8,11 @@ import { deleteUser } from "firebase/auth";
 import { ref, remove } from "firebase/database";
 import { database } from "../../../firebase/config";
 import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import {
+  getErrorCode,
+  getErrorMessage,
+  FirebaseErrorCodes,
+} from "../../../utils/firebaseErrors";
 import "../account-components/account.styles.css";
 import "./privacy-security.styles.css";
 
@@ -43,16 +48,17 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         setShowPasswordPopup(false);
         setMessage("");
       }, 3000);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Password reset error:", error);
-      if (error.code === "auth/user-not-found") {
+      const errorCode = getErrorCode(error);
+      if (errorCode === FirebaseErrorCodes.AUTH_USER_NOT_FOUND) {
         setMessage(t("no_account_found_email"));
-      } else if (error.code === "auth/invalid-email") {
+      } else if (errorCode === FirebaseErrorCodes.AUTH_INVALID_EMAIL) {
         setMessage(t("invalid_email_format"));
-      } else if (error.code === "auth/too-many-requests") {
+      } else if (errorCode === FirebaseErrorCodes.AUTH_TOO_MANY_REQUESTS) {
         setMessage(t("too_many_requests"));
       } else {
-        setMessage(`${t("failed_send_reset_email")}: ${error.message}`);
+        setMessage(`${t("failed_send_reset_email")}: ${getErrorMessage(error)}`);
       }
     } finally {
       setLoading(false);
@@ -80,10 +86,11 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
         // Redirect to signup page
         window.location.href = "/login";
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error deleting account:", error);
+      const errorCode = getErrorCode(error);
 
-      if (error.code === "auth/requires-recent-login") {
+      if (errorCode === "auth/requires-recent-login") {
         setShowDeleteConfirm(false);
         setShowReauthPopup(true);
       } else {
@@ -121,15 +128,16 @@ const PrivacySecurity = ({ onBack }: PrivacySecurityProps) => {
 
       // Redirect to signup page
       window.location.href = "/login";
-    } catch (error: any) {
+    } catch (error) {
       console.error("Re-authentication error:", error);
+      const errorCode = getErrorCode(error);
 
-      if (error.code === "auth/wrong-password") {
+      if (errorCode === FirebaseErrorCodes.AUTH_WRONG_PASSWORD) {
         setDeleteError(t("incorrect_password"));
-      } else if (error.code === "auth/user-mismatch") {
+      } else if (errorCode === "auth/user-mismatch") {
         setDeleteError(t("authentication_failed"));
       } else {
-        setDeleteError(`${t("reauthentication_failed")}: ${error.message}`);
+        setDeleteError(`${t("reauthentication_failed")}: ${getErrorMessage(error)}`);
       }
     } finally {
       setDeleteLoading(false);

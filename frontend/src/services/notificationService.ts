@@ -222,8 +222,21 @@ const calculateNextNotificationTime = (
   return nextTime;
 };
 
+interface StoredReminder {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  scheduledTime: number;
+}
+
 // Store reminders in localStorage for mobile persistence
-const storeReminderInStorage = (reminder: any) => {
+const storeReminderInStorage = (reminder: {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+}) => {
   try {
     const storedReminders = JSON.parse(
       localStorage.getItem("vizy-reminders") || "[]"
@@ -243,13 +256,13 @@ const checkStoredReminders = () => {
   try {
     const storedReminders = JSON.parse(
       localStorage.getItem("vizy-reminders") || "[]"
-    );
+    ) as StoredReminder[];
     const now = Date.now();
     const dueReminders = storedReminders.filter(
-      (r: any) => r.scheduledTime <= now
+      (r: StoredReminder) => r.scheduledTime <= now
     );
 
-    dueReminders.forEach((reminder: any) => {
+    dueReminders.forEach((reminder: StoredReminder) => {
       showMobileNotification({
         title: "Reminder: " + reminder.title,
         body: `Your reminder is due! (${reminder.date} at ${reminder.time})`,
@@ -259,7 +272,7 @@ const checkStoredReminders = () => {
 
     // Remove due reminders
     const remainingReminders = storedReminders.filter(
-      (r: any) => r.scheduledTime > now
+      (r: StoredReminder) => r.scheduledTime > now
     );
     localStorage.setItem("vizy-reminders", JSON.stringify(remainingReminders));
   } catch (error) {
@@ -356,9 +369,9 @@ export const cancelReminderNotification = (reminderId: string): void => {
   try {
     const storedReminders = JSON.parse(
       localStorage.getItem("vizy-reminders") || "[]"
-    );
+    ) as StoredReminder[];
     const remainingReminders = storedReminders.filter(
-      (r: any) => r.id !== reminderId
+      (r: StoredReminder) => r.id !== reminderId
     );
     localStorage.setItem("vizy-reminders", JSON.stringify(remainingReminders));
   } catch (error) {

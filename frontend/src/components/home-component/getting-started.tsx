@@ -176,7 +176,10 @@ const GettingStarted = ({ onComplete }: GettingStartedProps) => {
     ? getDocumentOptions(targetVisaType)
     : [];
 
-  const handleAnswer = async (questionId: string, answer: any) => {
+  const handleAnswer = async (
+    questionId: string,
+    answer: string | string[]
+  ) => {
     const newAnswers = {
       ...answers,
       [questionId]: answer,

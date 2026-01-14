@@ -143,6 +143,7 @@
     color: #5a6fd8;
 }
 
+.signup-button,
 .login-button {
     padding: 14px 20px;
     border: none;
@@ -155,39 +156,53 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    width: 100%;
+    min-height: 48px;
+    position: relative;
+    z-index: 1;
 }
 
+.signup-button.primary,
 .login-button.primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 }
 
+.signup-button.primary:hover:not(:disabled),
 .login-button.primary:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
+.signup-button.google,
 .login-button.google {
     background-color: #ffffff;
     color: #000000;
     border: 1px solid #000000;
 }
 
+.signup-button.google img,
 .login-button.google img {
     width: 30px;
     height: 30px;
 }
 
+.signup-button.google:hover:not(:disabled),
 .login-button.google:hover:not(:disabled) {
     background-color: #000000;
     color: #ffffff;
     transform: translateY(-1px);
 }
 
+.signup-button:disabled,
 .login-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;
+}
+
+.signup-button:not(:disabled) {
+    cursor: pointer;
 }
 
 .divider {
@@ -246,6 +261,12 @@
     justify-content: center;
     align-items: center;
     z-index: 1100;
+}
+
+/* Ensure form is above modal when modal is closed */
+.signup-form {
+    position: relative;
+    z-index: 1;
 }
 
 .terms-modal {

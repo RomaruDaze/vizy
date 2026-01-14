@@ -323,13 +323,15 @@ const AIFormAssistant = ({}: AIFormAssistantProps) => {
           text,
           actions: actions.length > 0 ? actions : undefined,
         };
-      } catch (error: any) {
+      } catch (error) {
         lastError = error;
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
 
         // If it's a rate limit error, wait before retrying
         if (
-          error.message?.includes("429") ||
-          error.message?.includes("overloaded")
+          errorMessage.includes("429") ||
+          errorMessage.includes("overloaded")
         ) {
           const waitTime = attempt * 2000; // 2s, 4s, 6s
           console.log(

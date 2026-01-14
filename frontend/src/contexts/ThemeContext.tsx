@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 
 type ThemeMode =
   | "ocean"
@@ -29,7 +36,7 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<ThemeMode>("ocean");
 
   // Theme gradients mapping with primary colors
@@ -107,10 +114,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  const value = {
-    theme,
-    setTheme,
-  };
+  const setThemeMemoized = useCallback((newTheme: ThemeMode) => {
+    setTheme(newTheme);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      theme,
+      setTheme: setThemeMemoized,
+    }),
+    [theme, setThemeMemoized]
+  );
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

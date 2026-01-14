@@ -9,7 +9,7 @@ export interface UserProfile {
   documents?: string[];
   experience?: string;
   language?: "en" | "ja" | "id"; // Add "id" for Indonesian
-  [key: string]: any;
+  [key: string]: string | string[] | undefined;
 }
 
 export const saveUserProfile = async (userId: string, data: UserProfile) => {

@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { useAuth } from "./AuthContext";
 import {
   getUserProfile,
@@ -1083,9 +1090,7 @@ const translations = {
   },
 };
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({
-  children,
-}) => {
+export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const [language, setLanguageState] = useState<Language>("en");
   const { currentUser } = useAuth();
 
@@ -1122,30 +1127,39 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   }, [currentUser]);
 
   // Save language to localStorage and Firebase when it changes
-  const setLanguage = async (newLanguage: Language) => {
-    setLanguageState(newLanguage);
-    localStorage.setItem("vizy-language", newLanguage);
+  const setLanguage = useCallback(
+    async (newLanguage: Language) => {
+      setLanguageState(newLanguage);
+      localStorage.setItem("vizy-language", newLanguage);
 
-    // Save to Firebase if user is authenticated
-    if (currentUser) {
-      try {
-        await updateUserLanguage(currentUser.uid, newLanguage);
-      } catch (error) {
-        console.error("Error saving language to Firebase:", error);
+      // Save to Firebase if user is authenticated
+      if (currentUser) {
+        try {
+          await updateUserLanguage(currentUser.uid, newLanguage);
+        } catch (error) {
+          console.error("Error saving language to Firebase:", error);
+        }
       }
-    }
-  };
+    },
+    [currentUser]
+  );
 
-  // Translation function
-  const t = (key: string): string => {
-    return (translations[language] as Record<string, string>)[key] || key;
-  };
+  // Translation function - memoized to prevent recreation
+  const t = useCallback(
+    (key: string): string => {
+      return (translations[language] as Record<string, string>)[key] || key;
+    },
+    [language]
+  );
 
-  const value = {
-    language,
-    setLanguage,
-    t,
-  };
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      t,
+    }),
+    [language, setLanguage, t]
+  );
 
   return (
     <LanguageContext.Provider value={value}>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { getErrorMessage } from "../../utils/firebaseErrors";
 import "./auth.styles.css";
 
 interface SignupProps {
@@ -43,8 +44,8 @@ const Signup = ({ onSwitchToLogin, onClose }: SignupProps) => {
       setLoading(true);
       await signup(email, password);
       onClose();
-    } catch (error: any) {
-      setError("Failed to create an account: " + error.message);
+    } catch (error) {
+      setError("Failed to create an account: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -56,8 +57,8 @@ const Signup = ({ onSwitchToLogin, onClose }: SignupProps) => {
       setLoading(true);
       await loginWithGoogle();
       onClose();
-    } catch (error: any) {
-      setError("Failed to sign up with Google: " + error.message);
+    } catch (error) {
+      setError("Failed to sign up with Google: " + getErrorMessage(error));
     } finally {
       setLoading(false);
     }

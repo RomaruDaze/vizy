@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 import LanguageButton from "../shared/LanguageButton";
 import "./signupPage.styles.css";
 import { updateProfile } from "firebase/auth";
@@ -16,6 +17,16 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const { signup, loginWithGoogle } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
+
+  // Compute form validity
+  const isFormValid =
+    nickname.trim().length > 0 &&
+    email.trim().length > 0 &&
+    password.length >= 6 &&
+    confirmPassword.length >= 6 &&
+    password === confirmPassword &&
+    agreeToTerms;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,9 +63,11 @@ const SignupPage = () => {
       }
 
       // Redirect to home page after successful signup
-      window.location.href = "/vizy/";
-    } catch (error: any) {
-      setError(t("failed_create_account") + ": " + error.message);
+      navigate("/");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : t("failed_create_account");
+      setError(t("failed_create_account") + ": " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -66,9 +79,11 @@ const SignupPage = () => {
       setLoading(true);
       await loginWithGoogle();
       // Redirect to home page after successful signup
-      window.location.href = "/vizy/";
-    } catch (error: any) {
-      setError(t("failed_google_signup") + ": " + error.message);
+      navigate("/");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : t("failed_google_signup");
+      setError(t("failed_google_signup") + ": " + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -157,7 +172,9 @@ const SignupPage = () => {
           <button
             type="submit"
             className="signup-button primary"
-            disabled={loading}
+            disabled={loading || !isFormValid}
+            aria-label={t("create_account")}
+            aria-disabled={loading || !isFormValid}
           >
             {loading ? t("creating_account") : t("create_account")}
           </button>
@@ -184,9 +201,13 @@ const SignupPage = () => {
         <div className="signup-footer">
           <p>
             {t("already_have_account")}{" "}
-            <a href="/login" className="link-button">
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="link-button"
+            >
               {t("log_in")}
-            </a>
+            </button>
           </p>
         </div>
       </div>
@@ -236,7 +257,10 @@ const SignupPage = () => {
             <div className="terms-footer">
               <button
                 className="signup-button primary"
-                onClick={() => setShowTerms(false)}
+                onClick={() => {
+                  setAgreeToTerms(true);
+                  setShowTerms(false);
+                }}
               >
                 {t("i_understand")}
               </button>
